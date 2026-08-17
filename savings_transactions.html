@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/savings_transactions.css">
     <link rel="stylesheet" href="css/payments_tab.css">
+    <link rel="stylesheet" href="css/extra_tabs.css">
     <script src="js/core_manager.js"></script>
     <script src="js/tab_manager.js"></script>
     <!-- PDF Libraries -->
@@ -72,14 +73,14 @@
 
         <nav class="txn-tabs">
             <div class="tab-item" onclick="switchTab('payments')">Payments</div>
-            <div class="tab-item">Requests</div>
+            <div class="tab-item" onclick="switchTab('requests')">Requests</div>
             <div class="tab-item active" onclick="switchTab('transactions')">Transactions</div>
-            <div class="tab-item">Recurring</div>
+            <div class="tab-item" onclick="switchTab('recurring')">Recurring</div>
             <div class="tab-item">Money Manager</div>
         </nav>
 
         <main class="txn-list-content">
-            <!-- TAB 1: PAYMENTS CONTENT (Integrated from payments.html) -->
+            <!-- TAB 1: PAYMENTS CONTENT -->
             <div id="payments-view" class="tab-view">
                 <div id="payments-view-content" style="padding: 0 5px;">
                     <p class="section-label">Send Money</p>
@@ -210,7 +211,20 @@
                 </div>
             </div>
 
-            <!-- TAB 2: TRANSACTIONS CONTENT (Original) -->
+            <!-- TAB 2: REQUESTS CONTENT -->
+            <div id="requests-view" class="tab-view">
+                <div class="tab-view-padding">
+                    <div class="tab-content-header">
+                        <span class="tab-section-title">UPI requests</span>
+                        <a href="#" class="see-all-link">See all</a>
+                    </div>
+                    <div class="empty-tab-state">
+                        There are no active UPI requests
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: TRANSACTIONS CONTENT (Original) -->
             <div id="transactions-view" class="tab-view active">
                 <div class="search-action-bar">
                     <div class="search-container"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input type="text" class="search-input" placeholder="Search"></div>
@@ -219,6 +233,31 @@
                 <div class="full-width-help-container"><p class="context-help">Can't find your recent transactions? <span class="red-highlight">Click here</span></p></div>
                 <div class="filter-row"><div class="filter-pill"><div class="filter-icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>Filter<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path></svg></div></div>
                 <div id="dynamic-txn-list"></div>
+            </div>
+
+            <!-- TAB 4: RECURRING CONTENT -->
+            <div id="recurring-view" class="tab-view">
+                <div class="tab-view-padding">
+                    <div class="recurring-header">
+                        <div class="filter-icon-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                        </div>
+                    </div>
+
+                    <div class="recurring-content-block">
+                        <span class="recurring-section-label">Recurring payments</span>
+                        <div class="empty-tab-state" style="padding: 30px 20px;">
+                            No recurring payments
+                        </div>
+                    </div>
+
+                    <div class="recurring-content-block">
+                        <span class="recurring-section-label">One time payments</span>
+                        <div class="empty-tab-state" style="padding: 30px 20px;">
+                            No one time payments
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 

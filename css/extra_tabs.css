@@ -1,0 +1,69 @@
+/* Styles for Requests and Recurring Tabs */
+
+.tab-view-padding {
+    padding: 10px 15px;
+}
+
+.tab-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-top: 5px;
+}
+
+.tab-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #444;
+}
+
+.see-all-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #931A1D;
+    text-decoration: none;
+}
+
+.empty-tab-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Recurring specific */
+.recurring-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+
+.filter-icon-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+}
+
+.recurring-section-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #444;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #F0F0F0;
+    margin-bottom: 15px;
+    display: block;
+    width: 100%;
+}
+
+.recurring-content-block {
+    margin-bottom: 30px;
+}
