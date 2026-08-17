@@ -166,7 +166,7 @@ body {
 }
 
 .icon-circle.red {
-    background-color: #E63946;
+    background-color: var(--idfc-red);
     color: white;
 }
 
