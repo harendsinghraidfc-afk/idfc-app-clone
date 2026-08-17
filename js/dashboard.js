@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eyeBtn = document.querySelector('.eye-btn');
     const balanceDots = document.querySelector('.dots');
-    const actualBalance = '₹ 5,00,000.00';
     let isHidden = true;
 
     if (eyeBtn && balanceDots) {
@@ -9,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isHidden = !isHidden;
             if (isHidden) {
                 balanceDots.textContent = '•••••';
+                balanceDots.classList.remove('shimmer-loading');
                 balanceDots.style.fontSize = '1.8rem';
                 balanceDots.style.letterSpacing = '4px';
                 eyeBtn.innerHTML = `
@@ -19,27 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 `;
             } else {
-                // Show "waiting" state
-                balanceDots.textContent = 'Fetching...';
-                balanceDots.style.fontSize = '1rem';
+                // Show shimmer state
+                balanceDots.textContent = '';
+                balanceDots.classList.add('shimmer-loading');
                 balanceDots.style.letterSpacing = 'normal';
 
                 try {
                     // Artificial delay to simulate network request
-                    await new Promise(resolve => setTimeout(resolve, 800));
+                    await new Promise(resolve => setTimeout(resolve, 1500));
 
                     const response = await fetch('server_backend/users.json');
                     const users = await response.json();
                     const user = getActiveUser();
 
-                    // Find current user in JSON or default to first
                     const userData = users.find(u => u.customerId === user?.customerId) || users[0];
                     const balance = userData.availableBalance || '₹ 0.00';
 
+                    balanceDots.classList.remove('shimmer-loading');
                     balanceDots.textContent = balance;
                     balanceDots.style.fontSize = '1.2rem';
-                    balanceDots.style.letterSpacing = 'normal';
                 } catch (e) {
+                    balanceDots.classList.remove('shimmer-loading');
                     balanceDots.textContent = '₹ Error';
                     console.error('Balance fetch failed', e);
                 }
@@ -52,6 +52,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
         });
+    }
+
+    // --- Search Placeholder Rotation ---
+    initSearchAnimation();
+
+    function initSearchAnimation() {
+        const wrapper = document.querySelector('.search-placeholder-wrapper');
+        if (!wrapper) return;
+
+        const texts = wrapper.querySelectorAll('.placeholder-text');
+        let currentIndex = 0;
+
+        setInterval(() => {
+            const current = texts[currentIndex];
+            currentIndex = (currentIndex + 1) % texts.length;
+            const next = texts[currentIndex];
+
+            // Slide current UP and OUT
+            current.classList.remove('active');
+            current.classList.add('prev');
+
+            // Set next to start from BOTTOM (next) and then slide IN
+            next.classList.remove('prev');
+            next.classList.add('next');
+
+            // Small timeout to allow the browser to register the 'next' position
+            setTimeout(() => {
+                next.classList.remove('next');
+                next.classList.add('active');
+            }, 50);
+
+            // Clean up old classes after animation
+            setTimeout(() => {
+                current.classList.remove('prev');
+            }, 600);
+        }, 3000); // 3 seconds interval
     }
 
     // --- Logout Functionality ---
@@ -96,12 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
             side: THREE.DoubleSide
         });
 
-        const topGeometry = new THREE.CylinderGeometry(4.5, 9, 3.5, 8); // Reduced size
+        const topGeometry = new THREE.CylinderGeometry(4.5, 9, 3.5, 8);
         const topMesh = new THREE.Mesh(topGeometry, diamondMaterial);
         topMesh.position.y = 1.75;
         diamondGroup.add(topMesh);
 
-        const bottomGeometry = new THREE.CylinderGeometry(9, 0.1, 10, 8); // Reduced size
+        const bottomGeometry = new THREE.CylinderGeometry(9, 0.1, 10, 8);
         const bottomMesh = new THREE.Mesh(bottomGeometry, diamondMaterial);
         bottomMesh.position.y = -5;
         diamondGroup.add(bottomMesh);
@@ -121,23 +157,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function animate() {
             requestAnimationFrame(animate);
-            diamondGroup.rotation.y -= 0.015; // Slightly faster rotation
+            diamondGroup.rotation.y -= 0.015;
             renderer.render(scene, camera);
         }
         animate();
     }
 
-    // --- Double Click/Tap for Savings Details (Laptop & Mobile) ---
     const savingsTargets = document.querySelectorAll('.maroon-tile, .savings-card');
     let lastClickTime = 0;
 
     savingsTargets.forEach(target => {
-        // Native Double Click for Laptops
         target.addEventListener('dblclick', () => {
             window.location.href = 'savings_details.html';
         });
 
-        // Manual Double Tap for Trackpads/Mobile
         target.addEventListener('click', () => {
             const currentTime = new Date().getTime();
             const clickGap = currentTime - lastClickTime;
@@ -149,18 +182,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Video Play on Viewport Enter ---
     const promoVideo = document.getElementById('promo-video');
     if (promoVideo) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Video entered view, play from start
                     promoVideo.currentTime = 0;
                     promoVideo.play();
                 }
             });
-        }, { threshold: 0.5 }); // Play when at least 50% of video is visible
+        }, { threshold: 0.5 });
 
         observer.observe(promoVideo);
     }

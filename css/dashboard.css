@@ -68,6 +68,63 @@
     padding: 0 12px;
     gap: 8px;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden; /* Important for placeholder animation */
+}
+
+.search-placeholder-wrapper {
+    position: relative;
+    height: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.placeholder-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: 500;
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+    white-space: nowrap;
+}
+
+.placeholder-text.active {
+    opacity: 1;
+    transform: translateY(-50%);
+}
+
+.placeholder-text.prev {
+    opacity: 0;
+    transform: translateY(-150%);
+}
+
+.placeholder-text.next {
+    opacity: 0;
+    transform: translateY(50%);
+}
+
+/* Skeleton/Shimmer Effect for Balance */
+.shimmer-loading {
+    display: inline-block;
+    height: 24px;
+    width: 120px;
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-anim 1.5s infinite linear;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+@keyframes shimmer-anim {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
 }
 
 .search-icon {
