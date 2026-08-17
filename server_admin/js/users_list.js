@@ -2,21 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('.txn-table tbody');
     const publishBtn = document.getElementById('publish-btn');
 
+    // Populate settings if exist
+    const savedToken = localStorage.getItem('idfc_gh_token');
+    const savedRepo = localStorage.getItem('idfc_gh_repo');
+    if(savedToken) document.getElementById('gh-token').value = savedToken;
+    if(savedRepo) document.getElementById('gh-repo').value = savedRepo;
+
     function renderUsers() {
         if (!tableBody) return;
-
-        // Clear placeholder
         tableBody.innerHTML = '';
-
-        // Get users from data manager
         const users = getUsers();
-
         if (users.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #888;">No users registered yet.</td></tr>';
             return;
         }
-
-        // Render each user
         users.forEach((user, index) => {
             const isDefault = index === 0;
             const row = document.createElement('tr');
@@ -45,14 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.makeDefault = (index) => {
         const users = getUsers();
         if (index === 0) return;
-
-        // Move selected user to the top
         const [selectedUser] = users.splice(index, 1);
         users.unshift(selectedUser);
-
         localStorage.setItem('idfc_users_data', JSON.stringify(users));
         renderUsers();
-        alert(`${selectedUser.fullName} set as default. Click 'Publish to Website' to make it live.`);
     };
 
     window.deleteUser = (index) => {
@@ -65,16 +60,65 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (publishBtn) {
-        publishBtn.addEventListener('click', () => {
+        publishBtn.addEventListener('click', async () => {
+            const token = localStorage.getItem('idfc_gh_token');
+            const repo = localStorage.getItem('idfc_gh_repo');
             const users = getUsers();
-            const jsonData = JSON.stringify(users, null, 4);
+            const content = JSON.stringify(users, null, 4);
 
-            const modal = document.getElementById('sync-modal');
-            const textarea = document.getElementById('json-output');
+            if (!token || !repo) {
+                // Fallback to manual sync if no token
+                const modal = document.getElementById('sync-modal');
+                const textarea = document.getElementById('json-output');
+                if (modal && textarea) {
+                    textarea.value = content;
+                    modal.classList.add('active');
+                }
+                return;
+            }
 
-            if (modal && textarea) {
-                textarea.value = jsonData;
-                modal.classList.add('active');
+            // --- AUTOMATIC SYNC VIA GITHUB API ---
+            publishBtn.textContent = 'Publishing...';
+            publishBtn.disabled = true;
+
+            try {
+                const path = 'server_backend/users.json';
+
+                // 1. Get the current file SHA (required to update)
+                const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+
+                if (!getRes.ok) throw new Error('Could not find file on GitHub');
+                const fileData = await getRes.json();
+                const sha = fileData.sha;
+
+                // 2. Update the file
+                const updateRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: 'Admin Panel Auto-Update: Synchronized users.json',
+                        content: btoa(unescape(encodeURIComponent(content))), // Base64 encode
+                        sha: sha
+                    })
+                });
+
+                if (updateRes.ok) {
+                    alert('✅ Published Successfully! Website will update in ~60 seconds.');
+                } else {
+                    const err = await updateRes.json();
+                    throw new Error(err.message || 'Update failed');
+                }
+            } catch (e) {
+                alert('❌ Error: ' + e.message);
+                console.error(e);
+            } finally {
+                publishBtn.textContent = 'Publish to Website';
+                publishBtn.disabled = false;
             }
         });
     }

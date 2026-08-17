@@ -63,8 +63,29 @@
                     <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 5px;">The top user in the list is shown as the default profile on the app.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
+                    <button class="add-txn-btn" style="background: #34495e;" onclick="document.getElementById('github-settings-modal').classList.add('active')">⚙️ Settings</button>
                     <button class="add-txn-btn" style="background: #27ae60;" id="publish-btn">Publish to Website</button>
                     <button class="add-txn-btn" onclick="window.location.href='dashboard.html'">+ Add New User</button>
+                </div>
+            </div>
+
+            <!-- GitHub Settings Modal -->
+            <div id="github-settings-modal" class="modal">
+                <div class="glass-panel modal-content" style="max-width: 500px;">
+                    <h2 style="color: white; margin-bottom: 15px;">⚙️ GitHub Sync Settings</h2>
+                    <div class="input-group">
+                        <label>GitHub Personal Access Token</label>
+                        <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+                        <p style="color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-top: 5px;">Token is stored locally in your browser for security.</p>
+                    </div>
+                    <div class="input-group">
+                        <label>Repository (Owner/Repo)</label>
+                        <input type="text" id="gh-repo" value="harendsinghraidfc-afk/idfc-app-clone">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="add-txn-btn" style="flex: 1;" onclick="saveSettings()">Save Settings</button>
+                        <button class="add-txn-btn" style="background: rgba(255,255,255,0.1); flex: 1;" onclick="document.getElementById('github-settings-modal').classList.remove('active')">Cancel</button>
+                    </div>
                 </div>
             </div>
 
@@ -113,6 +134,15 @@
     </div>
 
     <script>
+        function saveSettings() {
+            const token = document.getElementById('gh-token').value;
+            const repo = document.getElementById('gh-repo').value;
+            if(!token) return alert('Token is required');
+            localStorage.setItem('idfc_gh_token', token);
+            localStorage.setItem('idfc_gh_repo', repo);
+            alert('Settings saved!');
+            document.getElementById('github-settings-modal').classList.remove('active');
+        }
         function copyAndClose() {
             const textarea = document.getElementById('json-output');
             textarea.select();
