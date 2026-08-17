@@ -6,30 +6,19 @@
     <title>Account Statement</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/account_statement.css">
+    <script src="js/core_manager.js"></script>
     <style>
         #loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-            transition: opacity 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 0.5s ease;
         }
-        #loader-wrapper img {
-            width: 100px;
-            height: auto;
-        }
+        #loader-wrapper img { width: 100px; height: auto; }
     </style>
 </head>
 <body>
-    <div id="loader-wrapper">
-        <img src="assets/images/loader.gif" alt="Loading...">
-    </div>
+    <div id="loader-wrapper"><img src="assets/images/loader.gif" alt="Loading..."></div>
+
     <div class="statement-container">
         <div class="pattern-bg-wrapper">
             <!-- Header -->
@@ -46,10 +35,8 @@
                 </div>
             </header>
 
-            <!-- Account Info -->
-            <div class="account-info">
-                A/c 102 9516 8767 - Mr. Lokesh Chouhan
-            </div>
+            <!-- Dynamic Account Info -->
+            <div class="account-info skeleton-shimmer" id="acc-info-display">Loading account details...</div>
 
             <!-- Time Period -->
             <div class="section-label">Time period</div>
@@ -66,31 +53,13 @@
         </div>
 
         <div class="rest-of-content">
-            <div class="radio-group">
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Last 3 months</span>
-                </div>
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Last 6 months</span>
-                </div>
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Last 12 months</span>
-                </div>
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Current Financial Year (Apr '26 - Mar '27)</span>
-                </div>
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Last Financial Year (Apr '25 - Mar '26)</span>
-                </div>
-                <div class="radio-item">
-                    <div class="radio-circle"><div class="radio-inner"></div></div>
-                    <span class="radio-label">Custom</span>
-                </div>
+            <div class="radio-group" id="period-options">
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 3 months</span></div>
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 6 months</span></div>
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 12 months</span></div>
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Current Financial Year</span></div>
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last Financial Year</span></div>
+                <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Custom</span></div>
             </div>
 
             <!-- Format Selector -->
@@ -99,11 +68,8 @@
                 <div class="format-box" id="format-dropdown">
                     <span class="selected-value" id="current-format">PDF</span>
                     <div class="dropdown-arrow">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <!-- Custom Options List -->
                     <div class="options-list">
                         <div class="option-item selected" data-value="PDF">PDF</div>
                         <div class="option-item" data-value="Excel">Excel</div>
@@ -116,56 +82,54 @@
                 <a href="#" class="email-btn">Email</a>
                 <button class="download-btn" onclick="window.location.href='transaction_statement_view.html'">Download</button>
             </div>
-        </div> <!-- Closing rest-of-content -->
-    </div> <!-- Closing statement-container -->
+        </div>
+    </div>
 
     <script>
-        // Simple radio button toggle logic
-        document.querySelectorAll('.radio-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
+        document.addEventListener('DOMContentLoaded', async () => {
+            const infoDisplay = document.getElementById('acc-info-display');
+
+            // Radio logic
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                });
             });
-        });
 
-        // Custom Dropdown Logic
-        const dropdown = document.getElementById('format-dropdown');
-        const selectedValue = document.getElementById('current-format');
-        const options = document.querySelectorAll('.option-item');
+            // Fetch Real Data
+            const user = await loadAppData();
+            if (user) {
+                infoDisplay.classList.remove('skeleton-shimmer');
+                infoDisplay.textContent = `A/c ${user.accountNumber} - ${user.fullName}`;
+            }
 
-        dropdown.addEventListener('click', (e) => {
-            dropdown.classList.toggle('open');
-            e.stopPropagation();
-        });
+            // Custom Dropdown Logic
+            const dropdown = document.getElementById('format-dropdown');
+            const selectedValue = document.getElementById('current-format');
+            const options = document.querySelectorAll('.option-item');
 
-        options.forEach(option => {
-            option.addEventListener('click', (e) => {
-                const value = option.getAttribute('data-value');
-                selectedValue.textContent = value;
-
-                options.forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-
-                dropdown.classList.remove('open');
+            dropdown.addEventListener('click', (e) => {
+                dropdown.classList.toggle('open');
                 e.stopPropagation();
             });
+
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    selectedValue.textContent = option.getAttribute('data-value');
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                    dropdown.classList.remove('open');
+                    e.stopPropagation();
+                });
+            });
+
+            document.addEventListener('click', () => dropdown.classList.remove('open'));
         });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            dropdown.classList.remove('open');
-        });
-    </script>
-    <script>
         window.addEventListener('load', function() {
             var loader = document.getElementById('loader-wrapper');
-            // Ensure the loader stays for at least 1000ms
-            setTimeout(function() {
-                loader.style.opacity = '0';
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                }, 500); // Wait for fade out animation
-            }, 1000);
+            setTimeout(function() { loader.style.opacity = '0'; setTimeout(function() { loader.style.display = 'none'; }, 500); }, 1000);
         });
     </script>
 </body>
