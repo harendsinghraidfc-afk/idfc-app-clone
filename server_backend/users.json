@@ -9,7 +9,7 @@
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
         "mpin": "1234",
-        "availableBalance": "₹100",
+        "availableBalance": "₹1,950.00",
         "accountType": "Savings Regular 25k",
         "avgMonthlyBalance": "₹1,000.00",
         "holdFunds": "₹0.00",
@@ -19,6 +19,7 @@
         "ccTotalLimit": "₹50,000.00",
         "ccAvailableLimit": "₹48,500.00",
         "ckycId": "**********7254",
-        "address": "H.No 124, Sector 5, Malviya Nagar, Jaipur, Rajasthan 302017"
+        "address": "H.No 124, Sector 5, Malviya Nagar, Jaipur, Rajasthan 302017",
+        "upiId": "7415448245@idfcfirst"
     }
 ]

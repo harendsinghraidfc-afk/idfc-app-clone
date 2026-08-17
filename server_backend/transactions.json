@@ -1,11 +1,21 @@
 {
     "6910097017": [
         {
+            "id": 1000,
+            "date": "01 Aug, 2026",
+            "desc": "Cash Deposit/Branch/Mumbai",
+            "amount": "₹5,000.00",
+            "category": "savings",
+            "type": "credit",
+            "status": "approved"
+        },
+        {
             "id": 2001,
             "date": "17 Aug, 2026",
             "desc": "Phonepe/UPI/Transfer to Friends",
             "amount": "₹500.00",
             "category": "savings",
+            "type": "debit",
             "status": "unbilled"
         },
         {
@@ -14,6 +24,7 @@
             "desc": "Zomato/Order/Food Delivery",
             "amount": "₹350.00",
             "category": "savings",
+            "type": "debit",
             "status": "approved"
         },
         {
@@ -22,15 +33,17 @@
             "desc": "ATM/Cash Withdrawal/Mumbai",
             "amount": "₹2,000.00",
             "category": "savings",
+            "type": "debit",
             "status": "billed"
         },
         {
-            "date": "17 Aug 2026",
+            "id": 2004,
+            "date": "17 Aug, 2026",
             "desc": "ATM/Cash Withdrawal/Mumbai",
-            "amount": "₹200",
+            "amount": "₹200.00",
             "status": "billed",
             "category": "savings",
-            "id": 1786953104449
+            "type": "debit"
         }
     ]
 }
