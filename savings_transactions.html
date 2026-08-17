@@ -149,20 +149,20 @@
             if (profileCircle) profileCircle.textContent = initials;
 
             // Fetch Data
-            const allTxns = getTransactionsForActiveUser();
+            const allTxns = getTransactionsForActiveUser(); // Already sorted newest first
             const savingsTxns = allTxns.filter(t => !t.category || t.category === 'savings');
 
             // Populate PDF Table with Savings Data
             const tplBody = document.getElementById('tpl-txn-body');
             savingsTxns.forEach(txn => {
-                const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
+                const isCredit = txn.type === 'credit' || txn.amount.includes('+');
                 tplBody.insertAdjacentHTML('beforeend', `
                     <tr>
                         <td>${txn.date}</td>
                         <td>${isCredit ? 'Others' : 'Fees & charges'}</td>
                         <td style="font-weight: 500;">${txn.desc}</td>
                         <td>${isCredit ? 'Interests' : 'Others'}</td>
-                        <td class="pdf-amount-col ${isCredit ? 'pdf-credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '')}</td>
+                        <td class="pdf-amount-col ${isCredit ? 'pdf-credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '').replace('+ ', '')}</td>
                     </tr>`);
             });
 
@@ -173,6 +173,7 @@
                 const currentBalance = user.availableBalance || '₹ 0.00';
                 const today = new Date(); today.setHours(0,0,0,0);
                 const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0,0,0,0);
+
                 const grouped = {};
                 savingsTxns.forEach(txn => {
                     const txnDate = new Date(txn.date); txnDate.setHours(0,0,0,0);
@@ -182,14 +183,16 @@
                     if (!grouped[label]) grouped[label] = { date: txnDate, items: [] };
                     grouped[label].items.push(txn);
                 });
+
                 const sortedLabels = Object.keys(grouped).sort((a, b) => grouped[b].date - grouped[a].date);
                 let finalHtml = ''; let bannerPlaced = false;
+
                 sortedLabels.forEach((label) => {
                     if (label === 'Yesterday' && !bannerPlaced) { finalHtml += bannerHtml; bannerPlaced = true; }
                     finalHtml += `<div class="date-group-header">${label} | Balance ${currentBalance}</div>`;
                     grouped[label].items.forEach(txn => {
-                        const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                        finalHtml += `<div class="txn-card"><div class="txn-icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path></svg></div><div class="txn-info-main"><p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p><p class="txn-subtitle">${txn.desc}</p></div><div class="txn-amount-box"><p class="txn-amount ${isIncoming ? 'incoming' : ''}">${txn.amount}</p><p class="txn-time">${txn.date}</p></div></div>`;
+                        const isIncoming = txn.type === 'credit' || txn.amount.includes('+');
+                        finalHtml += `<div class="txn-card"><div class="txn-icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path></svg></div><div class="txn-info-main"><p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p><p class="txn-subtitle">${txn.desc}</p></div><div class="txn-amount-box"><p class="txn-amount ${isIncoming ? 'incoming' : ''}">${isIncoming ? '+ ' : ''}${txn.amount.replace('+', '').replace('+ ', '')}</p><p class="txn-time">${txn.date}</p></div></div>`;
                     });
                 });
                 if (!bannerPlaced) finalHtml += bannerHtml;
@@ -203,15 +206,19 @@
             const sheet = document.querySelector('.bottom-sheet-content');
             const historyBtn = document.getElementById('history-pdf-trigger');
 
-            openBtn.addEventListener('click', () => { overlay.style.display = 'block'; setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10); });
+            if (openBtn) {
+                openBtn.addEventListener('click', () => { overlay.style.display = 'block'; setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10); });
+            }
             const closeSheet = () => { overlay.classList.remove('active'); sheet.classList.remove('active'); setTimeout(() => { overlay.style.display = 'none'; }, 300); };
-            closeBtn.addEventListener('click', closeSheet);
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
+            if (closeBtn) closeBtn.addEventListener('click', closeSheet);
+            if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
 
-            historyBtn.addEventListener('click', async () => {
-                closeSheet();
-                await generateDirectPDF();
-            });
+            if (historyBtn) {
+                historyBtn.addEventListener('click', async () => {
+                    closeSheet();
+                    await generateDirectPDF();
+                });
+            }
         });
 
         async function generateDirectPDF() {
