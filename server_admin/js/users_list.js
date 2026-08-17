@@ -69,14 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const users = getUsers();
             const jsonData = JSON.stringify(users, null, 4);
 
-            // In a real scenario, this would send to a server.
-            // Here, we'll prompt the user or handle via task.
-            console.log('Publishing data:', jsonData);
-            alert('Initiating global sync... Please wait.');
+            const modal = document.getElementById('sync-modal');
+            const textarea = document.getElementById('json-output');
 
-            // Trigger the IDE to save this to the real file and push
-            // This happens via the agent's response logic
-            document.body.setAttribute('data-publish-request', jsonData);
+            if (modal && textarea) {
+                textarea.value = jsonData;
+                modal.classList.add('active');
+            }
         });
     }
 

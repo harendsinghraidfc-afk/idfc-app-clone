@@ -96,7 +96,30 @@
     </div>
     <script src="js/data_manager.js"></script>
     <script src="js/users_list.js"></script>
+
+    <!-- Sync Modal -->
+    <div id="sync-modal" class="modal">
+        <div class="glass-panel modal-content" style="max-width: 600px;">
+            <h2 style="color: white; margin-bottom: 15px;">🚀 Sync with GitHub</h2>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 20px;">
+                Copy the code below and paste it in the AI Chat to make your changes live on the website.
+            </p>
+            <textarea id="json-output" readonly style="width: 100%; height: 200px; background: rgba(0,0,0,0.3); color: #2ecc71; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 15px; font-family: monospace; font-size: 0.8rem; margin-bottom: 20px; outline: none;"></textarea>
+            <div style="display: flex; gap: 10px;">
+                <button class="add-txn-btn" style="flex: 1;" onclick="copyAndClose()">Copy & Close</button>
+                <button class="add-txn-btn" style="background: rgba(255,255,255,0.1); flex: 1;" onclick="document.getElementById('sync-modal').classList.remove('active')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function copyAndClose() {
+            const textarea = document.getElementById('json-output');
+            textarea.select();
+            document.execCommand('copy');
+            alert('Data copied! Now paste it in the AI chat.');
+            document.getElementById('sync-modal').classList.remove('active');
+        }
         window.addEventListener('load', function() {
             var loader = document.getElementById('loader-wrapper');
             // Ensure the loader stays for at least 1000ms
