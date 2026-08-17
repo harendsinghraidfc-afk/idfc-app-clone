@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaction Limits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/transaction_limits.css">
+    <style>
+        .limit-pane {
+            display: none;
+        }
+        .limit-pane.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="limits-container">
+        <!-- Header -->
+        <header class="limits-header">
+            <button class="back-btn" onclick="window.location.href='wow_card_details.html'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <h2 class="header-title">Transaction Limits</h2>
+        </header>
+
+        <!-- Content -->
+        <main class="limits-content">
+            <!-- Mini Card Header Strip -->
+            <div class="mini-card-header">
+                <div>
+                    <span class="card-brand-text">WOW!</span>
+                    <span class="card-num-text">XXXX 8818</span>
+                </div>
+                <div class="dropdown-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="toggle-tabs">
+                <button class="tab-btn active" onclick="switchTab('domestic', this)">Domestic</button>
+                <button class="tab-btn" onclick="switchTab('international', this)">International</button>
+            </div>
+
+            <!-- Domestic Content -->
+            <div id="domestic-content" class="limit-pane active">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 5px; margin-bottom: 25px;">
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #4a5568;">Enable all domestic channels</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#e53e3e"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                            <span class="section-name">In-store payments</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹20,000</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#3182ce"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            <span class="section-name">Online payments</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹76,000</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#805ad5"><path d="M2 17h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V10c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5H2c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zM23 8h-2c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h2c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zM11 11h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V7c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5h-2V6c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7zM18 10h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V8c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5h-2V7c0-.55-.45-1-1-1h-3c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-9z"/></svg>
+                            <span class="section-name">Tap to pay</span>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <p class="sub-desc">Turn on to make quick, contactless payments</p>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#38a169"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12zM12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                            <span class="section-name">Cash withdrawals</span>
+                        </div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹1,14,000</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- International Content -->
+            <div id="international-content" class="limit-pane">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 5px; margin-bottom: 25px;">
+                    <span style="font-size: 0.9rem; font-weight: 600; color: #4a5568;">Enable all international channels</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#e53e3e"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                            <span class="section-name">In-store payments</span>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹0</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#3182ce"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            <span class="section-name">Online payments</span>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹0</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#805ad5"><path d="M2 17h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V10c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5H2c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zM23 8h-2c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h2c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zM11 11h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V7c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5h-2V6c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7zM18 10h2v.5c0 .28.22.5.5.5s.5-.22.5-.5V8c0-.28-.22-.5-.5-.5s-.5.22-.5.5v.5h-2V7c0-.55-.45-1-1-1h-3c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-9z"/></svg>
+                            <span class="section-name">Tap to pay</span>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <p class="sub-desc">Turn on to make quick, contactless payments internationally</p>
+                </div>
+
+                <div class="limit-section">
+                    <div class="section-top">
+                        <div class="section-info">
+                            <svg class="section-icon" viewBox="0 0 24 24" fill="#38a169"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V6h16v12zM12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                            <span class="section-name">Cash withdrawals</span>
+                        </div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                    <div class="limit-input-container">
+                        <p class="input-label">Set per transaction limit</p>
+                        <p class="amount-input">₹0</p>
+                        <p class="max-limit-text">Max ₹1,14,200</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function switchTab(type, btn) {
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.limit-pane').forEach(p => p.classList.remove('active'));
+            document.getElementById(type + '-content').classList.add('active');
+        }
+    </script>
+</body>
+</html>

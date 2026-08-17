@@ -1,0 +1,221 @@
+/* Savings Account Details Styles */
+.savings-container {
+    background-color: #f5f7f9;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.savings-header {
+    background: #f5f7f9; /* Match page background */
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none; /* Removed separate line */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-info-center {
+    flex: 1;
+    text-align: center;
+}
+
+.header-acc-num {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.header-acc-type {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.savings-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* Red Balance Card */
+.balance-red-card {
+    background-color: #931A1D;
+    border-radius: 0; /* Sharp corners */
+    padding: 25px;
+    color: white;
+    margin: 0 auto 30px auto;
+    width: 85%; /* Further reduced width */
+    box-shadow: 0 10px 25px rgba(147, 26, 29, 0.2);
+}
+
+.balance-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.balance-title {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    opacity: 0.9;
+}
+
+.balance-main-amount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.balance-details-list {
+    margin-top: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+.label-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.9;
+}
+
+.info-circle {
+    width: 14px;
+    height: 14px;
+    border: 1px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: bold;
+}
+
+.row-value {
+    font-weight: 700;
+}
+
+/* Actions List */
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.action-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 5px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.action-icon-circle {
+    width: 45px;
+    height: 45px;
+    background-color: #931A1D;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.action-icon-circle svg {
+    width: 22px;
+    height: 22px;
+}
+
+.action-text {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #4a4a4a;
+}
+
+.new-badge {
+    background-color: #ffc107;
+    color: black;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    text-transform: uppercase;
+}
+
+/* Info Section Styling - Direct on Page */
+.info-details-section {
+    background-color: transparent; /* No container background */
+    padding: 10px 0;
+    margin-top: 20px;
+    border: none; /* No container border */
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: none; /* Removed default border */
+}
+
+.info-row.with-border {
+    border-bottom: 1px solid #c1c1c1; /* Darker, more visible divider */
+    padding-bottom: 15px;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+}
+
+.red-link {
+    color: #931A1D;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.flex-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+

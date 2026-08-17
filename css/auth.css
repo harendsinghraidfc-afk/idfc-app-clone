@@ -1,0 +1,321 @@
+:root {
+    font-size: 16px;
+    --primary-brand: #931A1D;
+    --bg-color: #ffffff;
+    --text-dark: #1A1A1A;
+    --text-light: #666666;
+    --curve-pink: #FFD8D8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 380px) {
+    :root { font-size: 14px; }
+}
+
+body {
+    background-color: var(--bg-color);
+    overflow: hidden; /* Prevent body scroll, handled by container */
+}
+
+#main-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.app-header {
+    /* Use a predictable height that can animate cleanly */
+    height: 15vh;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+    background: transparent; /* Changed to let curve show if needed */
+    flex-shrink: 0;
+    z-index: 10;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.header-logo {
+    height: clamp(50px, 15vw, 80px); /* Even larger logo size */
+    width: auto;
+}
+
+.header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 3vw, 1.25rem);
+}
+
+.app-otp-pill {
+    background-color: var(--text-dark);
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.header-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+
+.curve-bg {
+    position: absolute;
+    top: calc(15vh + 20px); /* Added 20px gap from header */
+    left: 50%;
+    /* Important: Keep transform logic consistent in both states for smooth scaling */
+    transform: translateX(-50%);
+    width: 250vw; /* Extremely wide to make a flat-looking curve */
+    height: 150vh;
+    background-color: var(--curve-pink);
+    border-radius: 50% 50% 0 0;
+    z-index: 1;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden; /* Contains the gradient fade */
+}
+
+/* Use a pseudo-element for the gradient so it can fade out smoothly into a solid pink circle */
+.curve-bg::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #FFF5F5 15%, #FFFFFF 50%);
+    transition: opacity 0.5s ease;
+}
+
+/* Moved shield to main-container for synchronized absolute positioning */
+.shield-container {
+    position: absolute;
+    top: calc(15vh + 20px); /* Matched curve gap */
+    left: 10%;
+    width: clamp(50px, 16vw, 70px);
+    height: clamp(50px, 16vw, 70px);
+    background: transparent; /* Removed white circle */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Shifted down significantly to sit mostly on the curve area */
+    transform: translateY(-10%);
+    z-index: 10;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.shield-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.shield-tick {
+    opacity: 1; /* Always visible now */
+    transition: opacity 0.5s ease;
+}
+
+.auth-body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10%;
+    padding-right: 10%;
+    /* Increased padding to push welcome text down further away from the curve edge */
+    padding-top: clamp(120px, 20vw, 160px);
+    flex-grow: 1;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.welcome-section {
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: clamp(1.5rem, 5vh, 3rem);
+    transition: all 0.4s ease;
+}
+
+.welcome-section .light {
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.welcome-section .bold {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.mpin-interaction {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mpin-interaction .label {
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.mpin-grid {
+    display: flex;
+    gap: clamp(12px, 4vw, 20px);
+}
+
+.mpin-box {
+    width: clamp(45px, 12vw, 55px);
+    height: clamp(45px, 12vw, 55px);
+    border: 1.5px solid #E0E0E0;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    outline: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mpin-box:focus {
+    border-color: var(--primary-brand);
+    box-shadow: 0 0 0 3px rgba(147, 26, 29, 0.1);
+}
+
+.forgot-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: var(--primary-brand);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-bottom: 1.5px solid var(--primary-brand);
+}
+
+/* --- THE MAGIC HAPPENS HERE --- */
+.auth-focused .app-header {
+    height: 80px;
+    min-height: 80px;
+}
+
+.auth-focused .curve-bg {
+    /* Morph down to an 80px circle placed with gap from top */
+    top: 100px; /* Moved down to create distance from header */
+    left: 50%; /* Keeps it centered */
+    width: 80px;
+    height: 80px;
+    /* Transform handles the X-centering seamlessly from 250vw width */
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: var(--curve-pink);
+    box-shadow: 0 4px 15px rgba(255, 216, 216, 0.9);
+}
+
+.auth-focused .curve-bg::after {
+    opacity: 0; /* Fade out the white gradient, revealing solid pink */
+}
+
+.auth-focused .shield-container {
+    /* Move shield slightly lower than the exact center for a better visual weight */
+    /* Center Y was 140px (100px top + 40px half-height) */
+    top: 148px;
+    left: 50%;
+    /* Scale maintained at 1.4 to touch circle edges */
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: none;
+    background: transparent;
+}
+
+.auth-focused .auth-body {
+    /* Kept fixed in place as requested */
+    transform: none;
+}
+
+.bottom-actions {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 1rem 0.5rem;
+    z-index: 3;
+    background: white;
+    margin-top: auto;
+    border-top: 1px solid #f0f0f0;
+}
+
+.action-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.icon-circle {
+    width: clamp(45px, 12vw, 55px);
+    height: clamp(45px, 12vw, 55px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.action-box:active .icon-circle {
+    transform: scale(0.95);
+}
+
+.icon-circle.outline {
+    border: 1.5px solid var(--primary-brand); /* Changed grey to maroon */
+    background-color: white;
+    color: var(--primary-brand);
+}
+
+.icon-circle.solid {
+    background-color: var(--primary-brand);
+    color: white;
+}
+
+.action-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.action-text {
+    font-size: 0.65rem;
+    color: var(--text-light);
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 80px;
+}
+
+.footer-ver {
+    padding: 0.5rem 0 1rem;
+    width: 100%;
+    text-align: center;
+    color: #C0C0C0;
+    font-size: 0.75rem;
+    z-index: 3;
+    background: white;
+}

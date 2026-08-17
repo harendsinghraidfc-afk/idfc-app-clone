@@ -1,0 +1,347 @@
+/* Tab Layout Styles */
+.tab-bar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+    z-index: 999;
+}
+
+.tab {
+    color: #666;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding-bottom: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    color: #444;
+    border-bottom: 2px solid #931A1D;
+}
+
+.tab-pane {
+    display: none;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Common Section Styling */
+.content-section {
+    padding: 20px 15px;
+}
+
+.section-label {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Card Styling */
+.data-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 25px;
+}
+
+.card-top-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card-icon-pink {
+    width: 55px;
+    height: 38px;
+    background-color: #e91e63;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.card-main-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-title-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-sub-text {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+.menu-dots-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.balance-box {
+    text-align: right;
+}
+
+.balance-label-small {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.balance-amount-main {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-top: 5px;
+}
+
+/* FIRSTAP Promo Card */
+.promo-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #eee;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.promo-visual {
+    width: 110px; /* Slightly wider */
+    flex-shrink: 0;
+}
+
+.promo-card-image-box {
+    position: relative;
+    padding: 20px 20px 20px 0; /* Space for arrows: top, right, bottom */
+    width: fit-content;
+}
+
+.promo-card-image-box img {
+    width: 80px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Dimension Arrows */
+.dim-arrow-h, .dim-arrow-v {
+    position: absolute;
+    background: #888;
+}
+
+.dim-arrow-h {
+    height: 1px;
+    top: 10px; /* Back to top */
+    left: 0;
+    right: 20px;
+}
+
+.dim-arrow-v {
+    width: 1px;
+    right: 10px; /* Stay on right */
+    top: 20px;
+    bottom: 20px;
+}
+
+/* Arrowheads using CSS borders */
+.dim-arrow-h::before, .dim-arrow-h::after,
+.dim-arrow-v::before, .dim-arrow-v::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 3px solid transparent;
+}
+
+.dim-arrow-h::before { left: 0; border-right-color: #888; top: -2.5px; }
+.dim-arrow-h::after { right: 0; border-left-color: #888; top: -2.5px; }
+
+.dim-arrow-v::before { top: 0; border-bottom-color: #888; left: -2.5px; }
+.dim-arrow-v::after { bottom: 0; border-top-color: #888; left: -2.5px; }
+
+.dim-label {
+    position: absolute;
+    font-size: 0.6rem;
+    color: #888;
+    background: white;
+    padding: 0 2px;
+    white-space: nowrap;
+}
+
+.dim-arrow-h .dim-label {
+    top: -8px; /* On top of the line */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dim-arrow-v .dim-label {
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.promo-features {
+    flex: 1;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.check-circle {
+    width: 20px;
+    height: 20px;
+    background: #e8f5e9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.feature-text {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* Footer Banner */
+.footer-banner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #fdfdfd;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+.banner-text {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+}
+
+.banner-img {
+    width: 65px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Empty State Styling */
+.empty-state {
+    text-align: center;
+    color: #888;
+    padding: 100px 20px;
+}
+
+.empty-img {
+    width: 80px;
+    opacity: 0.2;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+/* Bottom Sheet Styles */
+.sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sheet-overlay.active {
+    opacity: 1;
+}
+
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0;
+    z-index: 2005;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    padding: 0;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+}
+
+.bottom-sheet.active {
+    transform: translateY(0);
+}
+
+.sheet-item {
+    padding: 18px 25px;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #4a6d7d;
+    position: relative;
+    cursor: pointer;
+}
+
+.sheet-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: #dcdcdc;
+}
+
+.sheet-item:active {
+    background-color: #f9f9f9;
+}

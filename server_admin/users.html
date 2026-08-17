@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Admin - Users</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin_style.css">
+</head>
+<body>
+    <!-- Side Menu -->
+    <div class="sidebar">
+        <div class="sidebar-brand">IDFC ADMIN</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="transactions.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                    Transactions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="users.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Users
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="glass-panel">
+            <div class="panel-header">
+                <h1>Registered Users</h1>
+                <button class="add-txn-btn" onclick="window.location.href='dashboard.html'">+ Add New User</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="txn-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Customer ID</th>
+                            <th>Account No</th>
+                            <th>MPIN</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lokesh Chouhan</td>
+                            <td>6910097017</td>
+                            <td>102 9516 8767</td>
+                            <td>****</td>
+                            <td><a href="#" style="color: #931A1D; text-decoration: none; font-weight: bold;">Edit</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="js/data_manager.js"></script>
+    <script src="js/users_list.js"></script>
+</body>
+</html>

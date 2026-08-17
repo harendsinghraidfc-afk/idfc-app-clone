@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+    <defs>
+        <!-- SVG Filters for shadows and glowing highlights -->
+        <filter id="groundShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="12" result="blur" />
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.4"/>
+            </feComponentTransfer>
+        </filter>
+
+        <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#00184a" flood-opacity="0.25"/>
+        </filter>
+
+        <filter id="lidShadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="4" result="blur" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0.1   0 0 0 0 0.3  0 0 0 0.4 0"/>
+        </filter>
+
+        <!-- Box Gradients (Soft White/Grey Theme) -->
+        <linearGradient id="boxTop" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#eef3f7" />
+        </linearGradient>
+
+        <linearGradient id="boxRight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#dae3eb" />
+            <stop offset="100%" stop-color="#b3c4d5" />
+        </linearGradient>
+
+        <linearGradient id="boxLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#c6d4e1" />
+            <stop offset="100%" stop-color="#9aaec3" />
+        </linearGradient>
+
+        <!-- Ribbon Gradients (Vibrant Blue Theme) -->
+        <linearGradient id="ribTop" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4fc0ff" />
+            <stop offset="100%" stop-color="#1679f0" />
+        </linearGradient>
+
+        <linearGradient id="ribRight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1974ed" />
+            <stop offset="100%" stop-color="#0b4cba" />
+        </linearGradient>
+
+        <linearGradient id="ribLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0b52cc" />
+            <stop offset="100%" stop-color="#052970" />
+        </linearGradient>
+
+        <linearGradient id="bowInner" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0840a6" />
+            <stop offset="100%" stop-color="#031c54" />
+        </linearGradient>
+    </defs>
+
+    <!-- Ground Shadow -->
+    <ellipse cx="250" cy="390" rx="150" ry="45" fill="#000" filter="url(#groundShadow)"/>
+
+    <!-- BOX BODY -->
+    <g stroke-linejoin="round" stroke-linecap="round">
+        <path d="M 250,380 L 110,310 L 110,180 L 250,250 Z" fill="url(#boxLeft)" stroke="url(#boxLeft)" stroke-width="16"/>
+        <path d="M 250,380 L 390,310 L 390,180 L 250,250 Z" fill="url(#boxRight)" stroke="url(#boxRight)" stroke-width="16"/>
+        <path d="M 160,335 L 200,355 L 200,225 L 160,205 Z" fill="url(#ribLeft)" stroke="url(#ribLeft)" stroke-width="16"/>
+        <path d="M 300,355 L 340,335 L 340,205 L 300,225 Z" fill="url(#ribRight)" stroke="url(#ribRight)" stroke-width="16"/>
+    </g>
+
+    <!-- Shadow cast by the Lid onto the Box Body -->
+    <path d="M 250,250 L 110,180 L 110,200 L 250,270 L 390,200 L 390,180 Z" fill="none" stroke="#000000" stroke-width="18" filter="url(#lidShadow)" opacity="0.35"/>
+
+    <!-- BOX LID -->
+    <g class="gift-lid" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M 250,260 L 95,182.5 L 95,142.5 L 250,220 Z" fill="url(#boxLeft)" stroke="url(#boxLeft)" stroke-width="16"/>
+        <path d="M 250,260 L 405,182.5 L 405,142.5 L 250,220 Z" fill="url(#boxRight)" stroke="url(#boxRight)" stroke-width="16"/>
+        <path d="M 250,220 L 95,142.5 L 250,65 L 405,142.5 Z" fill="url(#boxTop)" stroke="url(#boxTop)" stroke-width="16"/>
+        <path d="M 152.5,211.25 L 192.5,231.25 L 192.5,191.25 L 152.5,171.25 Z" fill="url(#ribLeft)" stroke="url(#ribLeft)" stroke-width="16"/>
+        <path d="M 307.5,231.25 L 347.5,211.25 L 347.5,171.25 L 307.5,191.25 Z" fill="url(#ribRight)" stroke="url(#ribRight)" stroke-width="16"/>
+        <path d="M 152.5,171.25 L 192.5,191.25 L 347.5,113.75 L 307.5,93.75 Z" fill="url(#ribTop)" stroke="url(#ribTop)" stroke-width="16"/>
+        <path d="M 307.5,191.25 L 347.5,171.25 L 192.5,93.75 L 152.5,113.75 Z" fill="url(#ribTop)" stroke="url(#ribTop)" stroke-width="16"/>
+        <path d="M 95,142.5 L 250,220" stroke="#ffffff" stroke-width="4" opacity="0.9" fill="none"/>
+        <path d="M 250,220 L 405,142.5" stroke="#ffffff" stroke-width="4" opacity="0.9" fill="none"/>
+        <path d="M 250,220 L 250,260" stroke="#ffffff" stroke-width="3" opacity="0.8" fill="none"/>
+    </g>
+
+    <!-- THE BOW -->
+    <g class="gift-bow" filter="url(#dropShadow)" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M 245,135 C 220,60 140,50 160,110 C 170,130 220,135 245,135 Z" fill="url(#ribLeft)" stroke="url(#ribLeft)" stroke-width="4"/>
+        <path d="M 255,135 C 280,60 360,50 340,110 C 330,130 280,135 255,135 Z" fill="url(#ribRight)" stroke="url(#ribRight)" stroke-width="4"/>
+        <path d="M 245,145 C 100,240 50,110 160,105 C 200,103 235,135 245,145 Z" fill="url(#ribTop)" stroke="url(#ribTop)" stroke-width="5"/>
+        <path d="M 255,145 C 400,240 450,110 340,105 C 300,103 265,135 255,145 Z" fill="url(#ribTop)" stroke="url(#ribTop)" stroke-width="5"/>
+        <path d="M 230,140 C 140,195 100,120 170,115 C 190,113 220,135 230,140 Z" fill="url(#bowInner)"/>
+        <path d="M 270,140 C 360,195 400,120 330,115 C 310,113 280,135 270,140 Z" fill="url(#bowInner)"/>
+        <path d="M 240,145 C 210,180 170,220 150,250 C 165,255 190,210 230,155 Z" fill="url(#ribLeft)" stroke="url(#ribLeft)" stroke-width="4"/>
+        <path d="M 260,145 C 290,180 330,220 350,250 C 335,255 310,210 270,155 Z" fill="url(#ribRight)" stroke="url(#ribRight)" stroke-width="4"/>
+        <ellipse cx="250" cy="142" rx="24" ry="20" fill="url(#ribTop)" stroke="url(#ribTop)" stroke-width="2" transform="rotate(-5, 250, 142)"/>
+        <path d="M 240,132 Q 255,142 242,152" stroke="rgba(0,40,120,0.3)" fill="none" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 255,134 Q 265,142 257,150" stroke="rgba(0,40,120,0.2)" fill="none" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+</svg>

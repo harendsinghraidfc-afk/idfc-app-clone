@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 252">
+    <defs>
+        <!-- Card Main Gradient -->
+        <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0088ff" />
+            <stop offset="100%" stop-color="#0055dd" />
+        </linearGradient>
+
+        <!-- Chip Background Gradient -->
+        <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a3c2e0" />
+            <stop offset="100%" stop-color="#6b93ba" />
+        </linearGradient>
+
+        <!-- Glare Gradient (Diagonal Shine) -->
+        <linearGradient id="glareGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+            <stop offset="40%" stop-color="rgba(255,255,255,0.03)" />
+            <stop offset="50%" stop-color="rgba(255,255,255,0.15)" />
+            <stop offset="60%" stop-color="rgba(255,255,255,0.03)" />
+            <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+        </linearGradient>
+
+        <!-- Path for the card: 20px Top-Left, 40px Top-Right, 20px Bottom-Right, 40px Bottom-Left -->
+        <path id="cardShape" d="M 20 0 L 360 0 A 40 40 0 0 1 400 40 L 400 232 A 20 20 0 0 1 380 252 L 40 252 A 40 40 0 0 1 0 212 L 0 20 A 20 20 0 0 1 20 0 Z" />
+
+        <!-- Clip path to keep glare perfectly inside the card shape -->
+        <clipPath id="cardClip">
+            <use href="#cardShape" />
+        </clipPath>
+
+        <!-- Enhanced Emboss Filter for a more "raised" (ubhra hua) look -->
+        <filter id="embossRing" x="-50%" y="-50%" width="200%" height="200%">
+            <!-- Deeper bottom-right shadow for height -->
+            <feDropShadow dx="3" dy="3" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.6" result="outerShadow" />
+            <!-- Strong top-left highlight for the 3D edge -->
+            <feDropShadow in="SourceAlpha" dx="-1.5" dy="-1.5" stdDeviation="1" flood-color="#ffffff" flood-opacity="0.8" result="topHighlight" />
+            <!-- Soft ambient shadow for depth -->
+            <feDropShadow in="SourceAlpha" dx="1" dy="1" stdDeviation="3" flood-color="#000000" flood-opacity="0.3" result="softShadow" />
+            <feMerge>
+                <feMergeNode in="outerShadow" />
+                <feMergeNode in="softShadow" />
+                <feMergeNode in="topHighlight" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- Subtle Inner Shadow for the edges of the card -->
+        <filter id="innerGlow">
+            <feOffset dx="0" dy="-2"/>
+            <feGaussianBlur stdDeviation="2" result="offset-blur"/>
+            <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+            <feFlood flood-color="white" flood-opacity="0.25" result="color"/>
+            <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+            <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+        </filter>
+    </defs>
+
+    <!-- Base Card -->
+    <use href="#cardShape" fill="url(#cardGrad)" filter="url(#innerGlow)" />
+
+    <!-- Glare Overlay -->
+    <g clip-path="url(#cardClip)">
+        <rect x="-100" y="-100" width="600" height="600" fill="url(#glareGrad)" transform="rotate(30 200 126)" pointer-events="none" />
+    </g>
+
+    <!-- EMV Chip Details -->
+    <g transform="translate(45, 100)">
+        <rect width="50" height="40" rx="6" fill="url(#chipGrad)" />
+        <path d="M 15 0 L 15 13 L 0 13 M 35 0 L 35 13 L 50 13 M 0 27 L 15 27 L 15 40 M 50 27 L 35 27 L 35 40 M 15 13 L 35 13 M 15 27 L 35 27" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" />
+        <rect x="18" y="10" width="14" height="20" rx="3" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" />
+        <path d="M 15 0 L 15 13 L 0 13 M 35 0 L 35 13 L 50 13 M 0 27 L 15 27 L 15 40 M 50 27 L 35 27 L 35 40 M 15 13 L 35 13 M 15 27 L 35 27" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" transform="translate(1, 1)" />
+        <rect x="19" y="11" width="14" height="20" rx="3" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" />
+    </g>
+
+    <!-- Embossed Logo Mark -->
+    <g transform="translate(320, 195)" filter="url(#embossRing)">
+        <circle cx="0" cy="0" r="22" fill="none" stroke="#0058e0" stroke-width="4.5" />
+        <circle cx="28" cy="0" r="22" fill="none" stroke="#0058e0" stroke-width="4.5" />
+    </g>
+</svg>

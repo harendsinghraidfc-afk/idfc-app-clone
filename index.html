@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDFC First Bank</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/splash.css">
+</head>
+<body>
+    <div id="main-container">
+        <!-- Splash Screen Section -->
+        <div id="splash-screen">
+            <div class="logo-container">
+                <img src="assets/images/logo_final.svg" alt="IDFC" style="width: 150px;">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/core_manager.js"></script>
+    <script>
+        // Load data on startup
+        loadAppData().then(() => {
+            console.log('App initialized');
+            // Redirect to auth.html after 5 seconds
+            setTimeout(() => {
+                window.location.href = 'auth.html';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

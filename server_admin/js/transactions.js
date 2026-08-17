@@ -1,0 +1,114 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const userSelector = document.getElementById('user-selector');
+    const txnTableWrapper = document.getElementById('txn-table-wrapper');
+    const noUserSelected = document.getElementById('no-user-selected');
+    const txnListBody = document.getElementById('txn-list-body');
+    const addTxnBtn = document.querySelector('.add-txn-btn');
+
+    // Modal Elements
+    const modal = document.getElementById('txn-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const txnForm = document.getElementById('txn-form');
+    const closeModalBtn = document.getElementById('close-modal');
+    const editTxnId = document.getElementById('edit-txn-id');
+
+    // Load users into dropdown
+    const users = getUsers();
+    users.forEach(user => {
+        const option = document.createElement('option');
+        option.value = user.customerId;
+        option.textContent = `${user.fullName} (${user.customerId})`;
+        userSelector.appendChild(option);
+    });
+
+    // Handle user selection change
+    userSelector.addEventListener('change', () => {
+        const selectedCustomerId = userSelector.value;
+        if (selectedCustomerId) {
+            loadTransactions(selectedCustomerId);
+            txnTableWrapper.style.display = 'block';
+            noUserSelected.style.display = 'none';
+        } else {
+            txnTableWrapper.style.display = 'none';
+            noUserSelected.style.display = 'block';
+        }
+    });
+
+    function loadTransactions(customerId) {
+        txnListBody.innerHTML = '';
+        const txns = getTransactionsForUser(customerId);
+
+        if (txns.length === 0) {
+            txnListBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: #888;">No transactions found for this user.</td></tr>';
+            return;
+        }
+
+        txns.forEach(txn => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${txn.date}</td>
+                <td>${txn.desc}</td>
+                <td>${txn.amount}</td>
+                <td><span class="status-pill status-${txn.status}">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</span></td>
+                <td><a href="#" class="edit-btn" data-id="${txn.id}" style="color: #931A1D; text-decoration: none; font-weight: bold;">Edit</a></td>
+            `;
+            txnListBody.appendChild(row);
+        });
+
+        // Add event listeners to new Edit buttons
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const txnId = btn.getAttribute('data-id');
+                openModal(txnId);
+            });
+        });
+    }
+
+    // Modal logic
+    function openModal(id = null) {
+        if (!userSelector.value) {
+            alert('Please select a user first');
+            return;
+        }
+
+        if (id) {
+            const txn = getTransactionById(userSelector.value, id);
+            if (txn) {
+                modalTitle.textContent = 'Edit Transaction';
+                editTxnId.value = id;
+                document.getElementById('txn-date').value = txn.date;
+                document.getElementById('txn-desc').value = txn.desc;
+                document.getElementById('txn-amount').value = txn.amount;
+                document.getElementById('txn-status').value = txn.status;
+            }
+        } else {
+            modalTitle.textContent = 'Add Transaction';
+            txnForm.reset();
+            editTxnId.value = '';
+            document.getElementById('txn-date').value = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        modal.classList.add('active');
+    }
+
+    addTxnBtn.addEventListener('click', () => openModal());
+    closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+
+    txnForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const customerId = userSelector.value;
+        const txnData = {
+            date: document.getElementById('txn-date').value,
+            desc: document.getElementById('txn-desc').value,
+            amount: document.getElementById('txn-amount').value,
+            status: document.getElementById('txn-status').value
+        };
+
+        const id = editTxnId.value || null;
+        saveTransaction(customerId, txnData, id);
+
+        modal.classList.remove('active');
+        loadTransactions(customerId);
+        alert(id ? 'Transaction updated' : 'Transaction added');
+    });
+});

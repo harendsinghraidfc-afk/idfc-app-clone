@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account Statement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/account_statement.css">
+</head>
+<body>
+    <div class="statement-container">
+        <div class="pattern-bg-wrapper">
+            <!-- Header -->
+            <header class="header">
+                <span class="header-title">Account statement</span>
+                <div class="header-icons">
+                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#888">
+                        <path d="M8,17.751a2.749,2.749,0,0,1,5.127-1.382C15.217,15.447,16,14,16,11.25v-3c0-3.992-2.251-6.75-5.75-6.75S4.5,4.259,4.5,8.25v3.5a.751.751,0,0,1-.75.75h-1A2.753,2.753,0,0,1,0,9.751v-1A2.754,2.754,0,0,1,2.75,6h.478c.757-3.571,3.348-6,7.022-6s6.264,2.429,7.021,6h.478a2.754,2.754,0,0,1,2.75,2.75v1a2.753,2.753,0,0,1-2.75,2.75H17.44A5.85,5.85,0,0,1,13.5,17.84,2.75,2.75,0,0,1,8,17.751Zm1.5,0a1.25,1.25,0,1,0,1.25-1.25A1.251,1.251,0,0,0,9.5,17.751Zm8-6.75h.249A1.251,1.251,0,0,0,19,9.751v-1A1.251,1.251,0,0,0,17.75,7.5H17.5Zm-16-2.25v1A1.251,1.251,0,0,0,2.75,11H3V7.5H2.75A1.251,1.251,0,0,0,1.5,8.751Z" transform="translate(1.75 2.25)"></path>
+                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" onclick="window.history.back()" style="cursor: pointer;">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </header>
+
+            <!-- Account Info -->
+            <div class="account-info">
+                A/c 102 9516 8767 - Mr. Lokesh Chouhan
+            </div>
+
+            <!-- Time Period -->
+            <div class="section-label">Time period</div>
+            <div class="radio-group">
+                <div class="radio-item active">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Current month</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Last month</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="rest-of-content">
+            <div class="radio-group">
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Last 3 months</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Last 6 months</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Last 12 months</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Current Financial Year (Apr '26 - Mar '27)</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Last Financial Year (Apr '25 - Mar '26)</span>
+                </div>
+                <div class="radio-item">
+                    <div class="radio-circle"><div class="radio-inner"></div></div>
+                    <span class="radio-label">Custom</span>
+                </div>
+            </div>
+
+            <!-- Format Selector -->
+            <div class="format-selector-wrapper">
+                <span class="format-label">Select format</span>
+                <div class="format-box" id="format-dropdown">
+                    <span class="selected-value" id="current-format">PDF</span>
+                    <div class="dropdown-arrow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <!-- Custom Options List -->
+                    <div class="options-list">
+                        <div class="option-item selected" data-value="PDF">PDF</div>
+                        <div class="option-item" data-value="Excel">Excel</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="footer-actions">
+                <a href="#" class="email-btn">Email</a>
+                <button class="download-btn" onclick="window.location.href='transaction_statement_view.html'">Download</button>
+            </div>
+        </div> <!-- Closing rest-of-content -->
+    </div> <!-- Closing statement-container -->
+
+    <script>
+        // Simple radio button toggle logic
+        document.querySelectorAll('.radio-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Custom Dropdown Logic
+        const dropdown = document.getElementById('format-dropdown');
+        const selectedValue = document.getElementById('current-format');
+        const options = document.querySelectorAll('.option-item');
+
+        dropdown.addEventListener('click', (e) => {
+            dropdown.classList.toggle('open');
+            e.stopPropagation();
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                const value = option.getAttribute('data-value');
+                selectedValue.textContent = value;
+
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                dropdown.classList.remove('open');
+                e.stopPropagation();
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('open');
+        });
+    </script>
+</body>
+</html>

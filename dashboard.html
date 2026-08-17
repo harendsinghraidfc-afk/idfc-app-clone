@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDFC Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div id="dashboard-container">
+        <!-- Refined Header based on image -->
+        <header class="dash-header">
+            <div class="header-left">
+                <button class="icon-btn menu-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="4" y1="6" x2="20" y2="6"></line>
+                        <line x1="4" y1="12" x2="20" y2="12"></line>
+                        <line x1="4" y1="18" x2="20" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="header-center">
+                <div class="search-pill">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="View my statements" class="search-input">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="icon-btn notify-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn power-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="dash-content">
+            <!-- Savings Section Container -->
+            <div class="savings-container-block">
+                <!-- Savings Card -->
+                <section class="savings-card">
+                    <div class="card-header">
+                        <span class="card-title">SAVINGS ••8767 <span class="chevron-inline">›</span></span>
+                    </div>
+                    <div class="balance-section">
+                        <p class="balance-label">Available balance</p>
+                        <div class="balance-row">
+                            <span class="dots">•••••</span>
+                            <button class="eye-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- 4 Options Grid Below Card -->
+                <div class="card-bottom-actions">
+                    <div class="bottom-action-item">
+                        <div class="action-icon-box">
+                            <img src="assets/images/bank_transfer.svg" alt="">
+                        </div>
+                        <span class="action-text">Bank<br>Transfer</span>
+                    </div>
+                    <div class="bottom-action-item">
+                        <div class="action-icon-box">
+                            <img src="assets/images/reward_gallery.svg" alt="">
+                        </div>
+                        <span class="action-text">Rewards<br>Gallery</span>
+                    </div>
+                    <div class="bottom-action-item">
+                        <div class="action-icon-box">
+                            <img src="assets/images/pay_to_mobile.svg" alt="">
+                        </div>
+                        <span class="action-text">Pay to<br>Mobile</span>
+                    </div>
+                    <div class="bottom-action-item" onclick="window.location.href='savings_transactions.html'">
+                        <div class="action-icon-box">
+                            <img src="assets/images/view_transactions.svg" alt="">
+                        </div>
+                        <span class="action-text">View<br>Transactions</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Full Dashboard Grid Implementation (18 Tiles) -->
+            <section class="tiled-categories">
+                <!-- Row 1 -->
+                <div class="tile orange-tile payments-tile">
+                    <div class="tile-content"><h3>Payments</h3></div>
+                    <img src="assets/images/payments_card_hq.png" class="tile-img payments-img" alt="">
+                </div>
+                <div class="tile green-tile">
+                    <div class="tile-content"><h3>Customer Service</h3></div>
+                    <img src="assets/images/customer_service.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 2 -->
+                <div class="tile maroon-tile" onclick="window.location.href='savings_details.html'">
+                    <div class="tile-content">
+                        <h3>Savings</h3>
+                        <div class="savings-promo-wrap">
+                            <p class="promo-text promo-a">Earn up to 6.50% p.a. on Savings Account</p>
+                            <p class="promo-text promo-b">Monthly Interest Credits, not quarterly</p>
+                        </div>
+                    </div>
+                    <img src="assets/images/savings_bank_hq.png" class="tile-img savings-animate-img" alt="">
+                </div>
+                <div class="tile dark-blue-tile">
+                    <div class="tile-content"><h3>My Networth</h3></div>
+                    <div class="tile-video-wrap">
+                        <video autoplay muted loop playsinline class="tile-video-asset">
+                            <source src="assets/videos/diamond_transparent.webm" type="video/webm">
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="tile loans-blue-tile">
+                    <div class="tile-content"><h3>Loans</h3></div>
+                    <img src="assets/images/loans_new.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile blue-tile" onclick="window.location.href='accounts.html?tab=cards'">
+                    <div class="tile-content"><h3>Credit Cards</h3></div>
+                    <img src="assets/images/blue_credit_card.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 4 -->
+                <div class="tile grey-tile">
+                    <div class="tile-content"><h3>Wealth Management</h3></div>
+                    <img src="assets/images/wealth_management.png" class="tile-img" alt="">
+                </div>
+                <div class="tile mutual-blue-tile" onclick="window.location.href='accounts.html?tab=funds'">
+                    <div class="tile-content"><h3>Mutual Funds</h3></div>
+                    <img src="assets/images/mutual_funds.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 5 -->
+                <div class="tile deposits-purple-tile" onclick="window.location.href='accounts.html?tab=deposits'">
+                    <div class="tile-content"><h3>Deposits</h3></div>
+                    <img src="assets/images/deposits.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile bills-red-tile">
+                    <div class="tile-content"><h3>Bills & Recharges</h3></div>
+                    <img src="assets/images/bills_recharges.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 6 -->
+                <div class="tile debit-red-tile" onclick="window.location.href='accounts.html?tab=cards'">
+                    <div class="tile-content"><h3>Debit Cards</h3></div>
+                    <img src="assets/images/debit_cards.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile rewards-blue-tile">
+                    <div class="tile-content"><h3>Rewards & Benefits</h3></div>
+                    <img src="assets/images/rewards_benefits_3d.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 7 -->
+                <div class="tile insurance-orange-tile">
+                    <div class="tile-content"><h3>Insurance</h3></div>
+                    <img src="assets/images/insurance.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile planning-green-tile">
+                    <div class="tile-content"><h3>Financial Planning</h3></div>
+                    <img src="assets/images/financial_planning.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 8 -->
+                <div class="tile literacy-maroon-tile">
+                    <div class="tile-content"><h3>Financial Literacy</h3></div>
+                    <img src="assets/images/financial_literacy.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile security-brown-tile">
+                    <div class="tile-content"><h3>Security Settings</h3></div>
+                    <img src="assets/images/security_settings.svg" class="tile-img" alt="">
+                </div>
+
+                <!-- Row 9 -->
+                <div class="tile mutual-blue-tile">
+                    <div class="tile-content"><h3>FASTag</h3></div>
+                    <img src="assets/images/fastag.svg" class="tile-img" alt="">
+                </div>
+                <div class="tile intl-blue-tile">
+                    <div class="tile-content"><h3>International Payments</h3></div>
+                    <img src="assets/images/international_payments.svg" class="tile-img" alt="">
+                </div>
+            </section>
+
+            <!-- Rewards, Offers & Deals -->
+            <h2 class="section-title">Rewards, Offers & Deals</h2>
+            <section class="rewards-deals-grid">
+                <div class="deal-item">
+                    <div class="deal-icon-box bg-light-yellow">
+                        <img src="assets/images/flights_logo_crystal_clear_2k_final.png" alt="">
+                    </div>
+                    <p>Flights</p>
+                </div>
+                <div class="deal-item">
+                    <div class="deal-icon-box bg-light-pink">
+                        <img src="assets/images/hotels_logo_crystal_clear_2k_final.png" alt="">
+                    </div>
+                    <p>Hotels</p>
+                </div>
+                <div class="deal-item">
+                    <div class="deal-icon-box bg-light-green">
+                        <img src="assets/images/shop_logo_crystal_clear_2k_final.png" alt="">
+                    </div>
+                    <p>Shop</p>
+                </div>
+                <div class="deal-item">
+                    <div class="deal-icon-box bg-light-blue">
+                        <img src="assets/images/gift_cards_logo_crystal_clear_2k_final.png" alt="">
+                    </div>
+                    <p>Gift Cards</p>
+                </div>
+                <div class="deal-item">
+                    <div class="deal-icon-box bg-light-red">
+                        <img src="assets/images/deals_logo_crystal_clear_2k_final.png" alt="">
+                    </div>
+                    <p>Deals</p>
+                </div>
+            </section>
+
+            <!-- Share the Love Section -->
+            <section class="share-love-section">
+                <div class="share-love-visual">
+                    <img src="assets/images/share_love_hand.svg" alt="Share the love">
+                </div>
+                <h2 class="share-love-title">Share the love</h2>
+                <p class="share-love-description">
+                    Our products are made to pass our <strong>Near and Dear Test</strong>. And if you loved them too, share them with your loved ones.
+                </p>
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <button class="btn-refer-earn">Refer & Earn</button>
+                </div>
+            </section>
+
+            <!-- Save the Planet Section (Direct on Page) -->
+            <h2 class="planet-title" style="text-align: center; margin-top: 40px;">Save the Planet</h2>
+            <p class="planet-desc" style="text-align: center; margin-bottom: 20px;">Do your bit for a greener future with our green-banking products. <a href="#" style="color: #2d5a27; font-weight: 600;">Learn more</a></p>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <button class="btn-green-pill">Book Green FD</button>
+            </div>
+
+            <!-- Full Width Video (Above Navigation) -->
+            <div style="width: calc(100% + 30px); margin: 30px -15px 0 -15px;">
+                <video id="promo-video" width="100%" autoplay muted playsinline style="display: block; height: auto; min-height: 250px; object-fit: cover;">
+                    <source src="assets/videos/ethical_digital_social_good.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='dashboard.html'">
+                <img src="assets/images/home.svg" alt="Home">
+                <span>HOME</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='accounts.html'">
+                <img src="assets/images/accounts.svg" alt="Accounts">
+                <span>ACCOUNTS</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/pay.svg" alt="Pay">
+                <span>PAY</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/savings.svg" alt="Loans">
+                <span>LOANS</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/qr_scan_v2.svg" alt="Scan">
+                <span>SCAN</span>
+            </div>
+        </nav>
+    </div>
+    <script src="js/core_manager.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getActiveUser();
+            if (user && user.accountNumber) {
+                // Update Savings Card Title (Masked)
+                const lastFour = user.accountNumber.slice(-4);
+                const cardTitle = document.querySelector('.card-title');
+                if (cardTitle) cardTitle.textContent = `SAVINGS ••${lastFour}`;
+            }
+        });
+    </script>
+</body>
+</html>

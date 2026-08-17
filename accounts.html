@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDFC Accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/accounts_tabs.css">
+</head>
+<body>
+    <div id="dashboard-container">
+        <!-- Main Content Area -->
+        <main class="dash-content" style="padding-top: 60px;">
+            <!-- Sub Header Tabs -->
+            <div id="tab-bar" class="tab-bar-container">
+                <div class="tab active" data-target="accounts-content">Accounts</div>
+                <div class="tab" data-target="cards-content">Cards</div>
+                <div class="tab" data-target="deposits-content">Deposits</div>
+                <div class="tab" data-target="funds-content">Mutual Funds</div>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="accounts-content" class="tab-pane active">
+                <div class="content-section">
+                    <h4 class="section-label">My accounts (1)</h4>
+                    <div class="data-card" onclick="window.location.href='savings_details.html'" style="cursor: pointer;">
+                        <div class="card-top-row">
+                            <div class="card-icon-pink">
+                                <svg viewBox="0 0 24 24" fill="white" width="30" height="30">
+                                    <path d="M20 7H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm0 6h-7c-.55 0-1-.45-1-1s.45-1 1-1h7v2z"/>
+                                    <circle cx="17.5" cy="12" r="0.8" fill="#e91e63"/>
+                                </svg>
+                            </div>
+                            <div class="card-main-info">
+                                <div class="card-title-text">A/c 102 9516 8767 - Mr. Lokesh</div>
+                                <div class="card-sub-text">Savings Regular 10k</div>
+                            </div>
+                            <button class="menu-dots-btn" id="open-menu" onclick="event.stopPropagation()">
+                                <svg viewBox="0 0 24 24" fill="#1a1a1a" width="22" height="22">
+                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="balance-box">
+                            <p class="balance-label-small">Account balance</p>
+                            <p class="balance-amount-main">₹45.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cards-content" class="tab-pane">
+                <div class="content-section">
+                    <h4 class="section-label">Debit cards</h4>
+                    <div class="data-card">
+                        <div class="card-top-row">
+                            <div class="card-icon-pink">
+                                <!-- Blank -->
+                            </div>
+                            <div class="card-main-info">
+                                <div class="card-title-text">VISA Classic</div>
+                                <div class="card-sub-text">**** **** **** 2958</div>
+                            </div>
+                            <button class="menu-dots-btn" id="open-cards-menu">
+                                <svg viewBox="0 0 24 24" fill="#1a1a1a" width="22" height="22">
+                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="balance-box">
+                            <p class="balance-amount-main">₹45.00</p>
+                            <p class="balance-label-small" style="margin-top: 5px; opacity: 0.8;">A/C: 102 9516 8767</p>
+                        </div>
+                    </div>
+
+                    <h4 class="section-label">Apply FIRSTAP</h4>
+                    <div class="promo-card">
+                        <div class="promo-visual">
+                            <div class="promo-card-image-box">
+                                <!-- Top Arrow (Width) -->
+                                <div class="dim-arrow-h top-arrow">
+                                    <span class="dim-label">30 mm</span>
+                                </div>
+                                <!-- Right Arrow (Height) -->
+                                <div class="dim-arrow-v right-arrow">
+                                    <span class="dim-label">40 mm</span>
+                                </div>
+                                <img src="https://media.fortuneindia.com/fortune-india/import/2022-11/e124e65e-5a5f-4419-9a2e-e6d98a8d47da/FIRSTap_Front__1_.jpg?w=1200&ar=40:21&auto=format,compress&ogImage=true&mode=crop&enlarge=true&overlay=false&overlay_position=bottom&overlay_width=100" alt="FIRSTAP Card">
+                            </div>
+                        </div>
+                        <div class="promo-features">
+                            <div class="feature-item">
+                                <div class="check-circle"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="feature-text">Add-on card linked to your Savings Account</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="check-circle"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="feature-text">Supports Online and Contactless POS transactions</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="check-circle"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="feature-text">Complimentary Lounge Access</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-banner">
+                        <p class="banner-text">#EverydayExtras: New offer weekly with Debit Card. TCA</p>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6A7h7Xz7P6H6X9z0z0z0z0z0z0z0z0z0z0z&s" class="banner-img" alt="">
+                    </div>
+
+                    <h4 class="section-label" style="margin-top: 30px;">Credit Card</h4>
+                    <!-- FIRST WOW Card -->
+                    <div class="data-card" onclick="window.location.href='wow_card_details.html'" style="cursor: pointer;">
+                        <div class="card-top-row">
+                            <div class="card-icon-pink" style="background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);">
+                                <span style="color: white; font-size: 0.5rem; font-weight: bold;">WOW!</span>
+                            </div>
+                            <div class="card-main-info">
+                                <div class="card-title-text">FIRST WOW!</div>
+                                <div class="card-sub-text">LOKESH CHOUHAN</div>
+                                <div class="card-sub-text" style="font-size: 0.75rem; margin-top: 2px;">**** **** **** 8818</div>
+                            </div>
+                            <button class="menu-dots-btn credit-card-menu" onclick="event.stopPropagation()">
+                                <svg viewBox="0 0 24 24" fill="#1a1a1a" width="22" height="22">
+                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="balance-box">
+                            <p class="balance-val-large">₹1,11,883.98</p>
+                            <p class="balance-label-small" style="margin-top: 5px; opacity: 0.8;">Total outstanding</p>
+                        </div>
+                    </div>
+
+                    <!-- FIRST Digital Credit Card -->
+                    <div class="data-card">
+                        <div class="card-top-row">
+                            <div class="card-icon-pink" style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);">
+                                <span style="color: white; font-size: 0.5rem; font-weight: bold;">Digital</span>
+                            </div>
+                            <div class="card-main-info">
+                                <div class="card-title-text">FIRST Digital Credit Card</div>
+                                <div class="card-sub-text">LOKESH CHOUHAN</div>
+                                <div class="card-sub-text" style="font-size: 0.75rem; margin-top: 2px;">**** **** **** 1120</div>
+                            </div>
+                            <button class="menu-dots-btn credit-card-menu">
+                                <svg viewBox="0 0 24 24" fill="#1a1a1a" width="22" height="22">
+                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="balance-box">
+                            <p class="balance-val-large">₹1,11,883.98</p>
+                            <p class="balance-label-small" style="margin-top: 5px; opacity: 0.8;">Total outstanding</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="deposits-content" class="tab-pane">
+                <div class="empty-state">
+                    <img src="assets/images/deposits.svg" alt="Deposits" class="empty-img">
+                    <h3>No Deposits found</h3>
+                    <p>Open a Fixed or Recurring Deposit to get started.</p>
+                </div>
+            </div>
+
+            <div id="funds-content" class="tab-pane">
+                <div class="empty-state">
+                    <img src="assets/images/mutual_funds.svg" alt="Funds" class="empty-img">
+                    <h3>No Mutual Funds found</h3>
+                    <p>Start your investment journey today.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Sheet Menu -->
+        <div id="bottom-sheet-overlay" class="sheet-overlay"></div>
+        <div id="bottom-sheet" class="bottom-sheet">
+            <div id="sheet-content">
+                <!-- Content will be injected via JS -->
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='dashboard.html'">
+                <img src="assets/images/home.svg" alt="Home">
+                <span>HOME</span>
+            </div>
+            <div class="nav-item active">
+                <img src="assets/images/accounts.svg" alt="Accounts">
+                <span>ACCOUNTS</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/pay.svg" alt="Pay">
+                <span>PAY</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/savings.svg" alt="Loans">
+                <span>LOANS</span>
+            </div>
+            <div class="nav-item">
+                <img src="assets/images/qr_scan_v2.svg" alt="Scan">
+                <span>SCAN</span>
+            </div>
+        </nav>
+    </div>
+
+    <script src="js/core_manager.js"></script>
+    <script>
+        function setActiveTab(targetId) {
+            const tab = document.querySelector(`.tab[data-target="${targetId}"]`);
+            if (tab) {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+            }
+        }
+
+        // Tab switching logic
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = tab.getAttribute('data-target');
+                setActiveTab(targetId);
+            });
+        });
+
+        // Handle URL parameters and Data Loading
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getActiveUser();
+            if (user) {
+                // Update Account Tab Card
+                const accName = document.querySelector('#accounts-content .card-title-text');
+                if (accName) accName.textContent = `A/c ${user.accountNumber} - ${user.fullName.split(' ')[0]}`;
+
+                // Update Cards Tab names
+                const cardNames = document.querySelectorAll('#cards-content .card-sub-text');
+                cardNames.forEach(el => {
+                    if (el.textContent === 'LOKESH CHOUHAN') {
+                        el.textContent = user.fullName.toUpperCase();
+                    }
+                });
+
+                // Update A/C labels in cards
+                const accLabels = document.querySelectorAll('#cards-content .balance-label-small');
+                accLabels.forEach(el => {
+                    if (el.textContent.includes('A/C:')) {
+                        el.textContent = `A/C: ${user.accountNumber}`;
+                    }
+                });
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+
+            if (tabParam === 'cards') setActiveTab('cards-content');
+            else if (tabParam === 'deposits') setActiveTab('deposits-content');
+            else if (tabParam === 'funds') setActiveTab('funds-content');
+        });
+
+        // Bottom Sheet logic
+        const openMenuBtn = document.getElementById('open-menu');
+        const openCardsMenuBtn = document.getElementById('open-cards-menu');
+        const sheetOverlay = document.getElementById('bottom-sheet-overlay');
+        const bottomSheet = document.getElementById('bottom-sheet');
+        const sheetContent = document.getElementById('sheet-content');
+
+        const menuItems = {
+            accounts: [
+                'View transactions',
+                'Change nominee',
+                'Request cheque book',
+                'Manage cheque books',
+                'Download statement'
+            ],
+            cards: [
+                'Temporary block',
+                'Change PIN',
+                'Permanently block'
+            ]
+        };
+
+        function renderMenu(type) {
+            sheetContent.innerHTML = '';
+            menuItems[type].forEach(text => {
+                const item = document.createElement('div');
+                item.className = 'sheet-item';
+                item.textContent = text;
+                if (text.includes('Permanently block')) {
+                    item.style.color = '#e91e63'; // Red color for permanent block
+                }
+                item.onclick = () => toggleSheet(false);
+                sheetContent.appendChild(item);
+            });
+        }
+
+        function toggleSheet(show) {
+            if (show) {
+                sheetOverlay.style.display = 'block';
+                setTimeout(() => {
+                    sheetOverlay.classList.add('active');
+                    bottomSheet.classList.add('active');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                sheetOverlay.classList.remove('active');
+                bottomSheet.classList.remove('active');
+                document.body.style.overflow = '';
+                setTimeout(() => {
+                    if (!sheetOverlay.classList.contains('active')) {
+                        sheetOverlay.style.display = 'none';
+                    }
+                }, 300);
+            }
+        }
+
+        if (openMenuBtn) {
+            openMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                renderMenu('accounts');
+                toggleSheet(true);
+            });
+        }
+
+        if (openCardsMenuBtn) {
+            openCardsMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                renderMenu('cards');
+                toggleSheet(true);
+            });
+        }
+
+        document.querySelectorAll('.credit-card-menu').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                renderMenu('cards'); // Reusing cards menu for credit cards
+                toggleSheet(true);
+            });
+        });
+
+        sheetOverlay.addEventListener('click', () => toggleSheet(false));
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+/* New Transactions Page Styles - Matching Reference Image */
+:root {
+    --idfc-red: #931A1D;
+    --text-main: #1A1A1A;
+    --text-grey: #666666;
+    --bg-light: #f9fafb;
+    --border-light: #f0f0f0;
+}
+
+body {
+    background-color: #ffffff;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+* {
+    outline: none !important;
+}
+
+.txn-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+/* Header Section */
+.txn-header-main {
+    padding: 15px 15px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pay-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #444;
+    margin: 0;
+}
+
+.header-right-info {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.upi-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align right to match the text end */
+}
+
+.upi-main-logo {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* Push logo to the right side */
+    padding-right: 48px; /* Adjusted to sit exactly above the 'idfcfirst' text */
+}
+
+.upi-id {
+    font-size: 0.72rem;
+    color: #666;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.upi-icons {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.profile-circle {
+    width: 38px;
+    height: 38px;
+    background-color: var(--idfc-red); /* Maroon Color */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.notif-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    background-color: #d32f2f;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 0.5rem;
+}
+
+/* Tabs Section (Horizontal Scrollable) */
+.txn-tabs {
+    display: flex;
+    padding: 10px 15px;
+    gap: 25px;
+    border-bottom: 1px solid var(--border-light);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Firefox */
+}
+
+.txn-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+}
+
+.tab-item,
+.download-icon-btn,
+.filter-pill,
+.txn-card,
+.nav-item,
+.sheet-option-item,
+button {
+    -webkit-tap-highlight-color: transparent;
+    outline: none !important;
+}
+
+button:focus,
+div:focus {
+    outline: none !important;
+}
+
+.tab-item.active {
+    color: var(--idfc-red);
+    font-weight: 700;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background-color: var(--idfc-red);
+    border-radius: 10px 10px 0 0;
+}
+
+/* Search Bar Section */
+.search-action-bar {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.search-container {
+    flex: 1;
+    background: #f4f6f8;
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-size: 0.95rem;
+    color: #333;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.download-icon-btn {
+    width: 38px;
+    height: 38px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--idfc-red); /* Maroon color */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.download-icon-btn:active {
+    transform: scale(0.95);
+}
+
+/* Filter Bar */
+.full-width-help-container {
+    width: 100%;
+    background-color: #FDF4F4; /* Very light red background */
+    padding: 12px 0;
+    border-top: 1px solid #F0F0F0;
+    border-bottom: 1px solid #F0F0F0;
+    margin: 5px 0 10px;
+}
+
+.context-help {
+    padding: 0 15px;
+    font-size: 0.78rem;
+    color: #888; /* Muted color for help text */
+    font-weight: 500;
+    margin: 0;
+}
+
+.red-highlight {
+    color: #d32f2f; /* Red specifically for 'Click here' */
+    cursor: pointer;
+}
+
+.filter-row {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent; /* No container */
+    padding: 6px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #888; /* Grey text */
+}
+
+.filter-icon-circle {
+    width: 28px;
+    height: 28px;
+    background-color: #ffffff; /* White circle around icon */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Subtle shadow to make it pop on light bg */
+    color: var(--idfc-red); /* Maroon icon */
+}
+
+/* Transaction List Grouping */
+.date-group-header {
+    padding: 5px 15px 15px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #888;
+}
+
+.txn-list-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+/* Transaction Item */
+.txn-card {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    gap: 15px;
+}
+
+.txn-icon-circle {
+    width: 44px;
+    height: 44px;
+    background-color: #f1f3f9;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.txn-info-main {
+    flex: 1;
+}
+
+.txn-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.txn-subtitle {
+    font-size: 0.78rem;
+    color: #888;
+    margin: 2px 0 0;
+}
+
+.txn-amount-box {
+    text-align: right;
+}
+
+.txn-amount {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.txn-amount.incoming {
+    color: #2e7d32;
+}
+
+.txn-time {
+    font-size: 0.7rem;
+    color: #999;
+    margin: 3px 0 0;
+    text-transform: uppercase;
+}
+
+/* Networth Banner */
+.networth-promo-banner {
+    margin: 15px;
+    background: linear-gradient(135deg, #2c3e50 0%, #1a2531 100%);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-text-content {
+    flex: 1;
+    z-index: 2;
+    margin-right: 15px;
+}
+
+.banner-text {
+    color: white;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.btn-unlock-networth {
+    background: #f6e58d;
+    color: #1a2531;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: capitalize;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.banner-right-asset {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.diamond-mini-asset {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Bottom Navigation (Matched with Dashboard) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(25px) saturate(160%);
+    -webkit-backdrop-filter: blur(25px) saturate(160%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px 25px 0 0;
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -8px 32px 0 rgba(0, 0, 0, 0.08);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #888;
+    flex: 1;
+    height: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.nav-item.active {
+    color: #931A1D;
+}
+
+.nav-item img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-item.active .nav-icon-wrapper {
+    background-color: #931A1D; /* Maroon background circle */
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(147, 26, 29, 0.2);
+}
+
+.nav-item.active .nav-icon-wrapper img,
+.nav-item.active .nav-icon-wrapper svg {
+    opacity: 1;
+    width: 20px;
+    height: 20px;
+}
+
+.nav-item span {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.nav-item.active span {
+    font-weight: 800;
+}
+
+/* Bottom Sheet Styles */
+.bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bottom-sheet-overlay.active {
+    opacity: 1;
+}
+
+.bottom-sheet-content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 20px 40px; /* Extra bottom padding for safe area */
+    z-index: 2001;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.bottom-sheet-content.active {
+    transform: translateY(0);
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 5px;
+}
+
+.sheet-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.sheet-option-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+}
+
+.sheet-option-item:last-child {
+    border-bottom: none;
+}
+
+.option-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.option-details {
+    flex: 1;
+}
+
+.option-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.option-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.82rem;
+    color: #888;
+}

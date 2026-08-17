@@ -1,0 +1,9 @@
+<svg viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- User Icon Path shifted left -->
+    <g transform="translate(0, 0)">
+        <path d="M12,11A5,5,0,1,0,7,6,5.006,5.006,0,0,0,12,11Zm0-8A3,3,0,1,1,9,6,3,3,0,0,1,12,3ZM3,22V18a5.006,5.006,0,0,1,5-5h8a5.006,5.006,0,0,1,5,5v4a1,1,0,0,1-2,0V18a3,3,0,0,0-3-3H8a3,3,0,0,0-3,3v4a1,1,0,0,1-2,0Z" fill="#931A1D"/>
+    </g>
+
+    <!-- Plus (+) sign moved even further to the right by increasing viewbox width -->
+    <path d="M25 4V8M23 6H27" stroke="#931A1D" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

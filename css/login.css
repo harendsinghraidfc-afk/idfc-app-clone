@@ -1,0 +1,193 @@
+#main-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Header Elements */
+.header-logo {
+    position: absolute;
+    left: 4.91%;
+    top: 6.67%;
+    width: 7.86%;
+    height: auto;
+}
+
+.app-otp {
+    position: absolute;
+    left: 53.03%;
+    top: 6.78%;
+    width: 27.04%;
+    height: 3.31%;
+    background-color: #1A1A1A;
+    color: white;
+    border-radius: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.icon-support {
+    position: absolute;
+    left: 82.04%;
+    top: 7.00%;
+    width: 5.90%;
+    height: auto;
+}
+
+.icon-menu {
+    position: absolute;
+    left: 91.14%;
+    top: 7.11%;
+    width: 3.93%;
+    height: auto;
+}
+
+.welcome-bg {
+    position: absolute;
+    left: 0;
+    top: 12.31%;
+    width: 100%;
+    height: 19.91%;
+    background-color: #FFF1F1;
+    clip-path: ellipse(100% 100% at 50% 100%);
+}
+
+.welcome-text {
+    position: absolute;
+    left: 11.80%;
+    top: 33.22%;
+    line-height: 1.1;
+}
+
+.welcome-light {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: #931A1D;
+    display: block;
+}
+
+.welcome-bold {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #931A1D;
+}
+
+.mpin-label {
+    position: absolute;
+    left: 11.80%;
+    top: 42.95%;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.mpin-inputs {
+    position: absolute;
+    left: 11.80%;
+    top: 46.16%;
+    width: 76.39%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mpin-box {
+    width: 16.1%;
+    aspect-ratio: 1/1;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.8rem;
+    outline: none;
+    background: white;
+}
+
+.forgot-mpin {
+    position: absolute;
+    left: 11.80%;
+    top: 53.35%;
+    color: #931A1D;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.or-divider {
+    position: absolute;
+    left: 11.80%;
+    top: 58.7%;
+    width: 76.39%;
+    display: flex;
+    align-items: center;
+}
+
+.or-line {
+    flex: 1;
+    height: 1px;
+    background-color: #F0F0F0;
+}
+
+.or-text {
+    padding: 0 15px;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.biometric-btn {
+    position: absolute;
+    left: 28.19%;
+    top: 63.31%;
+    width: 43.68%;
+    height: 3.54%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    color: #931A1D;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.quick-actions {
+    position: absolute;
+    left: 4.91%;
+    top: 84.66%;
+    width: 90.16%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-item {
+    width: 17.2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.action-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.action-label {
+    font-size: 0.6rem;
+    color: #555;
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+.app-version {
+    position: absolute;
+    bottom: 2%;
+    width: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #CCC;
+}

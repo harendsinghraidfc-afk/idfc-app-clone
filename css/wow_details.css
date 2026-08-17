@@ -1,0 +1,442 @@
+/* WOW Card Details Page Styles - Grey Theme */
+.details-container {
+    background-color: #f5f7f9; /* Whole page background grey */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.details-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f5f7f9;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.header-title {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #444;
+}
+
+.header-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.6;
+}
+
+.details-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* Card Styling */
+.limit-card-stacked {
+    margin-bottom: 25px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #d1d3d6; /* Same grey as top layer by default */
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: background-color 0.4s ease;
+}
+
+.card-layer-top {
+    background-color: #d1d3d6;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dots-icon {
+    color: #888;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.card-layer-top .settings-icon {
+    width: 22px;
+    height: 22px;
+    background: #bbb;
+    padding: 4px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-layer-bottom {
+    background-color: #d1d3d6; /* Grey by default */
+    padding: 20px;
+    flex: 1;
+    transition: background-color 0.4s ease, opacity 0.4s ease;
+}
+
+/* Active state: White background when clicked */
+.limit-card-stacked.active .card-layer-bottom {
+    background-color: #ffffff;
+}
+
+.limit-card-stacked.active {
+    background-color: #ffffff;
+}
+
+.limit-text {
+    font-size: 1.15rem; /* Increased from 1.05rem */
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.available-text {
+    font-size: 1.05rem; /* Increased from 0.95rem */
+    color: #666;
+    font-weight: 500;
+}
+
+.see-limit-btn {
+    display: inline-block;
+    color: #d81b60;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+/* Outstanding Section */
+.outstanding-container {
+    background-color: #f5f7f9; /* Match page background */
+    border-radius: 12px;
+    padding: 30px 20px;
+    margin-bottom: 25px;
+    border: 1px solid #e0e2e5;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.outstanding-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.outstanding-label {
+    font-size: 0.9rem;
+    color: #757575;
+    margin-bottom: 8px;
+}
+
+.outstanding-amount {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1a1a1a;
+}
+
+.pay-early-btn {
+    background-color: #d81b60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.statement-info {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 45px;
+}
+
+/* Promo Banner */
+.refer-banner {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f5f7f9 100%);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e0eadd;
+    margin-bottom: 30px;
+}
+
+.promo-text h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2d5a27;
+    margin-bottom: 15px;
+    max-width: 180px;
+}
+
+.refer-now-btn {
+    background: #d81b60;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.promo-img {
+    width: 80px;
+}
+
+/* Transactions Tabs */
+.details-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.details-tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #888;
+    position: relative;
+    cursor: pointer;
+}
+
+.details-tab.active {
+    color: #1a1a1a;
+}
+
+.details-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background-color: #931A1D;
+}
+
+/* Transaction List */
+.date-header {
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Quick Actions Grid */
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #444;
+    margin: 25px 0 20px 0;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 10px;
+    margin-bottom: 30px;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.action-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.action-icon-box svg {
+    width: 24px;
+    height: 24px;
+}
+
+.action-item span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #666;
+    line-height: 1.2;
+}
+
+/* Your Rewards Section */
+.rewards-card {
+    background: #eef7f9; /* Light blueish tint from image */
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 50px;
+    border: 1px solid #dceef2;
+}
+
+.reward-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.reward-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.reward-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.reward-sub {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 3px;
+    line-height: 1.4;
+    max-width: 220px;
+}
+
+/* Transaction List Styling */
+.txn-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.txn-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #f1f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #4a6d7d;
+    flex-shrink: 0;
+    border: 1px solid #e0e2e5;
+}
+
+.txn-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.txn-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.txn-status {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.txn-amount-box {
+    text-align: right;
+}
+
+.txn-amount {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.emi-link {
+    font-size: 0.75rem;
+    color: #d81b60;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Help Card Styling */
+.help-card {
+    background-color: rgba(216, 27, 96, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0 30px 0;
+}
+
+.help-text h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.help-text p {
+    font-size: 0.85rem;
+    color: #757575;
+}
+
+.help-icon svg {
+    width: 30px;
+    height: 30px;
+    opacity: 0.6;
+}
+
+/* Watermark Styling */
+.watermark-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 40px 0 60px 0;
+    opacity: 0.3;
+}
+
+.watermark-seal svg {
+    width: 60px;
+    height: 60px;
+}
+
+.watermark-text {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ccc;
+    line-height: 1.1;
+    letter-spacing: 1px;
+}
+
+

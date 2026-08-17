@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IDFC Auth - Seamless Transform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div id="main-container">
+        <!-- Header -->
+        <header class="app-header">
+            <img src="assets/images/logo_v2.svg" class="header-logo" alt="IDFC Logo">
+
+            <div class="header-right">
+                <div class="app-otp-pill">App OTP</div>
+
+                <img src="assets/images/support.svg" class="header-icon" alt="Support">
+                <img src="assets/images/menu.svg" class="header-icon" alt="Menu">
+            </div>
+        </header>
+
+        <!-- Perfect Transforming Curve Background -->
+        <div class="curve-bg"></div>
+
+        <!-- Shield (Moved outside auth-body to sync positioning with curve-bg) -->
+        <div class="shield-container">
+            <svg class="shield-icon" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#B32025;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#931A1D;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <!-- Shield Body -->
+                <path d="M100 210C100 210 180 170 180 90V40L100 20L20 40V90C20 170 100 210 100 210Z"
+                      fill="url(#shieldGrad)"
+                      stroke="#FFCCCC"
+                      stroke-width="5"/>
+                <!-- White Checkmark (Logo) - Class added for transparency logic -->
+                <path class="shield-tick" d="M60 110L90 145L145 85"
+                      stroke="white"
+                      stroke-width="18"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <!-- Auth Content -->
+        <div class="auth-body">
+            <div class="welcome-section">
+                <span class="light">Welcome</span>
+                <span class="bold">Lokesh</span>
+            </div>
+
+            <div class="mpin-interaction">
+                <p class="label">Please enter your MPIN</p>
+                <div class="mpin-grid">
+                    <input type="password" maxlength="1" class="mpin-box" inputmode="numeric">
+                    <input type="password" maxlength="1" class="mpin-box" inputmode="numeric">
+                    <input type="password" maxlength="1" class="mpin-box" inputmode="numeric">
+                    <input type="password" maxlength="1" class="mpin-box" inputmode="numeric">
+                </div>
+                <p id="error-msg" style="color: #931A1D; font-size: 0.8rem; font-weight: 600; margin-top: 10px; display: none;">You Entered Wrong MPIN</p>
+                <a href="#" class="forgot-link">Forgot MPIN?</a>
+            </div>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="bottom-actions">
+            <div class="action-box">
+                <div class="icon-circle outline">
+                    <img src="assets/images/bank_block.svg" class="action-icon" alt="Block">
+                </div>
+                <p class="action-text">Block/Unblock</p>
+            </div>
+            <div class="action-box">
+                <div class="icon-circle outline">
+                    <img src="assets/images/user_add.svg" class="action-icon" alt="Login">
+                </div>
+                <p class="action-text">Login another</p>
+            </div>
+            <div class="action-box">
+                <div class="icon-circle solid">
+                    <img src="assets/images/qr_scan.svg" class="action-icon" alt="QR">
+                </div>
+                <p class="action-text">Scan QR</p>
+            </div>
+            <div class="action-box">
+                <div class="icon-circle outline">
+                    <img src="assets/images/card_manage.svg" class="action-icon" alt="Card">
+                </div>
+                <p class="action-text">Manage Card</p>
+            </div>
+        </div>
+
+        <div class="footer-ver">Version 2.71(20388)</div>
+    </div>
+
+    <script src="js/core_manager.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getActiveUser();
+            if (user && user.welcomeName) {
+                document.querySelector('.welcome-section .bold').textContent = user.welcomeName;
+            }
+        });
+    </script>
+</body>
+</html>

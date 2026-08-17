@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Credit Card Transactions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/all_transactions.css">
+    <script src="js/core_manager.js"></script>
+</head>
+<body>
+    <div class="all-txn-container">
+        <!-- Header -->
+        <header class="txn-header">
+            <div class="icon-box">
+                <!-- Blank for spacing -->
+            </div>
+            <h2>Credit card transactions</h2>
+            <div style="display: flex;">
+                <div class="icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#931A1D" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                </div>
+                <div class="icon-box" onclick="window.location.href='wow_card_details.html'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sub Header -->
+        <div class="sub-header-info">
+            <span class="showing-text">Showing transactions for FIRST WOW! 8818</span>
+            <div class="icon-box" style="width: auto;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Status Tabs -->
+        <div class="txn-status-tabs">
+            <div class="status-tab">Approved <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="status-tab active">Unbilled <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="status-tab">Billed <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+        </div>
+
+        <!-- Content -->
+        <main class="all-txn-content" id="txn-list-content">
+            <!-- Transactions will be grouped and loaded here -->
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getActiveUser();
+            const container = document.getElementById('txn-list-content');
+            const txns = getTransactionsForActiveUser(); // Latest first
+
+            if (user) {
+                document.querySelector('.showing-text').textContent = `Showing transactions for ${user.bankName} ${user.accountNumber.slice(-4)}`;
+            }
+
+            if (txns.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding: 40px; color: #888;">No transactions found.</p>';
+                return;
+            }
+
+            let html = '';
+            let currentGroupDate = '';
+            let groupHtml = '';
+            let groupTotal = 0;
+
+            function flushGroup() {
+                if (groupHtml) {
+                    html += `
+                        <div class="date-group-header">
+                            <span class="group-date">${currentGroupDate}</span>
+                            <span class="group-total">₹${groupTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+                        </div>
+                        <div class="txn-list-container">${groupHtml}</div>
+                    `;
+                    groupHtml = '';
+                    groupTotal = 0;
+                }
+            }
+
+            txns.forEach(txn => {
+                if (txn.date !== currentGroupDate) {
+                    flushGroup();
+                    currentGroupDate = txn.date;
+                }
+
+                // Add to group total
+                const val = parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
+                groupTotal += val;
+
+                groupHtml += `
+                    <div class="txn-full-item">
+                        <div class="card-c-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                        </div>
+                        <div class="txn-details">
+                            <p class="txn-main-title">${txn.desc}</p>
+                            <p class="txn-sub-status">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</p>
+                        </div>
+                        <div class="txn-val-box">
+                            <p class="txn-amount-bold">${txn.amount}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            flushGroup();
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>

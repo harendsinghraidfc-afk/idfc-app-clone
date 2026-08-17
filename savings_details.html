@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Savings Account Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/savings_details.css">
+</head>
+<body>
+    <div class="savings-container">
+        <!-- Header -->
+        <header class="savings-header">
+            <div class="icon-box">
+                <!-- Spacing -->
+            </div>
+            <div class="header-info-center">
+                <p class="header-acc-num">102 9516 8767 - ...</p>
+                <p class="header-acc-type">Savings Regular 10k</p>
+            </div>
+            <div style="display: flex;">
+                <div class="icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#931A1D" stroke-width="2">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                </div>
+                <div class="icon-box" onclick="window.location.href='dashboard.html'">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="savings-content">
+            <!-- Red Balance Card -->
+            <div class="balance-red-card">
+                <div class="balance-header">
+                    <div class="balance-title">A/c balance <span class="info-circle">?</span></div>
+                    <p class="balance-main-amount">₹395.00</p>
+                </div>
+
+                <div class="balance-details-list">
+                    <div class="detail-row">
+                        <div class="label-with-icon">Net withdrawal balance <span class="info-circle">?</span></div>
+                        <span class="row-value">₹395.00</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Overdraft limit (+)</span>
+                        <span class="row-value">₹0.00</span>
+                    </div>
+                    <div class="detail-row">
+                        <div class="label-with-icon">Sweep in balance (+) <span class="info-circle">?</span></div>
+                        <span class="row-value">₹0.00</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Uncleared funds</span>
+                        <span class="row-value">₹0.00</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Hold funds (-)</span>
+                        <span class="row-value">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions List -->
+            <div class="actions-list">
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <span class="action-text">Add Money</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    </div>
+                    <span class="action-text">Open Current Account</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M16 3h5v5M4 20L20.2 3.8M21 16v5h-5M4 4l5 5"></path></svg>
+                    </div>
+                    <span class="action-text">Connect All Banks <span class="new-badge">New!</span></span>
+                </div>
+
+                <div class="action-row" onclick="window.location.href='savings_transactions.html'">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                    <span class="action-text">View transactions</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </div>
+                    <span class="action-text">Change nominee</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="15" x2="17" y2="15"/></svg>
+                    </div>
+                    <span class="action-text">Request cheque book</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 14h6"/></svg>
+                    </div>
+                    <div>
+                        <span class="action-text">Manage cheque books</span>
+                        <p style="font-size: 0.75rem; color: #888; margin-top: 2px;">Track, stop, cancel cheques and do more</p>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </div>
+                    <span class="action-text">Download statement</span>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <div>
+                        <span class="action-text">Create Overdraft (OD) against FD</span>
+                        <p style="font-size: 0.75rem; color: #888; margin-top: 2px;">Leverage your FDs to enhance spending power</p>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <div class="action-icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M12 18l-2-2 2-2"></path><path d="M10 16h4"></path></svg>
+                    </div>
+                    <div>
+                        <span class="action-text">Upload Signature</span>
+                        <p style="font-size: 0.75rem; color: #888; margin-top: 2px;">Update your signature in your account by uploading</p>
+                    </div>
+                </div>
+
+                <!-- Account Information Details -->
+                <div class="info-details-section">
+                    <div class="info-row with-border">
+                        <div>
+                            <p class="info-label">Customer ID</p>
+                            <p class="info-value">69 1009 7017</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <p class="info-label">Name</p>
+                            <p class="info-value">Mr. Lokesh Chouhan</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <p class="info-label">A/c no.</p>
+                            <p class="info-value">102 9516 8767</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="flex-info">
+                            <div>
+                                <p class="info-label">IFSC code</p>
+                                <p class="info-value">IDFB0042142</p>
+                            </div>
+                            <span class="red-link">Share</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <p class="info-label">SWIFT code</p>
+                            <p class="info-value">IDFB IN BB MUM</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <p class="info-label">Bank name</p>
+                            <p class="info-value">IDFC FIRST</p>
+                        </div>
+                    </div>
+                    <div class="info-row with-border">
+                        <div>
+                            <p class="info-label">Branch</p>
+                            <p class="info-value">Sejawata Branch</p>
+                        </div>
+                    </div>
+                    <div class="info-row with-border" style="padding: 15px 0 12px 0;">
+                        <div>
+                            <p class="info-label">Primary holder</p>
+                            <p class="info-value">Mr. Lokesh Chouhan</p>
+                        </div>
+                    </div>
+                    <div class="info-row with-border">
+                        <div>
+                            <p class="info-label">Average monthly balance <span style="display:inline-flex; border:1px solid #ccc; border-radius:50%; width:12px; height:12px; align-items:center; justify-content:center; font-size:8px; color:#888;">?</span></p>
+                            <p class="info-value">₹89.00</p>
+                        </div>
+                    </div>
+                    <div class="info-row with-border">
+                        <div class="flex-info">
+                            <div>
+                                <p class="info-label">Nominee Details</p>
+                            </div>
+                            <span class="red-link">View</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+    </div>
+    <script src="js/core_manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getActiveUser();
+            if (!user) return;
+
+            // Header info
+            document.querySelector('.header-acc-num').textContent = `${user.accountNumber} - ...`;
+
+            // Map values to labels
+            const infoRows = document.querySelectorAll('.info-row');
+            infoRows.forEach(row => {
+                const label = row.querySelector('.info-label')?.textContent.toLowerCase();
+                const valueElem = row.querySelector('.info-value');
+
+                if (!label || !valueElem) return;
+
+                if (label.includes('customer id')) valueElem.textContent = user.customerId;
+                else if (label === 'name') valueElem.textContent = user.fullName;
+                else if (label === 'primary holder') valueElem.textContent = user.fullName;
+                else if (label.includes('a/c no')) valueElem.textContent = user.accountNumber;
+                else if (label.includes('ifsc code')) valueElem.textContent = user.ifscCode;
+                else if (label.includes('swift code')) valueElem.textContent = user.swiftCode;
+                else if (label.includes('bank name')) valueElem.textContent = user.bankName;
+                else if (label.includes('branch')) valueElem.textContent = user.branchName;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Maroon background square -->
+    <rect width="200" height="200" fill="#931A1D"/>
+
+    <!-- White border frame -->
+    <rect x="35" y="35" width="130" height="130" stroke="white" stroke-width="12" fill="none"/>
+
+    <!-- Interior white bars (F-style geometry) -->
+    <!-- Top bar: Long -->
+    <rect x="55" y="55" width="90" height="22" fill="white"/>
+
+    <!-- Middle bar: Medium -->
+    <rect x="55" y="89" width="60" height="22" fill="white"/>
+
+    <!-- Bottom bar: Small square -->
+    <rect x="55" y="123" width="22" height="22" fill="white"/>
+</svg>

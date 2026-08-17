@@ -1,0 +1,17 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <mask id="cutout">
+            <!-- White shows, Black hides -->
+            <rect x="45" y="45" width="110" height="110" fill="white" />
+            <rect x="49" y="49" width="102" height="102" fill="black" />
+        </mask>
+    </defs>
+
+    <!-- Even Thinner Maroon border (4px) -->
+    <rect x="45" y="45" width="110" height="110" fill="#8B0000" mask="url(#cutout)" />
+
+    <!-- Stylized "F" Strips in Maroon -->
+    <rect x="60" y="60" width="80" height="18" fill="#8B0000" />
+    <rect x="60" y="91" width="55" height="18" fill="#8B0000" />
+    <rect x="60" y="122" width="30" height="18" fill="#8B0000" />
+</svg>
