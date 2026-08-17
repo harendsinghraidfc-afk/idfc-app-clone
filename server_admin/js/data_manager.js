@@ -96,4 +96,18 @@ function getTransactionById(customerId, txnId) {
     return txns.find(t => t.id == txnId) || null;
 }
 
+function deleteTransaction(customerId, txnId) {
+    const allTxns = getAllTransactions();
+    if (!allTxns[customerId]) return false;
+
+    const initialLength = allTxns[customerId].length;
+    allTxns[customerId] = allTxns[customerId].filter(t => t.id != txnId);
+
+    if (allTxns[customerId].length !== initialLength) {
+        localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
+        return true;
+    }
+    return false;
+}
+
 initializeData();

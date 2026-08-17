@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Render each txn
         txns.forEach(txn => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -50,7 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${txn.desc}</td>
                 <td>${txn.amount}</td>
                 <td><span class="status-pill status-${txn.status}">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</span></td>
-                <td><a href="#" class="edit-btn" data-id="${txn.id}" style="color: #931A1D; text-decoration: none; font-weight: bold;">Edit</a></td>
+                <td>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="#" class="edit-btn" data-id="${txn.id}" style="color: #3498db; text-decoration: none; font-weight: bold;">Edit</a>
+                        <a href="#" class="delete-btn" data-id="${txn.id}" style="color: #e74c3c; text-decoration: none; font-weight: bold;">Delete</a>
+                    </div>
+                </td>
             `;
             txnListBody.appendChild(row);
         });
@@ -61,6 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const txnId = btn.getAttribute('data-id');
                 openModal(txnId);
+            });
+        });
+
+        // Add event listeners to Delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const txnId = btn.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this transaction?')) {
+                    deleteTransaction(customerId, txnId);
+                    loadTransactions(customerId);
+                }
             });
         });
     }
@@ -86,7 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
             modalTitle.textContent = 'Add Transaction';
             txnForm.reset();
             editTxnId.value = '';
-            document.getElementById('txn-date').value = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            // Auto date
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('txn-date').value = dateStr;
         }
         modal.classList.add('active');
     }
@@ -109,6 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.classList.remove('active');
         loadTransactions(customerId);
-        alert(id ? 'Transaction updated' : 'Transaction added');
+        alert(id ? 'Transaction updated locally. Use Publish to make live.' : 'Transaction added locally. Use Publish to make live.');
     });
 });
