@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isHidden = true;
 
     if (eyeBtn && balanceDots) {
-        eyeBtn.addEventListener('click', () => {
+        eyeBtn.addEventListener('click', async () => {
             isHidden = !isHidden;
             if (isHidden) {
                 balanceDots.textContent = '•••••';
@@ -19,9 +19,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 `;
             } else {
-                balanceDots.textContent = actualBalance;
-                balanceDots.style.fontSize = '1.2rem';
+                // Show "waiting" state
+                balanceDots.textContent = 'Fetching...';
+                balanceDots.style.fontSize = '1rem';
                 balanceDots.style.letterSpacing = 'normal';
+
+                try {
+                    // Artificial delay to simulate network request
+                    await new Promise(resolve => setTimeout(resolve, 800));
+
+                    const response = await fetch('server_backend/users.json');
+                    const users = await response.json();
+                    const user = getActiveUser();
+
+                    // Find current user in JSON or default to first
+                    const userData = users.find(u => u.customerId === user?.customerId) || users[0];
+                    const balance = userData.availableBalance || '₹ 0.00';
+
+                    balanceDots.textContent = balance;
+                    balanceDots.style.fontSize = '1.2rem';
+                    balanceDots.style.letterSpacing = 'normal';
+                } catch (e) {
+                    balanceDots.textContent = '₹ Error';
+                    console.error('Balance fetch failed', e);
+                }
+
                 eyeBtn.innerHTML = `
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
