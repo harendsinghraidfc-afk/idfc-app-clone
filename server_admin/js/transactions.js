@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const txns = getTransactionsForUser(customerId);
 
         if (txns.length === 0) {
-            txnListBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: #888;">No transactions found for this user.</td></tr>';
+            txnListBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #888;">No transactions found for this user.</td></tr>';
             return;
         }
 
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${txn.date}</td>
                 <td>${txn.desc}</td>
                 <td>${txn.amount}</td>
+                <td><span style="font-size: 0.8rem; opacity: 0.7;">${txn.category === 'credit_card' ? 'Credit Card' : 'Savings'}</span></td>
                 <td><span class="status-pill status-${txn.status}">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</span></td>
                 <td>
                     <div style="display: flex; gap: 12px;">
@@ -99,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('txn-desc').value = txn.desc;
                 document.getElementById('txn-amount').value = txn.amount;
                 document.getElementById('txn-status').value = txn.status;
+                document.getElementById('txn-category').value = txn.category || 'savings';
             }
         } else {
             modalTitle.textContent = 'Add Transaction';
@@ -122,7 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             date: document.getElementById('txn-date').value,
             desc: document.getElementById('txn-desc').value,
             amount: document.getElementById('txn-amount').value,
-            status: document.getElementById('txn-status').value
+            status: document.getElementById('txn-status').value,
+            category: document.getElementById('txn-category').value
         };
 
         const id = editTxnId.value || null;

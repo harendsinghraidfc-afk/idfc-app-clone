@@ -75,6 +75,7 @@
                             <th>Date</th>
                             <th>Description</th>
                             <th>Amount</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -109,6 +110,13 @@
                     <div class="input-group">
                         <label>Amount</label>
                         <input type="text" id="txn-amount" placeholder="e.g. ₹2,000.00">
+                    </div>
+                    <div class="input-group">
+                        <label>Category</label>
+                        <select id="txn-category" class="admin-select" style="width: 100%;">
+                            <option value="savings">Savings Account</option>
+                            <option value="credit_card">Credit Card (WOW)</option>
+                        </select>
                     </div>
                     <div class="input-group">
                         <label>Status</label>
