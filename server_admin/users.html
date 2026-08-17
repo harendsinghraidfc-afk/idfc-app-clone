@@ -58,14 +58,21 @@
     <div class="main-wrapper">
         <div class="glass-panel">
             <div class="panel-header">
-                <h1>Registered Users</h1>
-                <button class="add-txn-btn" onclick="window.location.href='dashboard.html'">+ Add New User</button>
+                <div>
+                    <h1>Registered Users</h1>
+                    <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-top: 5px;">The top user in the list is shown as the default profile on the app.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="add-txn-btn" style="background: #27ae60;" id="publish-btn">Publish to Website</button>
+                    <button class="add-txn-btn" onclick="window.location.href='dashboard.html'">+ Add New User</button>
+                </div>
             </div>
 
             <div class="table-responsive">
                 <table class="txn-table">
                     <thead>
                         <tr>
+                            <th>Default</th>
                             <th>Name</th>
                             <th>Customer ID</th>
                             <th>Account No</th>
