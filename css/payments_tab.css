@@ -1,0 +1,108 @@
+/* Specific styles for the Payments Tab content within other pages */
+
+.section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 10px;
+    margin-bottom: 30px;
+}
+
+.grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-circle.gold { background-color: #F8B400; color: white; }
+.icon-circle.red { background-color: #E63946; color: white; }
+
+.grid-item span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #444;
+    line-height: 1.2;
+}
+
+.setup-banner {
+    background-color: #FFF9E6;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+    border: 1px solid #FFEBB3;
+    position: relative;
+}
+
+.banner-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #F8B400;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-text h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+.banner-text p { font-size: 0.72rem; color: #666; }
+.banner-arrow { position: absolute; right: 15px; color: #F8B400; font-size: 1.2rem; }
+
+.empty-state-box {
+    background-color: #F5F7FA;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 35px;
+}
+
+.bills-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.view-all { font-size: 0.75rem; color: #999; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+.bill-item { position: relative; }
+.new-badge {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #27AE60;
+    color: white;
+    font-size: 0.55rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.page-dots { display: flex; justify-content: center; gap: 5px; margin-top: 15px; }
+.dot { width: 6px; height: 6px; background-color: #DDD; border-radius: 50%; }
+.dot.active { background-color: #931A1D; width: 15px; border-radius: 10px; }

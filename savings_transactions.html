@@ -6,7 +6,9 @@
     <title>Transactions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/savings_transactions.css">
+    <link rel="stylesheet" href="css/payments_tab.css">
     <script src="js/core_manager.js"></script>
+    <script src="js/tab_manager.js"></script>
     <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -169,22 +171,6 @@
     </div>
 
     <script>
-        window.switchTab = function(tabName) {
-            const tabs = document.querySelectorAll('.txn-tabs .tab-item');
-            const views = document.querySelectorAll('.tab-view');
-
-            tabs.forEach(t => t.classList.remove('active'));
-            views.forEach(v => v.classList.remove('active'));
-
-            if (tabName === 'payments') {
-                tabs[0].classList.add('active');
-                document.getElementById('payments-view').classList.add('active');
-            } else if (tabName === 'transactions') {
-                tabs[2].classList.add('active');
-                document.getElementById('transactions-view').classList.add('active');
-            }
-        };
-
         document.addEventListener('DOMContentLoaded', async () => {
             const dynamicList = document.getElementById('dynamic-txn-list');
             const user = await loadAppData();
