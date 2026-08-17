@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaction History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/savings_transactions.css">
+    <script src="js/core_manager.js"></script>
+    <style>
+        #loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 0.5s ease;
+        }
+        #loader-wrapper img { width: 100px; height: auto; }
+        .history-header { background: #fff; padding: 20px 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 15px; }
+        .back-btn { cursor: pointer; }
+        .history-title { font-size: 1.2rem; font-weight: 700; color: #1a1a1a; }
+        .category-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; margin-top: 4px; display: inline-block; }
+        .badge-savings { background: #e8f8f5; color: #27ae60; }
+        .badge-cc { background: #fef5e7; color: #d68910; }
+    </style>
+</head>
+<body>
+    <div id="loader-wrapper"><img src="assets/images/loader.gif" alt="Loading..."></div>
+
+    <header class="history-header">
+        <div class="back-btn" onclick="window.history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </div>
+        <span class="history-title">Transaction History</span>
+    </header>
+
+    <main class="txn-list-content" style="padding-top: 10px;">
+        <div id="history-list"></div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const list = document.getElementById('history-list');
+            const user = await loadAppData();
+            if (!user) return;
+
+            const allTxns = getTransactionsForActiveUser(); // Already latest first
+            const balance = user.availableBalance || '₹ 0.00';
+
+            if (allTxns.length === 0) {
+                list.innerHTML = '<p style="text-align:center; padding:50px; color:#888;">No transactions found in history.</p>';
+                return;
+            }
+
+            // Grouping logic
+            const grouped = {};
+            allTxns.forEach(t => {
+                if (!grouped[t.date]) grouped[t.date] = [];
+                grouped[t.date].push(t);
+            });
+
+            let html = '';
+            Object.keys(grouped).forEach(date => {
+                const txnDateObj = new Date(date);
+                const todayStr = new Date().toDateString();
+                const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+
+                let headerText = date;
+                if (txnDateObj.toDateString() === todayStr) headerText = 'Today';
+                else if (txnDateObj.toDateString() === yesterdayDate.toDateString()) headerText = 'Yesterday';
+
+                html += `<div class="date-group-header">${headerText} | Balance ${balance}</div>`;
+
+                grouped[date].forEach(txn => {
+                    const isCC = txn.category === 'credit_card';
+                    const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
+
+                    html += `
+                        <div class="txn-card">
+                            <div class="txn-icon-circle">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                    <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                    <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                            <div class="txn-info-main">
+                                <p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p>
+                                <span class="category-badge ${isCC ? 'badge-cc' : 'badge-savings'}">${isCC ? 'Credit Card' : 'Savings'}</span>
+                            </div>
+                            <div class="txn-amount-box">
+                                <p class="txn-amount ${isIncoming ? 'incoming' : ''}">${txn.amount}</p>
+                                <p class="txn-time">${txn.date}</p>
+                            </div>
+                        </div>`;
+                });
+            });
+            list.innerHTML = html;
+        });
+
+        window.addEventListener('load', function() {
+            var loader = document.getElementById('loader-wrapper');
+            setTimeout(function() {
+                loader.style.opacity = '0';
+                setTimeout(function() { loader.style.display = 'none'; }, 500);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

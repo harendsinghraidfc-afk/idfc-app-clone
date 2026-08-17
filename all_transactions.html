@@ -10,34 +10,18 @@
     <script src="js/core_manager.js"></script>
     <style>
         #loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-            transition: opacity 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 0.5s ease;
         }
-        #loader-wrapper img {
-            width: 100px;
-            height: auto;
-        }
+        #loader-wrapper img { width: 100px; height: auto; }
     </style>
 </head>
 <body>
-    <div id="loader-wrapper">
-        <img src="assets/images/loader.gif" alt="Loading...">
-    </div>
+    <div id="loader-wrapper"><img src="assets/images/loader.gif" alt="Loading..."></div>
     <div class="all-txn-container">
-        <!-- Header -->
         <header class="txn-header">
-            <div class="icon-box">
-                <!-- Blank for spacing -->
-            </div>
+            <div class="icon-box"></div>
             <h2>Credit card transactions</h2>
             <div style="display: flex;">
                 <div class="icon-box">
@@ -55,103 +39,80 @@
             </div>
         </header>
 
-        <!-- Sub Header -->
         <div class="sub-header-info">
-            <span class="showing-text">Showing transactions for FIRST WOW! 8818</span>
+            <span class="showing-text">Showing transactions for WOW! Card</span>
             <div class="icon-box" style="width: auto;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
             </div>
         </div>
 
-        <!-- Status Tabs -->
         <div class="txn-status-tabs">
-            <div class="status-tab">Approved <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
-            <div class="status-tab active">Unbilled <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
-            <div class="status-tab">Billed <svg class="info-icon-small" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+            <div class="status-tab">Approved</div>
+            <div class="status-tab active">Unbilled</div>
+            <div class="status-tab">Billed</div>
         </div>
 
-        <!-- Content -->
         <main class="all-txn-content" id="txn-list-content">
-            <!-- Transactions will be grouped and loaded here -->
+            <!-- Dynamic CC transactions -->
         </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = getActiveUser();
+        document.addEventListener('DOMContentLoaded', async () => {
             const container = document.getElementById('txn-list-content');
-            const txns = getTransactionsForActiveUser(); // Latest first
-
+            const user = await loadAppData();
             if (user) {
-                document.querySelector('.showing-text').textContent = `Showing transactions for ${user.bankName} ${user.accountNumber.slice(-4)}`;
+                const lastFour = user.creditCardNumber ? user.creditCardNumber.slice(-4) : 'XXXX';
+                document.querySelector('.showing-text').textContent = `Showing transactions for FIRST WOW! ${lastFour}`;
             }
 
-            if (txns.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding: 40px; color: #888;">No transactions found.</p>';
+            const allTxns = getTransactionsForActiveUser();
+            const ccTxns = allTxns.filter(t => t.category === 'credit_card');
+
+            if (ccTxns.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding: 40px; color: #888;">No credit card transactions found.</p>';
                 return;
             }
 
+            // Group by Date
+            const grouped = {};
+            ccTxns.forEach(t => { if(!grouped[t.date]) grouped[t.date] = []; grouped[t.date].push(t); });
+
             let html = '';
-            let currentGroupDate = '';
-            let groupHtml = '';
-            let groupTotal = 0;
+            Object.keys(grouped).forEach(date => {
+                let groupTotal = 0;
+                let groupHtml = '';
+                grouped[date].forEach(txn => {
+                    groupTotal += parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
+                    groupHtml += `
+                        <div class="txn-full-item">
+                            <div class="card-c-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                            </div>
+                            <div class="txn-details">
+                                <p class="txn-main-title">${txn.desc}</p>
+                                <p class="txn-sub-status">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</p>
+                            </div>
+                            <div class="txn-val-box">
+                                <p class="txn-amount-bold">${txn.amount}</p>
+                            </div>
+                        </div>`;
+                });
 
-            function flushGroup() {
-                if (groupHtml) {
-                    html += `
-                        <div class="date-group-header">
-                            <span class="group-date">${currentGroupDate}</span>
-                            <span class="group-total">₹${groupTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
-                        </div>
-                        <div class="txn-list-container">${groupHtml}</div>
-                    `;
-                    groupHtml = '';
-                    groupTotal = 0;
-                }
-            }
-
-            txns.forEach(txn => {
-                if (txn.date !== currentGroupDate) {
-                    flushGroup();
-                    currentGroupDate = txn.date;
-                }
-
-                // Add to group total
-                const val = parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
-                groupTotal += val;
-
-                groupHtml += `
-                    <div class="txn-full-item">
-                        <div class="card-c-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                        </div>
-                        <div class="txn-details">
-                            <p class="txn-main-title">${txn.desc}</p>
-                            <p class="txn-sub-status">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</p>
-                        </div>
-                        <div class="txn-val-box">
-                            <p class="txn-amount-bold">${txn.amount}</p>
-                        </div>
+                html += `
+                    <div class="date-group-header">
+                        <span class="group-date">${date}</span>
+                        <span class="group-total">₹${groupTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
                     </div>
-                `;
+                    <div class="txn-list-container">${groupHtml}</div>`;
             });
-
-            flushGroup();
             container.innerHTML = html;
         });
     </script>
     <script>
         window.addEventListener('load', function() {
             var loader = document.getElementById('loader-wrapper');
-            // Ensure the loader stays for at least 1000ms
-            setTimeout(function() {
-                loader.style.opacity = '0';
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                }, 500); // Wait for fade out animation
-            }, 1000);
+            setTimeout(function() { loader.style.opacity = '0'; setTimeout(function() { loader.style.display = 'none'; }, 500); }, 1000);
         });
     </script>
 </body>
