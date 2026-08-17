@@ -103,6 +103,43 @@
     border-radius: 4px;
 }
 
-.page-dots { display: flex; justify-content: center; gap: 5px; margin-top: 15px; }
+.page-dots { display: flex; justify-content: center; gap: 5px; margin-top: 15px; margin-bottom: 30px; }
 .dot { width: 6px; height: 6px; background-color: #DDD; border-radius: 50%; }
 .dot.active { background-color: #931A1D; width: 15px; border-radius: 10px; }
+
+/* Promotional Banners */
+.promo-banner {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    position: relative;
+}
+
+.fastag-banner {
+    background: linear-gradient(90deg, #931A1D 0%, #631114 100%);
+    color: white;
+}
+
+.fastag-img { width: 80px; height: auto; margin-right: 15px; }
+.fastag-content { flex: 1; }
+.fastag-content p { font-size: 0.75rem; line-height: 1.3; margin: 0; font-weight: 500; }
+.fastag-btn {
+    display: inline-block; margin-top: 10px; font-size: 0.8rem; font-weight: 700;
+    border-bottom: 1.5px solid white; padding-bottom: 2px;
+}
+
+.zepto-banner {
+    background-color: white;
+    border: 1px solid #EEE;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+}
+
+.zepto-content p { font-size: 0.85rem; font-weight: 600; line-height: 1.3; color: #444; max-width: 180px; }
+.zepto-content span { color: #888; font-size: 0.75rem; display: block; margin-top: 4px; }
+.zepto-logo { width: 70px; height: auto; }
+

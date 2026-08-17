@@ -20,7 +20,12 @@ window.switchTab = function(tabName) {
     }
 };
 
-// Any specific logic for the payments tab inside the savings context can go here
+// Initial state check based on URL
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Tab Manager Initialized');
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTab = urlParams.get('tab');
+
+    if (initialTab === 'payments') {
+        switchTab('payments');
+    }
 });
