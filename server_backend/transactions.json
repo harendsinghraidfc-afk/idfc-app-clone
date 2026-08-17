@@ -23,6 +23,14 @@
             "amount": "₹2,000.00",
             "category": "savings",
             "status": "billed"
+        },
+        {
+            "date": "17 Aug 2026",
+            "desc": "ATM/Cash Withdrawal/Mumbai",
+            "amount": "₹200",
+            "status": "billed",
+            "category": "savings",
+            "id": 1786953104449
         }
     ]
 }
