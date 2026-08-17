@@ -7,15 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/account_statement.css">
     <script src="js/core_manager.js"></script>
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         #loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 999999; transition: opacity 0.5s ease;
         }
         #loader-wrapper img { width: 100px; height: auto; }
+        #loader-text { margin-top: 15px; color: #931A1D; font-weight: 600; font-family: sans-serif; }
 
-        /* Subtle background pattern like the image */
         body::before {
             content: '';
             position: fixed;
@@ -27,22 +30,46 @@
             z-index: -1;
             pointer-events: none;
         }
+
+        /* --- HIDDEN PDF TEMPLATE STYLES --- */
+        #pdf-template-container {
+            position: absolute;
+            left: -9999px; /* Hide off-screen */
+            top: 0;
+            width: 800px; /* Standard A4-ish width for rendering */
+            background: white;
+            padding: 40px;
+            color: #1a1a1a;
+        }
+        .pdf-header { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 30px; }
+        .pdf-full-logo { width: 180px; height: auto; margin-bottom: 5px; }
+        .pdf-tagline { font-weight: 900; font-size: 0.8rem; color: #000; letter-spacing: 0.5px; }
+        .pdf-section-title { font-size: 1.2rem; font-weight: 700; margin: 25px 0 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .pdf-summary-grid { display: grid; grid-template-columns: 180px 1fr; row-gap: 8px; font-size: 0.9rem; margin-bottom: 30px; }
+        .pdf-label { font-weight: 600; color: #555; }
+        .pdf-value { font-weight: 700; color: #000; }
+        .pdf-filter-box { background: #f4f6f8; border-radius: 4px; padding: 15px; margin-bottom: 30px; display: grid; grid-template-columns: 180px 1fr; row-gap: 10px; font-size: 0.9rem; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .pdf-table th { border-top: 2px solid #000; border-bottom: 2px solid #000; text-align: left; padding: 12px 8px; font-size: 0.8rem; font-weight: 700; }
+        .pdf-table td { padding: 12px 8px; font-size: 0.8rem; border-bottom: 1px solid #f0f0f0; }
+        .pdf-amount-col { text-align: right; font-weight: 700; }
+        .pdf-credit { color: #00816F; }
     </style>
 </head>
 <body>
-    <div id="loader-wrapper"><img src="assets/images/loader.gif" alt="Loading..."></div>
+    <div id="loader-wrapper">
+        <img src="assets/images/loader.gif" alt="Loading...">
+        <div id="loader-text" style="display: none;">Generating PDF...</div>
+    </div>
 
     <div class="statement-container">
-        <!-- Header -->
         <header class="header">
             <span class="header-title">Account statement</span>
             <div class="header-icons">
-                <!-- Headset/Support Icon -->
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
                     <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
                     <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
                 </svg>
-                <!-- Close Icon -->
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" onclick="window.history.back()">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -50,116 +77,153 @@
             </div>
         </header>
 
-        <!-- Dynamic Account Info -->
-        <div class="account-info" id="acc-info-display">A/c 102 9516 8767 - Mr. Lokesh Chouhan</div>
+        <div class="account-info" id="acc-info-display">...</div>
 
         <div class="section-label">Time period</div>
-
         <div class="radio-group">
-            <div class="radio-item active" data-period="current">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Current month</span>
-            </div>
-            <div class="radio-item" data-period="last">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Last month</span>
-            </div>
-            <div class="radio-item" data-period="last3">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Last 3 months</span>
-            </div>
-            <div class="radio-item" data-period="last6">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Last 6 months</span>
-            </div>
-            <div class="radio-item" data-period="last12">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Last 12 months</span>
-            </div>
-            <div class="radio-item" data-period="current-fy">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Current Financial Year (Apr '26 - Mar '27)</span>
-            </div>
-            <div class="radio-item" data-period="last-fy">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Last Financial Year (Apr '25 - Mar '26)</span>
-            </div>
-            <div class="radio-item" data-period="custom">
-                <div class="radio-circle"><div class="radio-inner"></div></div>
-                <span class="radio-label">Custom</span>
-            </div>
+            <div class="radio-item active"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Current month</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last month</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 3 months</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 6 months</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last 12 months</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Current Financial Year</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Last Financial Year</span></div>
+            <div class="radio-item"><div class="radio-circle"><div class="radio-inner"></div></div><span class="radio-label">Custom</span></div>
         </div>
 
-        <!-- Format Selector -->
         <div class="format-selector-wrapper">
             <span class="format-label">Select format</span>
             <div class="format-box" id="format-dropdown">
                 <span class="selected-value" id="current-format">PDF</span>
                 <div class="dropdown-arrow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                </div>
-                <div class="options-list">
-                    <div class="option-item" data-value="PDF">PDF</div>
-                    <div class="option-item" data-value="Excel">Excel</div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
             </div>
         </div>
 
-        <!-- Footer Actions -->
         <div class="footer-actions">
             <a href="#" class="email-btn">Email</a>
-            <button class="download-btn" onclick="window.location.href='transaction_statement_view.html?autoprint=true'">Download</button>
+            <button class="download-btn" id="generate-pdf-btn">Download</button>
         </div>
+    </div>
+
+    <!-- HIDDEN PDF TEMPLATE -->
+    <div id="pdf-template-container">
+        <div class="pdf-header">
+            <img src="assets/images/idfclogofull.png" alt="IDFC Logo" class="pdf-full-logo">
+            <div class="pdf-tagline">ALWAYS YOU FIRST</div>
+        </div>
+        <h2 class="pdf-section-title">Smart Summary</h2>
+        <div class="pdf-summary-grid">
+            <span class="pdf-label">Name</span> <span class="pdf-value" id="tpl-name">...</span>
+            <span class="pdf-label">Customer ID</span> <span class="pdf-value" id="tpl-cust-id">...</span>
+            <span class="pdf-label">CKYC ID</span> <span class="pdf-value" id="tpl-ckyc">...</span>
+            <span class="pdf-label">Address</span> <span class="pdf-value" id="tpl-address" style="white-space: pre-wrap;">...</span>
+        </div>
+        <h2 class="pdf-section-title">Filter / Search Selection</h2>
+        <div class="pdf-filter-box">
+            <span class="pdf-label">Accounts</span> <span class="pdf-value" id="tpl-account">...</span>
+            <span class="pdf-label">Date Range</span> <span class="pdf-value" id="tpl-date-range">...</span>
+        </div>
+        <p style="font-weight: 700; font-size: 1rem; margin-bottom: 5px;">Transactions Based On Applied Selections</p>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 15px;">(Upto 2000 transactions downloaded)</p>
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Payment Type</th>
+                    <th>Transaction Name</th>
+                    <th>Category</th>
+                    <th style="text-align: right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="tpl-txn-body"></tbody>
+        </table>
+        <div style="text-align: right; margin-top: 40px; font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 10px;">Page 1 of 1</div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const infoDisplay = document.getElementById('acc-info-display');
-
-            // Radio button logic
-            document.querySelectorAll('.radio-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    document.querySelectorAll('.radio-item').forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                });
-            });
-
-            // Fetch Real User Data
             const user = await loadAppData();
             if (user) {
-                infoDisplay.textContent = `A/c ${user.accountNumber} - Mr. ${user.welcomeName || user.fullName}`;
+                document.getElementById('acc-info-display').textContent = `A/c ${user.accountNumber} - Mr. ${user.welcomeName || user.fullName}`;
+                // Pre-populate template
+                document.getElementById('tpl-name').textContent = user.fullName;
+                document.getElementById('tpl-cust-id').textContent = user.customerId;
+                document.getElementById('tpl-ckyc').textContent = user.ckycId || '**********7254';
+                document.getElementById('tpl-address').textContent = user.address || '';
+                const lastFour = user.accountNumber ? user.accountNumber.slice(-4) : 'XXXX';
+                document.getElementById('tpl-account').textContent = `IDFC FIRST xx ${lastFour} ${user.accountNumber}`;
+                document.getElementById('tpl-date-range').textContent = `Upto ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+
+                // Populate Table
+                const txns = getTransactionsForActiveUser().filter(t => !t.category || t.category === 'savings');
+                const tbody = document.getElementById('tpl-txn-body');
+                txns.forEach(txn => {
+                    const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
+                    tbody.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${txn.date}</td>
+                            <td>${isCredit ? 'Others' : 'Fees & charges'}</td>
+                            <td style="font-weight: 500;">${txn.desc}</td>
+                            <td>${isCredit ? 'Interests' : 'Others'}</td>
+                            <td class="pdf-amount-col ${isCredit ? 'pdf-credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '')}</td>
+                        </tr>`);
+                });
             }
 
-            // Dropdown logic
+            document.getElementById('generate-pdf-btn').addEventListener('click', generateDirectPDF);
+
+            // Radio/Dropdown UI logic
+            document.querySelectorAll('.radio-item').forEach(i => i.addEventListener('click', () => {
+                document.querySelectorAll('.radio-item').forEach(r => r.classList.remove('active'));
+                i.classList.add('active');
+            }));
             const dropdown = document.getElementById('format-dropdown');
-            const selectedValue = document.getElementById('current-format');
-            const options = document.querySelectorAll('.option-item');
-
-            dropdown.addEventListener('click', (e) => {
-                dropdown.classList.toggle('open');
-                e.stopPropagation();
-            });
-
-            options.forEach(option => {
-                option.addEventListener('click', (e) => {
-                    selectedValue.textContent = option.getAttribute('data-value');
-                    dropdown.classList.remove('open');
-                    e.stopPropagation();
-                });
-            });
-
+            dropdown.addEventListener('click', (e) => { dropdown.classList.toggle('open'); e.stopPropagation(); });
             document.addEventListener('click', () => dropdown.classList.remove('open'));
         });
 
-        // Loader hide
-        window.addEventListener('load', function() {
-            var loader = document.getElementById('loader-wrapper');
-            setTimeout(function() {
+        async function generateDirectPDF() {
+            const loader = document.getElementById('loader-wrapper');
+            const loaderText = document.getElementById('loader-text');
+
+            loader.style.display = 'flex';
+            loader.style.opacity = '1';
+            loaderText.style.display = 'block';
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const element = document.getElementById('pdf-template-container');
+
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                const base64String = pdf.output('datauristring').split(',')[1];
+                const fileName = "IDFC_Statement_" + Date.now() + ".pdf";
+
+                if (window.Android && window.Android.openPdfFromBase64) {
+                    window.Android.showNotification("Opening your Account Statement...");
+                    window.Android.openPdfFromBase64(base64String, fileName);
+                } else {
+                    pdf.save(fileName);
+                }
+            } catch (e) {
+                alert("Error: " + e.message);
+            } finally {
                 loader.style.opacity = '0';
-                setTimeout(function() { loader.style.display = 'none'; }, 500);
-            }, 800);
+                setTimeout(() => { loader.style.display = 'none'; loaderText.style.display = 'none'; }, 500);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader-wrapper');
+            setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }, 800);
         });
     </script>
 </body>

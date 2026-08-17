@@ -5,25 +5,24 @@
     <title>Account Statement - IDFC FIRST Bank</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="js/core_manager.js"></script>
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: 'Arial', sans-serif; margin: 0; padding: 40px; color: #1a1a1a; background: white; line-height: 1.4; }
-        .pdf-page { max-width: 900px; margin: 0 auto; position: relative; min-height: 1200px; }
+        .pdf-page { max-width: 900px; margin: 0 auto; position: relative; padding: 20px; background: white; }
 
-        /* Logo & Tagline */
         .header-main { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 40px; }
         .full-logo { width: 160px; height: auto; margin-bottom: 5px; }
         .tagline-bold { font-weight: 900; font-size: 0.75rem; color: #000; letter-spacing: 0.5px; }
 
-        /* Summary Sections */
         .section-title { font-size: 1.1rem; font-weight: 700; margin: 25px 0 10px; border-bottom: 1.5px solid #eee; padding-bottom: 5px; }
         .summary-grid { display: grid; grid-template-columns: 180px 1fr; row-gap: 8px; font-size: 0.85rem; margin-bottom: 30px; }
         .label { font-weight: 600; color: #555; }
         .value { font-weight: 700; color: #000; }
 
-        /* Filter Box */
         .filter-selection-box { background: #f4f6f8; border-radius: 4px; padding: 15px; margin-bottom: 30px; display: grid; grid-template-columns: 180px 1fr; row-gap: 12px; font-size: 0.85rem; }
 
-        /* Transactions Table */
         .table-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
         .table-subtitle { font-size: 0.75rem; color: #666; margin-bottom: 20px; }
 
@@ -31,35 +30,33 @@
         th { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; text-align: left; padding: 12px 8px; font-size: 0.75rem; font-weight: 700; }
         td { padding: 12px 8px; font-size: 0.75rem; border-bottom: 1px solid #f0f0f0; }
         .amount-col { text-align: right; font-weight: 700; }
-        .credit { color: #00816F; } /* IDFC Green for credits */
+        .credit { color: #00816F; }
 
-        /* Footer */
-        .footer { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: flex-end; font-size: 0.7rem; color: #666; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer { font-size: 0.7rem; color: #666; padding-top: 20px; border-top: 1px solid #eee; margin-top: 50px; text-align: right; }
 
-        @media print {
-            .no-print { display: none; }
-            body { padding: 0; }
-            .pdf-page { max-width: 100%; }
-        }
         #loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 999999;
         }
         #loader-wrapper img { width: 100px; }
+        #loader-text { margin-top: 20px; font-weight: 600; color: #931A1D; font-family: sans-serif; }
     </style>
 </head>
 <body>
-    <div id="loader-wrapper" class="no-print"><img src="assets/images/loader.gif" alt="Loading..."></div>
+    <div id="loader-wrapper">
+        <img src="assets/images/loader.gif" alt="Loading...">
+        <div id="loader-text">Generating Statement...</div>
+    </div>
 
-    <div class="pdf-page">
+    <div class="pdf-page" id="statement-content">
         <header class="header-main">
             <img src="assets/images/idfclogofull.png" alt="IDFC FIRST Bank" class="full-logo">
             <div class="tagline-bold">ALWAYS YOU FIRST</div>
         </header>
 
         <h2 class="section-title">Smart Summary</h2>
-        <div class="summary-grid" id="summary-info">
+        <div class="summary-grid">
             <span class="label">Name</span> <span class="value" id="pdf-name">...</span>
             <span class="label">Customer ID</span> <span class="value" id="pdf-cust-id">...</span>
             <span class="label">CKYC ID</span> <span class="value" id="pdf-ckyc">...</span>
@@ -86,15 +83,11 @@
                         <th class="amount-col">Amount</th>
                     </tr>
                 </thead>
-                <tbody id="pdf-txn-body">
-                    <!-- Dynamic Rows -->
-                </tbody>
+                <tbody id="pdf-txn-body"></tbody>
             </table>
         </div>
 
-        <div class="footer">
-            Page 1 of 1
-        </div>
+        <div class="footer">Page 1 of 1</div>
     </div>
 
     <script>
@@ -102,11 +95,10 @@
             const user = await loadAppData();
             if (!user) return;
 
-            // Populate Summary
             document.getElementById('pdf-name').textContent = user.fullName || 'User';
             document.getElementById('pdf-cust-id').textContent = user.customerId || '-';
             document.getElementById('pdf-ckyc').textContent = user.ckycId || '**********7254';
-            document.getElementById('pdf-address').textContent = user.address || 'Address not set in Admin Panel';
+            document.getElementById('pdf-address').textContent = user.address || '';
 
             const lastFour = user.accountNumber ? user.accountNumber.slice(-4) : 'XXXX';
             document.getElementById('pdf-account').textContent = `IDFC FIRST xx ${lastFour} ${user.accountNumber || ''}`;
@@ -114,48 +106,66 @@
             const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
             document.getElementById('pdf-date-range').textContent = `Upto ${todayStr}`;
 
-            // Populate Table
-            const allTxns = getTransactionsForActiveUser();
-
-            // Filter by savings (Account Statement usually only shows savings)
-            const txns = allTxns.filter(t => !t.category || t.category === 'savings');
-
+            const txns = getTransactionsForActiveUser().filter(t => !t.category || t.category === 'savings');
             const body = document.getElementById('pdf-txn-body');
 
             if (txns.length === 0) {
-                body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px;">No transactions found for the selected period.</td></tr>';
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px;">No transactions found.</td></tr>';
             } else {
                 txns.forEach(txn => {
                     const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                    const paymentType = isCredit ? 'Others' : 'Fees & charges';
-                    const category = isCredit ? 'Interests & Dividends' : 'Others';
-
                     const row = `
                         <tr>
                             <td>${txn.date}</td>
-                            <td>${paymentType}</td>
+                            <td>${isCredit ? 'Others' : 'Fees & charges'}</td>
                             <td style="font-weight: 500;">${txn.desc}</td>
-                            <td>${category}</td>
+                            <td>${isCredit ? 'Interests' : 'Others'}</td>
                             <td class="amount-col ${isCredit ? 'credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '')}</td>
                         </tr>`;
                     body.insertAdjacentHTML('beforeend', row);
                 });
             }
 
-            // Hide loader and trigger print
-            setTimeout(() => {
+            // --- AUTO GENERATE AND OPEN PDF ---
+            if (window.location.search.includes('autoprint=true')) {
+                setTimeout(generateAndOpenPDF, 1000);
+            } else {
                 document.getElementById('loader-wrapper').style.display = 'none';
-
-                if (window.location.search.includes('autoprint=true')) {
-                    // Send notification to Android App
-                    if (window.Android) {
-                        Android.showNotification("Account Statement is ready for download.");
-                    }
-
-                    window.print();
-                }
-            }, 800);
+            }
         });
+
+        async function generateAndOpenPDF() {
+            const { jsPDF } = window.jspdf;
+            const element = document.getElementById('statement-content');
+
+            try {
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+
+                // Convert to Base64
+                const base64String = pdf.output('datauristring').split(',')[1];
+                const fileName = "IDFC_Statement_" + Date.now() + ".pdf";
+
+                if (window.Android && window.Android.openPdfFromBase64) {
+                    window.Android.openPdfFromBase64(base64String, fileName);
+                } else {
+                    // Fallback for browser testing
+                    pdf.save(fileName);
+                }
+            } catch (e) {
+                console.error("PDF Error", e);
+                if(window.Android) window.Android.showNotification("Error generating PDF: " + e.message);
+            } finally {
+                document.getElementById('loader-wrapper').style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
