@@ -9,14 +9,6 @@
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
         "mpin": "1234",
-        "availableBalance": "₹100",
-        "accountType": "Savings Regular 25k",
-        "avgMonthlyBalance": "₹0",
-        "holdFunds": "₹0",
-        "unclearedFunds": "₹0",
-        "debitCardNumber": "",
-        "creditCardNumber": "",
-        "ccTotalLimit": "",
-        "ccAvailableLimit": ""
+        "availableBalance": "₹100"
     }
 ]
