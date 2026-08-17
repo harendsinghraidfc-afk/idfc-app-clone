@@ -109,27 +109,32 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const nameElement = document.querySelector('.welcome-section .bold');
 
-            // Show a temporary state while fetching
-            nameElement.textContent = '...';
+            // Show skeleton while fetching
+            nameElement.classList.add('name-skeleton');
 
             try {
                 // Fetch fresh data from server with cache-busting
                 const response = await fetch('server_backend/users.json?t=' + new Date().getTime());
+
+                // Artificial delay to see the shimmer (optional, remove for instant feel)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
                 if (response.ok) {
                     const users = await response.json();
                     if (users && users.length > 0) {
-                        const user = users[0]; // Get the first user
+                        const user = users[0];
+                        nameElement.classList.remove('name-skeleton');
                         nameElement.textContent = user.welcomeName || 'User';
 
-                        // Sync local storage so MPIN validation works with fresh data
                         localStorage.setItem('idfc_app_user_data', JSON.stringify(user));
                     }
                 }
             } catch (e) {
                 console.error('Failed to fetch user name', e);
-                // Fallback to local storage if server fails
+                nameElement.classList.remove('name-skeleton');
+
                 const localUser = JSON.parse(localStorage.getItem('idfc_app_user_data'));
-                if (localUser) nameElement.textContent = localUser.welcomeName;
+                nameElement.textContent = localUser ? localUser.welcomeName : 'User';
             }
         });
     </script>
