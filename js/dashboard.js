@@ -32,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Logout Functionality ---
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+    }
+
     // --- 3D Diamond for Networth ---
     initDiamond();
 

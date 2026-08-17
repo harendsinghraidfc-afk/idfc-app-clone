@@ -7,6 +7,12 @@ const APP_USER_KEY = 'idfc_app_user_data';
 const ADMIN_USERS_KEY = 'idfc_users_data';
 const ADMIN_TXN_KEY = 'idfc_transactions_data';
 
+function logout() {
+    console.log('Logging out...');
+    localStorage.removeItem('idfc_app_user_data');
+    window.location.href = 'auth.html';
+}
+
 // Proactive data loading
 function getActiveUser() {
     // Check Admin's user list first (Source of Truth)
