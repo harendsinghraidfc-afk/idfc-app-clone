@@ -62,7 +62,7 @@
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
                 </button>
-                <button class="icon-btn power-btn">
+                <button class="icon-btn power-btn" onclick="logout()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
                         <line x1="12" y1="2" x2="12" y2="12"></line>
@@ -325,6 +325,10 @@
     <script src="js/core_manager.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
+        function logout() {
+            localStorage.removeItem('idfc_app_user_data');
+            window.location.href = 'auth.html';
+        }
         document.addEventListener('DOMContentLoaded', () => {
             const user = getActiveUser();
             if (user && user.accountNumber) {
