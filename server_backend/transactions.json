@@ -1,25 +1,12 @@
 {
     "6910097017": [
         {
-            "id": 1001,
-            "date": "07 Aug, 2026",
-            "desc": "UPICC/DR/702456126437/Ishwarl/YESB/paytm.s/Payment...",
-            "amount": "₹2,000.00",
-            "status": "unbilled"
-        },
-        {
-            "id": 1002,
-            "date": "07 Aug, 2026",
-            "desc": "Domestic Cash Advance Fee",
-            "amount": "₹199.00",
-            "status": "unbilled"
-        },
-        {
-            "id": 1003,
-            "date": "07 Aug, 2026",
+            "date": "17 Aug 2026",
             "desc": "IGST",
-            "amount": "₹35.82",
-            "status": "unbilled"
+            "amount": "200",
+            "status": "unbilled",
+            "category": "savings",
+            "id": 1786949963522
         }
     ]
 }
