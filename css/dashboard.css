@@ -106,20 +106,38 @@
     transform: translateY(50%);
 }
 
-/* Skeleton/Shimmer Effect for Balance */
-.shimmer-loading {
-    display: inline-block;
-    height: 24px;
-    width: 120px;
+/* Skeleton/Shimmer Effect for Savings Card */
+.savings-card.loading-shimmer .card-header,
+.savings-card.loading-shimmer .balance-label,
+.savings-card.loading-shimmer .dots {
+    position: relative;
+    color: transparent !important;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.savings-card.loading-shimmer .card-header::after,
+.savings-card.loading-shimmer .balance-label::after,
+.savings-card.loading-shimmer .dots::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(90deg,
-        rgba(255, 255, 255, 0.1) 25%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0.1) 75%
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
     );
     background-size: 200% 100%;
     animation: shimmer-anim 1.5s infinite linear;
-    border-radius: 4px;
-    vertical-align: middle;
+}
+
+.savings-card.loading-shimmer .eye-btn {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 @keyframes shimmer-anim {

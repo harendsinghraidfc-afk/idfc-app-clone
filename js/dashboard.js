@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eyeBtn = document.querySelector('.eye-btn');
     const balanceDots = document.querySelector('.dots');
+    const savingsCard = document.querySelector('.savings-card');
     let isHidden = true;
 
-    if (eyeBtn && balanceDots) {
+    if (eyeBtn && balanceDots && savingsCard) {
         eyeBtn.addEventListener('click', async () => {
             isHidden = !isHidden;
             if (isHidden) {
                 balanceDots.textContent = '•••••';
-                balanceDots.classList.remove('shimmer-loading');
+                savingsCard.classList.remove('loading-shimmer');
                 balanceDots.style.fontSize = '1.8rem';
                 balanceDots.style.letterSpacing = '4px';
                 eyeBtn.innerHTML = `
@@ -19,27 +20,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 `;
             } else {
-                // Show shimmer state
-                balanceDots.textContent = '';
-                balanceDots.classList.add('shimmer-loading');
+                // Show skeleton state for the entire card
+                savingsCard.classList.add('loading-shimmer');
                 balanceDots.style.letterSpacing = 'normal';
 
                 try {
                     // Artificial delay to simulate network request
                     await new Promise(resolve => setTimeout(resolve, 1500));
 
-                    const response = await fetch('server_backend/users.json');
+                    // Fetch with cache-busting timestamp
+                    const response = await fetch('server_backend/users.json?t=' + new Date().getTime());
                     const users = await response.json();
                     const user = getActiveUser();
 
                     const userData = users.find(u => u.customerId === user?.customerId) || users[0];
                     const balance = userData.availableBalance || '₹ 0.00';
 
-                    balanceDots.classList.remove('shimmer-loading');
+                    savingsCard.classList.remove('loading-shimmer');
                     balanceDots.textContent = balance;
                     balanceDots.style.fontSize = '1.2rem';
                 } catch (e) {
-                    balanceDots.classList.remove('shimmer-loading');
+                    savingsCard.classList.remove('loading-shimmer');
                     balanceDots.textContent = '₹ Error';
                     console.error('Balance fetch failed', e);
                 }
@@ -77,17 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
             next.classList.remove('prev');
             next.classList.add('next');
 
-            // Small timeout to allow the browser to register the 'next' position
             setTimeout(() => {
                 next.classList.remove('next');
                 next.classList.add('active');
             }, 50);
 
-            // Clean up old classes after animation
             setTimeout(() => {
                 current.classList.remove('prev');
             }, 600);
-        }, 3000); // 3 seconds interval
+        }, 3000);
     }
 
     // --- Logout Functionality ---
