@@ -1,6 +1,6 @@
 [
     {
-        "welcomeName": "Lokesh Chouhan",
+        "welcomeName": "Lokesh",
         "fullName": "Lokesh Chouhan",
         "customerId": "6910097017",
         "accountNumber": "102 9516 8767",
@@ -9,6 +9,16 @@
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
         "mpin": "1234",
-        "availableBalance": "₹100"
+        "availableBalance": "₹100",
+        "accountType": "Savings Regular 10k",
+        "avgMonthlyBalance": "₹1,000.00",
+        "holdFunds": "₹0.00",
+        "unclearedFunds": "₹0.00",
+        "debitCardNumber": "4567 8901 2345 6789",
+        "creditCardNumber": "4321 8765 4321 0987",
+        "ccTotalLimit": "₹50,000.00",
+        "ccAvailableLimit": "₹48,500.00",
+        "ckycId": "**********7254",
+        "address": "H.No 124, Sector 5, Malviya Nagar, Jaipur, Rajasthan 302017"
     }
 ]
