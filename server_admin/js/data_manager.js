@@ -17,7 +17,8 @@ function initializeData() {
                 swiftCode: "IDFB IN BB MUM",
                 bankName: "IDFC FIRST",
                 branchName: "Sejawata Branch",
-                mpin: "1234"
+                mpin: "1234",
+                availableBalance: "₹ 5,00,000.00"
             }
         ];
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultUsers));

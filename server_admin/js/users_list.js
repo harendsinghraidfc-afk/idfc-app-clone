@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${user.fullName}</td>
                 <td>${user.customerId}</td>
                 <td>${user.accountNumber}</td>
+                <td><span style="font-weight: 600; color: #2d5a27;">${user.availableBalance || '₹ 0.00'}</span></td>
                 <td>****</td>
                 <td><a href="dashboard.html?edit=${index}" style="color: #931A1D; text-decoration: none; font-weight: bold;">Edit</a></td>
             `;

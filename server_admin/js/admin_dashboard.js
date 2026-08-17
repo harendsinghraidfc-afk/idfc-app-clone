@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('bankName').value = user.bankName || '';
             document.getElementById('branchName').value = user.branchName || '';
             document.getElementById('mpin').value = user.mpin || '';
+            document.getElementById('availableBalance').value = user.availableBalance || '';
 
             // Update UI for Edit mode
             document.querySelector('h1').textContent = 'Edit User Account';
@@ -35,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 swiftCode: document.getElementById('swiftCode').value,
                 bankName: document.getElementById('bankName').value,
                 branchName: document.getElementById('branchName').value,
-                mpin: document.getElementById('mpin').value
+                mpin: document.getElementById('mpin').value,
+                availableBalance: document.getElementById('availableBalance').value
             };
 
             // Basic validation
