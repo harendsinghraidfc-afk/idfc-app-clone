@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'ifscCode', 'swiftCode', 'bankName', 'branchName', 'mpin',
         'availableBalance', 'accountType', 'avgMonthlyBalance',
         'holdFunds', 'unclearedFunds', 'debitCardNumber',
-        'creditCardNumber', 'ccTotalLimit', 'ccAvailableLimit'
+        'creditCardNumber', 'ccTotalLimit', 'ccAvailableLimit',
+        'ckycId', 'address'
     ];
 
     // If in edit mode, populate data

@@ -2,103 +2,160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Transaction Statement - IDFC FIRST Bank</title>
+    <title>Account Statement - IDFC FIRST Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="js/core_manager.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 40px; color: #333; }
-        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #931A1D; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { height: 40px; }
-        .bank-info { text-align: right; font-size: 0.8rem; line-height: 1.4; }
-        .statement-title { font-size: 1.5rem; font-weight: 800; color: #931A1D; margin-bottom: 20px; text-transform: uppercase; }
-        .user-details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; font-size: 0.9rem; }
-        .detail-item span { font-weight: 700; color: #666; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background-color: #f8f9fa; color: #931A1D; text-align: left; padding: 12px; font-size: 0.85rem; border-bottom: 2px solid #dee2e6; }
-        td { padding: 12px; font-size: 0.85rem; border-bottom: 1px solid #eee; }
-        .amount { text-align: right; font-weight: 600; }
-        .credit { color: #2e7d32; }
-        .debit { color: #d32f2f; }
-        .balance { font-weight: 800; text-align: right; }
-        .footer { margin-top: 50px; font-size: 0.75rem; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 20px; }
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 40px; color: #1a1a1a; background: white; line-height: 1.4; }
+        .pdf-page { max-width: 900px; margin: 0 auto; position: relative; min-height: 1200px; }
+
+        /* Logo & Tagline */
+        .header-main { display: flex; align-items: flex-start; margin-bottom: 40px; }
+        .logo-box { border: 1.5px solid #931A1D; padding: 8px; display: inline-flex; flex-direction: column; align-items: center; width: 140px; }
+        .logo-box img { width: 120px; }
+        .tagline { color: #1a1a1a; font-weight: 800; font-size: 0.75rem; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Summary Sections */
+        .section-title { font-size: 1.1rem; font-weight: 700; margin: 25px 0 10px; border-bottom: 1.5px solid #eee; padding-bottom: 5px; }
+        .summary-grid { display: grid; grid-template-columns: 180px 1fr; row-gap: 8px; font-size: 0.85rem; margin-bottom: 30px; }
+        .label { font-weight: 600; color: #555; }
+        .value { font-weight: 700; color: #000; }
+
+        /* Filter Box */
+        .filter-selection-box { background: #f4f6f8; border-radius: 4px; padding: 15px; margin-bottom: 30px; display: grid; grid-template-columns: 180px 1fr; row-gap: 12px; font-size: 0.85rem; }
+
+        /* Transactions Table */
+        .table-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; }
+        .table-subtitle { font-size: 0.75rem; color: #666; margin-bottom: 20px; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; text-align: left; padding: 12px 8px; font-size: 0.75rem; font-weight: 700; }
+        td { padding: 12px 8px; font-size: 0.75rem; border-bottom: 1px solid #f0f0f0; }
+        .amount-col { text-align: right; font-weight: 700; }
+        .credit { color: #00816F; } /* IDFC Green for credits */
+
+        /* Footer */
+        .footer { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: flex-end; font-size: 0.7rem; color: #666; padding-top: 20px; border-top: 1px solid #eee; }
+
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+            .pdf-page { max-width: 100%; }
+        }
         #loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #ffffff; display: flex; justify-content: center; align-items: center;
-            z-index: 999999; transition: opacity 0.5s ease;
+            z-index: 999999;
         }
-        #loader-wrapper img { width: 100px; height: auto; }
-        @media print { .no-print { display: none; } body { padding: 20px; } }
+        #loader-wrapper img { width: 100px; }
     </style>
 </head>
 <body>
-    <div id="loader-wrapper"><img src="assets/images/loader.gif" alt="Loading..."></div>
-    <div class="no-print" style="background: #fdf4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-        <span style="color: #931A1D; font-weight: 600;">Statement Preview - Dynamic Data</span>
-        <button onclick="window.print()" style="background: #931A1D; color: white; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 700; cursor: pointer;">Print to PDF</button>
+    <div id="loader-wrapper" class="no-print"><img src="assets/images/loader.gif" alt="Loading..."></div>
+
+    <div class="no-print" style="position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;">
+        <button onclick="window.history.back()" style="padding: 10px 20px; border-radius: 20px; border: 1px solid #ccc; background: #fff; cursor: pointer; font-weight: 600;">Go Back</button>
+        <button onclick="window.print()" style="padding: 10px 25px; border-radius: 20px; border: none; background: #931A1D; color: white; cursor: pointer; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">Save as PDF</button>
     </div>
 
-    <div class="header">
-        <img src="assets/images/logo_v2.svg" class="logo" alt="IDFC FIRST Bank">
-        <div class="bank-info"><strong>IDFC FIRST Bank Limited</strong><br>Chennai - 600031</div>
+    <div class="pdf-page">
+        <header class="header-main">
+            <div class="logo-box">
+                <img src="assets/images/logo_v2.svg" alt="IDFC Logo">
+                <div class="tagline">ALWAYS YOU FIRST</div>
+            </div>
+        </header>
+
+        <h2 class="section-title">Smart Summary</h2>
+        <div class="summary-grid" id="summary-info">
+            <span class="label">Name</span> <span class="value" id="pdf-name">...</span>
+            <span class="label">Customer ID</span> <span class="value" id="pdf-cust-id">...</span>
+            <span class="label">CKYC ID</span> <span class="value" id="pdf-ckyc">...</span>
+            <span class="label">Address</span> <span class="value" id="pdf-address" style="white-space: pre-wrap;">...</span>
+        </div>
+
+        <h2 class="section-title">Filter / Search Selection</h2>
+        <div class="filter-selection-box">
+            <span class="label">Accounts</span> <span class="value" id="pdf-account">...</span>
+            <span class="label">Date Range</span> <span class="value" id="pdf-date-range">...</span>
+        </div>
+
+        <div class="table-container">
+            <p class="table-title">Transactions Based On Applied Selections</p>
+            <p class="table-subtitle">(Upto 2000 transactions downloaded)</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Payment Type</th>
+                        <th>Transaction Name</th>
+                        <th>Category</th>
+                        <th class="amount-col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="pdf-txn-body">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            Page 1 of 1
+        </div>
     </div>
-    <div class="statement-title">Account Statement</div>
-    <div class="user-details" id="user-info"></div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th style="text-align: right;">Debit (Dr)</th>
-                <th style="text-align: right;">Credit (Cr)</th>
-                <th style="text-align: right;">Balance</th>
-            </tr>
-        </thead>
-        <tbody id="statement-body"></tbody>
-    </table>
-
-    <div class="footer">This is a computer generated statement. IDFC FIRST Bank Ltd.</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const user = await loadAppData();
             if (!user) return;
 
-            document.getElementById('user-info').innerHTML = `
-                <div class="detail-item">
-                    <span>Name:</span> ${user.fullName}<br>
-                    <span>Account Number:</span> ${user.accountNumber}<br>
-                    <span>Customer ID:</span> ${user.customerId}
-                </div>
-                <div class="detail-item" style="text-align: right;">
-                    <span>Currency:</span> INR<br>
-                    <span>Closing Balance:</span> ${user.availableBalance || '₹0.00'}
-                </div>`;
+            // Populate Summary
+            document.getElementById('pdf-name').textContent = user.fullName || 'User';
+            document.getElementById('pdf-cust-id').textContent = user.customerId || '-';
+            document.getElementById('pdf-ckyc').textContent = user.ckycId || '**********7254';
+            document.getElementById('pdf-address').textContent = user.address || 'Address not set in Admin Panel';
 
+            const lastFour = user.accountNumber ? user.accountNumber.slice(-4) : 'XXXX';
+            document.getElementById('pdf-account').textContent = `IDFC FIRST xx ${lastFour} ${user.accountNumber || ''}`;
+
+            const todayStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('pdf-date-range').textContent = `Upto ${todayStr}`;
+
+            // Populate Table
             const txns = getTransactionsForActiveUser();
-            const body = document.getElementById('statement-body');
-            let runningBalance = parseFloat(user.availableBalance?.replace(/[^0-9.]/g, '')) || 0;
+            const body = document.getElementById('pdf-txn-body');
 
-            txns.forEach(txn => {
-                const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                const amountVal = parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
+            if (txns.length === 0) {
+                body.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px;">No transactions found for the selected period.</td></tr>';
+            } else {
+                txns.forEach(txn => {
+                    const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
+                    const paymentType = isCredit ? 'Others' : 'Fees & charges'; // Simulated mapping
+                    const category = isCredit ? 'Interests & Dividends' : 'Others';
 
-                const row = `
-                    <tr>
-                        <td>${txn.date}</td>
-                        <td>${txn.desc}</td>
-                        <td class="amount debit">${!isCredit ? txn.amount.replace('₹', '') : '-'}</td>
-                        <td class="amount credit">${isCredit ? txn.amount.replace('₹', '') : '-'}</td>
-                        <td class="balance">${runningBalance.toFixed(2)}</td>
-                    </tr>`;
-                body.insertAdjacentHTML('beforeend', row);
-                // Simple balance simulation
-                if(isCredit) runningBalance -= amountVal; else runningBalance += amountVal;
-            });
-        });
+                    const row = `
+                        <tr>
+                            <td>${txn.date}</td>
+                            <td>${paymentType}</td>
+                            <td style="font-weight: 500;">${txn.desc}</td>
+                            <td>${category}</td>
+                            <td class="amount-col ${isCredit ? 'credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '')}</td>
+                        </tr>`;
+                    body.insertAdjacentHTML('beforeend', row);
+                });
+            }
 
-        window.addEventListener('load', function() {
-            var loader = document.getElementById('loader-wrapper');
-            setTimeout(function() { loader.style.opacity = '0'; setTimeout(function() { loader.style.display = 'none'; }, 500); }, 1000);
+            // Hide loader and trigger print
+            setTimeout(() => {
+                document.getElementById('loader-wrapper').style.display = 'none';
+                // Wait a bit more for layout to settle before auto-print
+                setTimeout(() => {
+                    if (window.location.search.includes('autoprint=true')) {
+                        window.print();
+                    }
+                }, 500);
+            }, 800);
         });
     </script>
 </body>
