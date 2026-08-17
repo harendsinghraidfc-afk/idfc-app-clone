@@ -118,7 +118,11 @@
             document.getElementById('pdf-date-range').textContent = `Upto ${todayStr}`;
 
             // Populate Table
-            const txns = getTransactionsForActiveUser();
+            const allTxns = getTransactionsForActiveUser();
+
+            // Filter by savings (Account Statement usually only shows savings)
+            const txns = allTxns.filter(t => !t.category || t.category === 'savings');
+
             const body = document.getElementById('pdf-txn-body');
 
             if (txns.length === 0) {
@@ -126,7 +130,7 @@
             } else {
                 txns.forEach(txn => {
                     const isCredit = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                    const paymentType = isCredit ? 'Others' : 'Fees & charges'; // Simulated mapping
+                    const paymentType = isCredit ? 'Others' : 'Fees & charges';
                     const category = isCredit ? 'Interests & Dividends' : 'Others';
 
                     const row = `

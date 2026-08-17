@@ -59,8 +59,16 @@ function getTransactionsForActiveUser() {
     if (!allTxnsData) return [];
 
     const allTxns = JSON.parse(allTxnsData);
-    // Fetch only transactions belonging to THIS user's Customer ID
     const userTxns = allTxns[user.customerId] || [];
 
-    return [...userTxns].reverse();
+    // Robust Chronological Sorting (Newest First)
+    return [...userTxns].sort((a, b) => {
+        const timeA = new Date(a.date).getTime();
+        const timeB = new Date(b.date).getTime();
+
+        if (timeB !== timeA) return timeB - timeA;
+
+        // If dates are exactly same, sort by ID to maintain entry order
+        return (b.id || 0) - (a.id || 0);
+    });
 }
