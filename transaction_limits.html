@@ -14,9 +14,28 @@
         .limit-pane.active {
             display: block;
         }
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+        }
+        #loader-wrapper img {
+            width: 100px;
+            height: auto;
+        }
     </style>
 </head>
 <body>
+    <div id="loader-wrapper">
+        <img src="assets/images/loader.gif" alt="Loading...">
+    </div>
     <div class="limits-container">
         <!-- Header -->
         <header class="limits-header">
@@ -192,6 +211,11 @@
             document.querySelectorAll('.limit-pane').forEach(p => p.classList.remove('active'));
             document.getElementById(type + '-content').classList.add('active');
         }
+    </script>
+    <script>
+        window.addEventListener('load', function() {
+            document.getElementById('loader-wrapper').style.display = 'none';
+        });
     </script>
 </body>
 </html>
