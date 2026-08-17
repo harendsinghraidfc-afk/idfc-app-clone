@@ -53,6 +53,15 @@
             "category": "savings",
             "type": "debit",
             "id": 1786960646971
+        },
+        {
+            "date": "17 Aug 2026",
+            "desc": "ATM/Cash Deposit/Mumbai",
+            "amount": "₹1500",
+            "status": "approved",
+            "category": "savings",
+            "type": "credit",
+            "id": 1786960694577
         }
     ]
 }
