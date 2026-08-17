@@ -82,7 +82,10 @@
                         <label>Repository (Owner/Repo)</label>
                         <input type="text" id="gh-repo" value="harendsinghraidfc-afk/idfc-app-clone">
                     </div>
-                    <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="add-txn-btn" style="flex: 1; background: #e74c3c;" onclick="resetLocalData()">⚠️ Reset All Data</button>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
                         <button class="add-txn-btn" style="flex: 1;" onclick="saveSettings()">Save Settings</button>
                         <button class="add-txn-btn" style="background: rgba(255,255,255,0.1); flex: 1;" onclick="document.getElementById('github-settings-modal').classList.remove('active')">Cancel</button>
                     </div>
@@ -142,6 +145,14 @@
             localStorage.setItem('idfc_gh_repo', repo);
             alert('Settings saved!');
             document.getElementById('github-settings-modal').classList.remove('active');
+        }
+        function resetLocalData() {
+            if(confirm('Are you sure you want to reset all local data? This will clear your browser cache and re-fetch from the server.')) {
+                localStorage.removeItem('idfc_users_data');
+                localStorage.removeItem('idfc_transactions_data');
+                alert('Data cleared. Page will now reload.');
+                window.location.reload();
+            }
         }
         function copyAndClose() {
             const textarea = document.getElementById('json-output');

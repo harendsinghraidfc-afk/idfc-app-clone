@@ -28,17 +28,9 @@ async function initializeData() {
         } catch (e) { console.warn('Transactions init from server failed'); }
     }
 
-    // Hard fallback if still empty
+    // No hardcoded fallback - rely on server data
     if (!localStorage.getItem(STORAGE_KEY)) {
-        const defaultUsers = [{
-            welcomeName: "Lokesh",
-            fullName: "Lokesh Chouhan",
-            customerId: "6910097017",
-            accountNumber: "102 9516 8767",
-            availableBalance: "₹ 5,00,000.00",
-            mpin: "1234"
-        }];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultUsers));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
     }
 }
 
