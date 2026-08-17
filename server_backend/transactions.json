@@ -1,12 +1,28 @@
 {
     "6910097017": [
         {
-            "date": "17 Aug 2026",
-            "desc": "IGST",
-            "amount": "₹200",
-            "status": "unbilled",
+            "id": 2001,
+            "date": "17 Aug, 2026",
+            "desc": "Phonepe/UPI/Transfer to Friends",
+            "amount": "₹500.00",
             "category": "savings",
-            "id": 1786951166477
+            "status": "unbilled"
+        },
+        {
+            "id": 2002,
+            "date": "16 Aug, 2026",
+            "desc": "Zomato/Order/Food Delivery",
+            "amount": "₹350.00",
+            "category": "savings",
+            "status": "approved"
+        },
+        {
+            "id": 2003,
+            "date": "08 Aug, 2026",
+            "desc": "ATM/Cash Withdrawal/Mumbai",
+            "amount": "₹2,000.00",
+            "category": "savings",
+            "status": "billed"
         }
     ]
 }
