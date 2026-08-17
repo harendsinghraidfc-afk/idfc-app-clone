@@ -424,6 +424,10 @@
             if (savingsTxns.length === 0) {
                 txnListBody.insertAdjacentHTML('beforeend', '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>');
             } else {
+                // Add "Today" group header with user's available balance
+                const balance = user.availableBalance || '₹ 0.00';
+                txnListBody.insertAdjacentHTML('beforeend', `<div class="date-group-header">Today | Balance ${balance}</div>`);
+
                 savingsTxns.forEach(txn => {
                     const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
                     const cardHtml = `
