@@ -145,12 +145,15 @@
             // Hide loader and trigger print
             setTimeout(() => {
                 document.getElementById('loader-wrapper').style.display = 'none';
-                // Wait a bit more for layout to settle before auto-print
-                setTimeout(() => {
-                    if (window.location.search.includes('autoprint=true')) {
-                        window.print();
+
+                if (window.location.search.includes('autoprint=true')) {
+                    // Send notification to Android App
+                    if (window.Android) {
+                        Android.showNotification("Account Statement is ready for download.");
                     }
-                }, 500);
+
+                    window.print();
+                }
             }, 800);
         });
     </script>
