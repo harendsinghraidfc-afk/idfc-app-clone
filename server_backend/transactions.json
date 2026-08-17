@@ -44,6 +44,15 @@
             "status": "billed",
             "category": "savings",
             "type": "debit"
+        },
+        {
+            "date": "17 Aug 2026",
+            "desc": "ATM/Cash Withdrawal/Mumbai",
+            "amount": "100",
+            "status": "unbilled",
+            "category": "savings",
+            "type": "debit",
+            "id": 1786960646971
         }
     ]
 }
