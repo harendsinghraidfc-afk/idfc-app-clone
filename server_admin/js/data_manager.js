@@ -1,38 +1,66 @@
-// Data Manager to handle User and Transaction Storage (Simulating Backend)
+// Data Manager with Automatic Balance Calculation logic (Server Priority)
 
 const STORAGE_KEY = 'idfc_users_data';
 const TXN_STORAGE_KEY = 'idfc_transactions_data';
 
-// Initialize data if not present
-async function initializeData() {
-    // Attempt to fetch from server first if localStorage is empty
-    if (!localStorage.getItem(STORAGE_KEY)) {
+// Initialize data from server
+async function initializeData(forceFetch = false) {
+    if (forceFetch || !localStorage.getItem(STORAGE_KEY)) {
         try {
             const res = await fetch('../server_backend/users.json?t=' + Date.now());
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                console.log('Users initialized from server');
+                console.log('Users synced from server');
             }
-        } catch (e) { console.warn('Users init from server failed'); }
+        } catch (e) { console.warn('Users fetch failed'); }
     }
 
-    if (!localStorage.getItem(TXN_STORAGE_KEY)) {
+    if (forceFetch || !localStorage.getItem(TXN_STORAGE_KEY)) {
         try {
             const res = await fetch('../server_backend/transactions.json?t=' + Date.now());
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(data));
-                console.log('Transactions initialized from server');
+                console.log('Transactions synced from server');
             }
-        } catch (e) { console.warn('Transactions init from server failed'); }
-    }
-
-    // No hardcoded fallback - rely on server data
-    if (!localStorage.getItem(STORAGE_KEY)) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        } catch (e) { console.warn('Transactions fetch failed'); }
     }
 }
+
+// Reset function to clear local changes and pull fresh from GitHub
+async function resetToServer() {
+    if(confirm('Are you sure? This will delete all local changes and pull fresh data from server.')) {
+        await initializeData(true);
+        window.location.reload();
+    }
+}
+
+// --- CALCULATION LOGIC ---
+
+function recalculateUserBalance(customerId) {
+    const users = getUsers();
+    const userIndex = users.findIndex(u => u.customerId === customerId);
+    if (userIndex === -1) return;
+
+    const txns = getTransactionsForUser(customerId);
+    let total = 0;
+
+    txns.forEach(t => {
+        const amount = parseFloat(t.amount.replace(/[^0-9.]/g, '')) || 0;
+        if (t.type === 'credit' || t.amount.includes('+')) {
+            total += amount;
+        } else {
+            total -= amount;
+        }
+    });
+
+    // Update the availableBalance field for the user
+    users[userIndex].availableBalance = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+// --- USER FUNCTIONS ---
 
 function getUsers() {
     const data = localStorage.getItem(STORAGE_KEY);
@@ -52,8 +80,11 @@ function saveUser(user, index = null) {
         users.push(user);
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+    recalculateUserBalance(user.customerId); // Ensure balance is correct after user save
     return true;
 }
+
+// --- TRANSACTION FUNCTIONS ---
 
 function getAllTransactions() {
     const data = localStorage.getItem(TXN_STORAGE_KEY);
@@ -80,6 +111,9 @@ function saveTransaction(customerId, txn, txnId = null) {
     }
 
     localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
+
+    // AUTO-RECALCULATE
+    recalculateUserBalance(customerId);
     return true;
 }
 
@@ -92,14 +126,12 @@ function deleteTransaction(customerId, txnId) {
     const allTxns = getAllTransactions();
     if (!allTxns[customerId]) return false;
 
-    const initialLength = allTxns[customerId].length;
     allTxns[customerId] = allTxns[customerId].filter(t => t.id != txnId);
+    localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
 
-    if (allTxns[customerId].length !== initialLength) {
-        localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
-        return true;
-    }
-    return false;
+    // AUTO-RECALCULATE
+    recalculateUserBalance(customerId);
+    return true;
 }
 
 initializeData();
