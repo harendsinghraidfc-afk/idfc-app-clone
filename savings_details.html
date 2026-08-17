@@ -281,7 +281,24 @@
                 netWithdrawalElem.textContent = user.availableBalance || '₹ 0.00';
                 accNumHeader.textContent = `${user.accountNumber} - ...`;
 
-                // Map values to labels
+                // Update Account Type and Header
+                const accTypeElem = document.querySelector('.header-acc-type');
+                if (accTypeElem) accTypeElem.textContent = user.accountType || 'Savings Regular 10k';
+
+                // Update extra balance fields
+                const detailRows = document.querySelectorAll('.detail-row');
+                detailRows.forEach(row => {
+                    const label = row.textContent.toLowerCase();
+                    const valueElem = row.querySelector('.row-value');
+                    if (!valueElem) return;
+
+                    if (label.includes('hold funds')) valueElem.textContent = user.holdFunds || '₹ 0.00';
+                    else if (label.includes('uncleared funds')) valueElem.textContent = user.unclearedFunds || '₹ 0.00';
+                    else if (label.includes('sweep in balance')) valueElem.textContent = '₹ 0.00'; // Default
+                    else if (label.includes('overdraft limit')) valueElem.textContent = '₹ 0.00'; // Default
+                });
+
+                // Map values to labels for Account Information
                 const allInfoRows = document.querySelectorAll('.info-row');
                 allInfoRows.forEach(row => {
                     const label = row.querySelector('.info-label')?.textContent.toLowerCase();
@@ -297,6 +314,7 @@
                     else if (label.includes('swift code')) valueElem.textContent = user.swiftCode;
                     else if (label.includes('bank name')) valueElem.textContent = user.bankName;
                     else if (label.includes('branch')) valueElem.textContent = user.branchName;
+                    else if (label.includes('average monthly balance')) valueElem.textContent = user.avgMonthlyBalance || '₹ 0.00';
                 });
             }
         });

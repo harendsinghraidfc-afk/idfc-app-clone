@@ -3,20 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const editIndex = urlParams.get('edit');
 
+    const fields = [
+        'welcomeName', 'fullName', 'customerId', 'accountNumber',
+        'ifscCode', 'swiftCode', 'bankName', 'branchName', 'mpin',
+        'availableBalance', 'accountType', 'avgMonthlyBalance',
+        'holdFunds', 'unclearedFunds', 'debitCardNumber',
+        'creditCardNumber', 'ccTotalLimit', 'ccAvailableLimit'
+    ];
+
     // If in edit mode, populate data
     if (editIndex !== null) {
         const user = getUserByIndex(parseInt(editIndex));
         if (user) {
-            document.getElementById('welcomeName').value = user.welcomeName || '';
-            document.getElementById('fullName').value = user.fullName || '';
-            document.getElementById('customerId').value = user.customerId || '';
-            document.getElementById('accountNumber').value = user.accountNumber || '';
-            document.getElementById('ifscCode').value = user.ifscCode || '';
-            document.getElementById('swiftCode').value = user.swiftCode || '';
-            document.getElementById('bankName').value = user.bankName || '';
-            document.getElementById('branchName').value = user.branchName || '';
-            document.getElementById('mpin').value = user.mpin || '';
-            document.getElementById('availableBalance').value = user.availableBalance || '';
+            fields.forEach(field => {
+                const elem = document.getElementById(field);
+                if (elem) elem.value = user[field] || '';
+            });
 
             // Update UI for Edit mode
             document.querySelector('h1').textContent = 'Edit User Account';
@@ -27,18 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (addBtn) {
         addBtn.addEventListener('click', () => {
-            const userData = {
-                welcomeName: document.getElementById('welcomeName').value,
-                fullName: document.getElementById('fullName').value,
-                customerId: document.getElementById('customerId').value,
-                accountNumber: document.getElementById('accountNumber').value,
-                ifscCode: document.getElementById('ifscCode').value,
-                swiftCode: document.getElementById('swiftCode').value,
-                bankName: document.getElementById('bankName').value,
-                branchName: document.getElementById('branchName').value,
-                mpin: document.getElementById('mpin').value,
-                availableBalance: document.getElementById('availableBalance').value
-            };
+            const userData = {};
+            fields.forEach(field => {
+                const elem = document.getElementById(field);
+                if (elem) userData[field] = elem.value;
+            });
 
             // Basic validation
             if (!userData.fullName || !userData.customerId) {
@@ -52,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 saveUser(userData, index);
 
                 const msg = index !== null ? 'updated' : 'created';
-                alert(`User account ${msg} successfully for ${userData.fullName}`);
+                alert(`User account ${msg} successfully for ${userData.fullName}. Don't forget to Publish!`);
                 window.location.href = 'users.html';
             } else {
                 console.error('saveUser function not found');
