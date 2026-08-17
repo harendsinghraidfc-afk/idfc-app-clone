@@ -140,7 +140,10 @@
 
             // Header UI Update
             const upiElem = document.querySelector('.upi-id');
-            if (upiElem && upiElem.childNodes[0]) upiElem.childNodes[0].textContent = `${user.accountNumber.replace(/ /g, '')}@idfcfirst `;
+            if (upiElem && upiElem.childNodes[0]) {
+                const upiDisplay = user.upiId || `${user.accountNumber.replace(/ /g, '')}@idfcfirst`;
+                upiElem.childNodes[0].textContent = `${upiDisplay} `;
+            }
             const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'LC';
             const profileCircle = document.querySelector('.profile-circle');
             if (profileCircle) profileCircle.textContent = initials;

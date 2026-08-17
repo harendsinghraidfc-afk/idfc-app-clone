@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fields = [
         'welcomeName', 'fullName', 'customerId', 'accountNumber',
-        'ifscCode', 'swiftCode', 'bankName', 'branchName', 'mpin',
+        'ifscCode', 'swiftCode', 'bankName', 'branchName', 'upiId', 'mpin',
         'availableBalance', 'accountType', 'avgMonthlyBalance',
         'holdFunds', 'unclearedFunds', 'debitCardNumber',
         'creditCardNumber', 'ccTotalLimit', 'ccAvailableLimit',
