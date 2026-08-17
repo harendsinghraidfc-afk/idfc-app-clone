@@ -41,7 +41,7 @@
                         <img src="assets/images/upi_logo.png" alt="UPI" style="height: 20px; margin-bottom: -6px; opacity: 1;">
                     </div>
                     <span class="upi-id" style="line-height: 1;">7415448245@idfcfirst
-                        <!-- QR Scan SVG shifted further up and resized -->
+                        <!-- QR Scan SVG -->
                         <svg width="32" height="32" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 8px; vertical-align: middle; transform: translateY(-12px); opacity: 0.95;">
                             <path fill="#FFD700" d="M108 108h23.226Z"></path>
                             <path stroke="#FFD700" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" d="M108 108h23.226"></path>
@@ -68,18 +68,10 @@
                         </svg>
                     </span>
                 </div>
-                <div class="profile-circle">
-                    LC
-                </div>
-                <div style="margin-left: 5px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8.22 5.22a.75.75 0 011.06 0l6.25 6.25a.75.75 0 010 1.06l-6.25 6.25a.75.75 0 11-1.06-1.06L13.94 12 8.22 6.28a.75.75 0 010-1.06z" fill="#666"></path>
-                    </svg>
-                </div>
+                <div class="profile-circle">LC</div>
             </div>
         </header>
 
-        <!-- Tabs (Scrollable) -->
         <nav class="txn-tabs">
             <div class="tab-item">Payments</div>
             <div class="tab-item">Requests</div>
@@ -88,214 +80,10 @@
             <div class="tab-item">Money Manager</div>
         </nav>
 
-        <!-- Scrollable Content Area -->
         <main class="txn-list-content">
-            <!-- Search & Actions -->
-            <div class="search-action-bar">
-                <div class="search-container">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" placeholder="Search">
-                </div>
-                <div class="download-icon-btn" id="open-download-sheet">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M4.97 11.03a.75.75 0 111.06-1.06L11 14.94V2.75a.75.75 0 011.5 0v12.19l4.97-4.97a.75.75 0 111.06 1.06l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25zm-.22 9.47a.75.75 0 000 1.5h14.5a.75.75 0 000-1.5H4.75z" fill="currentColor"></path>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-
-            <div class="full-width-help-container">
-                <p class="context-help">Can't find your recent transactions? <span class="red-highlight">Click here</span></p>
-            </div>
-
-            <!-- Filter -->
-            <div class="filter-row">
-                <div class="filter-pill">
-                    <div class="filter-icon-circle">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g id="SVGRepo_iconCarrier">
-                                <g id="style=stroke">
-                                    <g id="filter-rectangle">
-                                        <path d="M7.75 17.5C7.75 17.0858 7.41421 16.75 7 16.75H2C1.58579 16.75 1.25 17.0858 1.25 17.5C1.25 17.9142 1.58579 18.25 2 18.25H7C7.41421 18.25 7.75 17.9142 7.75 17.5Z" fill="currentColor"></path>
-                                        <path d="M16.25 6.5C16.25 6.08579 16.5858 5.75 17 5.75H22C22.4142 5.75 22.75 6.08579 22.75 6.5C22.75 6.91421 22.4142 7.25 22 7.25H17C16.5858 7.25 16.25 6.91421 16.25 6.5Z" fill="currentColor"></path>
-                                        <path d="M22.75 17.5C22.75 17.0858 22.4142 16.75 22 16.75H13C12.5858 16.75 12.25 17.0858 12.25 17.5C12.25 17.9142 12.5858 18.25 13 18.25H22C22.4142 18.25 22.75 17.9142 22.75 17.5Z" fill="currentColor"></path>
-                                        <path d="M1.25 6.5C1.25 6.08579 1.58579 5.75 2 5.75H11C11.4142 5.75 11.75 6.08579 11.75 6.5C11.75 6.91421 11.4142 7.25 11 7.25H2C1.58579 7.25 1.25 6.91421 1.25 6.5Z" fill="currentColor"></path>
-                                        <path d="M6.25 15.5C6.25 14.5335 7.0335 13.75 8 13.75H12C12.9665 13.75 13.75 14.5335 13.75 15.5V19.5C13.75 20.4665 12.9665 21.25 12 21.25H8C7.0335 21.25 6.25 20.4665 6.25 19.5V15.5ZM8 15.25C7.86193 15.25 7.75 15.3619 7.75 15.5V19.5C7.75 19.6381 7.86193 19.75 8 19.75H12C12.1381 19.75 12.25 19.6381 12.25 19.5V15.5C12.25 15.3619 12.1381 15.25 12 15.25H8Z" fill="currentColor"></path>
-                                        <path d="M17.75 4.5C17.75 3.5335 16.9665 2.75 16 2.75H12C11.0335 2.75 10.25 3.5335 10.25 4.5V8.5C10.25 9.4665 11.0335 10.25 12 10.25H16C16.9665 10.25 17.75 9.4665 17.75 8.5V4.5ZM16 4.25C16.1381 4.25 16.25 4.36193 16.25 4.5V8.5C16.25 8.63807 16.1381 8.75 16 8.75H12C11.8619 8.75 11.75 8.63807 11.75 8.5V4.5C11.75 4.36193 11.8619 4.25 12 4.25H16Z" fill="currentColor"></path>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                    </div>
-                    Filter
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Transaction List -->
-            <div class="date-group-header">Today | Balance ₹150.00</div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Phonepe</p>
-                    <p class="txn-subtitle">Digital Payments</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹10.00</p>
-                    <p class="txn-time">03:34 PM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Aws India</p>
-                    <p class="txn-subtitle">Reversals and Refund</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount incoming">+ ₹2.00</p>
-                    <p class="txn-time">10:53 AM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Aws India</p>
-                    <p class="txn-subtitle">Services</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹2.00</p>
-                    <p class="txn-time">10:51 AM</p>
-                </div>
-            </div>
-
-            <!-- Networth Banner -->
-            <div class="networth-promo-banner">
-                <div class="banner-text-content">
-                    <p class="banner-text">See the impact of your last transaction on your Networth</p>
-                </div>
-                <button class="btn-unlock-networth" onclick="window.location.href='dashboard.html'">Unlock Networth</button>
-            </div>
-
-            <!-- Yesterday Group -->
-            <div class="date-group-header">Yesterday | Balance ₹160.00</div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Atm - Cash Withdrawal</p>
-                    <p class="txn-subtitle">Cash Withdrawal</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹10,000.00</p>
-                    <p class="txn-time">03:09 PM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Atm - Cash Withdrawal</p>
-                    <p class="txn-subtitle">Cash Withdrawal</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹10,000.00</p>
-                    <p class="txn-time">03:08 PM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Atm - Cash Withdrawal</p>
-                    <p class="txn-subtitle">Cash Withdrawal</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹10,000.00</p>
-                    <p class="txn-time">03:07 PM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Atm - Cash Withdrawal</p>
-                    <p class="txn-subtitle">Cash Withdrawal</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount">₹10,000.00</p>
-                    <p class="txn-time">03:06 PM</p>
-                </div>
-            </div>
-
-            <div class="txn-card">
-                <div class="txn-icon-circle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="txn-info-main">
-                    <p class="txn-name">Chdc - Deposit</p>
-                    <p class="txn-subtitle">Bank Deposit</p>
-                </div>
-                <div class="txn-amount-box">
-                    <p class="txn-amount incoming">₹10,000.00</p>
-                    <p class="txn-time">10:45 AM</p>
-                </div>
-            </div>
-
+            <!-- Dynamic transactions will be inserted here -->
         </main>
 
-        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="nav-item" onclick="window.location.href='dashboard.html'">
                 <img src="assets/images/home.svg" alt="Home">
@@ -324,86 +112,10 @@
         </nav>
     </div>
 
-    <!-- Download Options Bottom Sheet -->
-    <div class="bottom-sheet-overlay" id="download-overlay">
-        <div class="bottom-sheet-content">
-            <div class="sheet-header">
-                <button class="sheet-close-btn" id="close-download-sheet">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="sheet-body">
-                <div class="sheet-option-item" onclick="window.location.href='account_statement.html'">
-                    <div class="option-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69L6.74 19.68C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                        </svg>
-                    </div>
-                    <div class="option-details">
-                        <p class="option-title" style="color: #931A1D; font-weight: 500;">Account statement</p>
-                    </div>
-                </div>
-                <div class="sheet-option-item">
-                    <div class="option-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69L6.74 19.68C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                        </svg>
-                    </div>
-                    <div class="option-details">
-                        <p class="option-title" style="color: #931A1D; font-weight: 500;">Transaction history</p>
-                        <p class="option-subtitle">Up to 2000 transactions</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const openBtn = document.getElementById('open-download-sheet');
-            const closeBtn = document.getElementById('close-download-sheet');
-            const overlay = document.getElementById('download-overlay');
-            const sheet = document.querySelector('.bottom-sheet-content');
-
-            openBtn.addEventListener('click', () => {
-                overlay.style.display = 'block';
-                setTimeout(() => {
-                    overlay.classList.add('active');
-                    sheet.classList.add('active');
-                }, 10);
-            });
-
-            const closeSheet = () => {
-                overlay.classList.remove('active');
-                sheet.classList.remove('active');
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 300);
-            };
-
-            closeBtn.addEventListener('click', closeSheet);
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeSheet();
-            });
-        });
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const txnListBody = document.querySelector('.txn-list-content');
-            // Remove existing static cards for dynamic loading
-            const staticCards = document.querySelectorAll('.txn-card, .date-group-header');
-            staticCards.forEach(c => c.remove());
 
-            // Load data
             const user = await loadAppData();
             if (!user) return;
 
@@ -417,7 +129,7 @@
             const profileCircle = document.querySelector('.profile-circle');
             if (profileCircle) profileCircle.textContent = initials;
 
-            // Fetch and Filter Savings Transactions
+            // Fetch Transactions
             const allTxns = getTransactionsForActiveUser();
             const savingsTxns = allTxns.filter(t => !t.category || t.category === 'savings');
 
@@ -431,8 +143,7 @@
             `;
 
             if (savingsTxns.length === 0) {
-                txnListBody.insertAdjacentHTML('beforeend', '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>');
-                txnListBody.insertAdjacentHTML('beforeend', bannerHtml);
+                txnListBody.innerHTML = '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>' + bannerHtml;
                 return;
             }
 
@@ -445,34 +156,31 @@
 
             const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
             let bannerPlaced = false;
-
-            // Check if "Yesterday" exists in the data
             const yesterdayDate = new Date();
             yesterdayDate.setDate(yesterdayDate.getDate() - 1);
             const yesterdayStr = yesterdayDate.toDateString();
 
-            sortedDates.forEach((date, index) => {
-                const isYesterdayGroup = new Date(date).toDateString() === yesterdayStr;
+            let finalHtml = '';
 
-                // If this is the "Yesterday" group, place banner BEFORE it
+            sortedDates.forEach((date) => {
+                const txnDateObj = new Date(date);
+                const isYesterdayGroup = txnDateObj.toDateString() === yesterdayStr;
+
                 if (isYesterdayGroup && !bannerPlaced) {
-                    txnListBody.insertAdjacentHTML('beforeend', bannerHtml);
+                    finalHtml += bannerHtml;
                     bannerPlaced = true;
                 }
 
-                // Add Group Header
-                const txnDateObj = new Date(date);
                 const todayStr = new Date().toDateString();
                 let headerText = date;
                 if (txnDateObj.toDateString() === todayStr) headerText = 'Today';
                 else if (txnDateObj.toDateString() === yesterdayStr) headerText = 'Yesterday';
 
-                txnListBody.insertAdjacentHTML('beforeend', `<div class="date-group-header">${headerText} | Balance ${currentBalance}</div>`);
+                finalHtml += `<div class="date-group-header">${headerText} | Balance ${currentBalance}</div>`;
 
-                // Add Transactions
                 grouped[date].forEach(txn => {
                     const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                    const cardHtml = `
+                    finalHtml += `
                         <div class="txn-card">
                             <div class="txn-icon-circle">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -491,26 +199,18 @@
                             </div>
                         </div>
                     `;
-                    txnListBody.insertAdjacentHTML('beforeend', cardHtml);
                 });
             });
 
-            // If banner was never placed (no Yesterday group), put it at the bottom
-            if (!bannerPlaced) {
-                txnListBody.insertAdjacentHTML('beforeend', bannerHtml);
-            }
+            if (!bannerPlaced) finalHtml += bannerHtml;
+            txnListBody.innerHTML = finalHtml;
         });
-        });
-    </script>
-    <script>
+
         window.addEventListener('load', function() {
             var loader = document.getElementById('loader-wrapper');
-            // Ensure the loader stays for at least 1000ms
             setTimeout(function() {
                 loader.style.opacity = '0';
-                setTimeout(function() {
-                    loader.style.display = 'none';
-                }, 500); // Wait for fade out animation
+                setTimeout(function() { loader.style.display = 'none'; }, 500);
             }, 1000);
         });
     </script>
