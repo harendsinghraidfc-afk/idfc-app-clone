@@ -45,11 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Render each txn
         txns.forEach(txn => {
+            const isCredit = txn.type === 'credit';
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${txn.date}</td>
                 <td>${txn.desc}</td>
-                <td>${txn.amount}</td>
+                <td style="color: ${isCredit ? '#2ecc71' : 'white'}; font-weight: bold;">
+                    ${isCredit ? '+ ' : ''}${txn.amount}
+                </td>
                 <td><span style="font-size: 0.8rem; opacity: 0.7;">${txn.category === 'credit_card' ? 'Credit Card' : 'Savings'}</span></td>
                 <td><span class="status-pill status-${txn.status}">${txn.status.charAt(0).toUpperCase() + txn.status.slice(1)}</span></td>
                 <td>
@@ -98,9 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 editTxnId.value = id;
                 document.getElementById('txn-date').value = txn.date;
                 document.getElementById('txn-desc').value = txn.desc;
-                document.getElementById('txn-amount').value = txn.amount;
+                document.getElementById('txn-amount').value = txn.amount.replace('+ ', '');
                 document.getElementById('txn-status').value = txn.status;
                 document.getElementById('txn-category').value = txn.category || 'savings';
+                document.getElementById('txn-type').value = txn.type || 'debit';
             }
         } else {
             modalTitle.textContent = 'Add Transaction';
@@ -125,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
             desc: document.getElementById('txn-desc').value,
             amount: document.getElementById('txn-amount').value,
             status: document.getElementById('txn-status').value,
-            category: document.getElementById('txn-category').value
+            category: document.getElementById('txn-category').value,
+            type: document.getElementById('txn-type').value
         };
 
         const id = editTxnId.value || null;
