@@ -246,30 +246,59 @@
     </div>
     <script src="js/core_manager.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = getActiveUser();
-            if (!user) return;
+        document.addEventListener('DOMContentLoaded', async () => {
+            const balanceElem = document.querySelector('.balance-main-amount');
+            const netWithdrawalElem = document.querySelector('.detail-row .row-value');
+            const accNumHeader = document.querySelector('.header-acc-num');
+            const infoRows = document.querySelectorAll('.info-row .info-value');
 
-            // Header info
-            document.querySelector('.header-acc-num').textContent = `${user.accountNumber} - ...`;
+            // Add skeleton loading to dynamic elements
+            balanceElem.classList.add('skeleton-loading');
+            netWithdrawalElem.classList.add('skeleton-loading');
+            accNumHeader.classList.add('skeleton-loading');
+            infoRows.forEach(row => row.classList.add('skeleton-loading'));
 
-            // Map values to labels
-            const infoRows = document.querySelectorAll('.info-row');
-            infoRows.forEach(row => {
-                const label = row.querySelector('.info-label')?.textContent.toLowerCase();
-                const valueElem = row.querySelector('.info-value');
+            // Fetch fresh data from server
+            const user = await loadAppData();
 
-                if (!label || !valueElem) return;
+            if (!user) {
+                // Fallback to local if fetch fails completely
+                const localUser = getActiveUser();
+                if (localUser) updateUI(localUser);
+                return;
+            }
 
-                if (label.includes('customer id')) valueElem.textContent = user.customerId;
-                else if (label === 'name') valueElem.textContent = user.fullName;
-                else if (label === 'primary holder') valueElem.textContent = user.fullName;
-                else if (label.includes('a/c no')) valueElem.textContent = user.accountNumber;
-                else if (label.includes('ifsc code')) valueElem.textContent = user.ifscCode;
-                else if (label.includes('swift code')) valueElem.textContent = user.swiftCode;
-                else if (label.includes('bank name')) valueElem.textContent = user.bankName;
-                else if (label.includes('branch')) valueElem.textContent = user.branchName;
-            });
+            updateUI(user);
+
+            function updateUI(user) {
+                // Remove skeleton and update values
+                balanceElem.classList.remove('skeleton-loading');
+                netWithdrawalElem.classList.remove('skeleton-loading');
+                accNumHeader.classList.remove('skeleton-loading');
+                infoRows.forEach(row => row.classList.remove('skeleton-loading'));
+
+                balanceElem.textContent = user.availableBalance || '₹ 0.00';
+                netWithdrawalElem.textContent = user.availableBalance || '₹ 0.00';
+                accNumHeader.textContent = `${user.accountNumber} - ...`;
+
+                // Map values to labels
+                const allInfoRows = document.querySelectorAll('.info-row');
+                allInfoRows.forEach(row => {
+                    const label = row.querySelector('.info-label')?.textContent.toLowerCase();
+                    const valueElem = row.querySelector('.info-value');
+
+                    if (!label || !valueElem) return;
+
+                    if (label.includes('customer id')) valueElem.textContent = user.customerId;
+                    else if (label === 'name') valueElem.textContent = user.fullName;
+                    else if (label === 'primary holder') valueElem.textContent = user.fullName;
+                    else if (label.includes('a/c no')) valueElem.textContent = user.accountNumber;
+                    else if (label.includes('ifsc code')) valueElem.textContent = user.ifscCode;
+                    else if (label.includes('swift code')) valueElem.textContent = user.swiftCode;
+                    else if (label.includes('bank name')) valueElem.textContent = user.bankName;
+                    else if (label.includes('branch')) valueElem.textContent = user.branchName;
+                });
+            }
         });
     </script>
     <script>
