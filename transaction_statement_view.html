@@ -10,8 +10,9 @@
         .pdf-page { max-width: 900px; margin: 0 auto; position: relative; min-height: 1200px; }
 
         /* Logo & Tagline */
-        .header-main { display: flex; align-items: flex-start; margin-bottom: 40px; }
-        .full-logo { width: 180px; height: auto; }
+        .header-main { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 40px; }
+        .full-logo { width: 160px; height: auto; margin-bottom: 5px; }
+        .tagline-bold { font-weight: 900; font-size: 0.75rem; color: #000; letter-spacing: 0.5px; }
 
         /* Summary Sections */
         .section-title { font-size: 1.1rem; font-weight: 700; margin: 25px 0 10px; border-bottom: 1.5px solid #eee; padding-bottom: 5px; }
@@ -54,6 +55,7 @@
     <div class="pdf-page">
         <header class="header-main">
             <img src="assets/images/idfclogofull.png" alt="IDFC FIRST Bank" class="full-logo">
+            <div class="tagline-bold">ALWAYS YOU FIRST</div>
         </header>
 
         <h2 class="section-title">Smart Summary</h2>
