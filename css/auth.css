@@ -123,6 +123,7 @@ body {
 .shield-icon {
     width: 100%;
     height: 100%;
+    object-fit: contain;
 }
 
 .shield-tick {
