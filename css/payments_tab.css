@@ -121,9 +121,20 @@
 .fastag-banner {
     background: linear-gradient(90deg, #931A1D 0%, #631114 100%);
     color: white;
+    justify-content: space-between;
 }
 
-.fastag-img { width: 80px; height: auto; margin-right: 15px; }
+.fastag-visuals {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-right: 15px;
+}
+
+.fastag-car { width: 90px; height: auto; filter: brightness(1.2); }
+.fastag-logo-img { width: 50px; height: auto; background: white; border-radius: 4px; padding: 2px; }
+
 .fastag-content { flex: 1; }
 .fastag-content p { font-size: 0.75rem; line-height: 1.3; margin: 0; font-weight: 500; }
 .fastag-btn {
