@@ -9,22 +9,11 @@
     <script src="js/core_manager.js"></script>
     <style>
         #loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999999;
-            transition: opacity 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
+            z-index: 999999; transition: opacity 0.5s ease;
         }
-        #loader-wrapper img {
-            width: 100px;
-            height: auto;
-        }
+        #loader-wrapper img { width: 100px; height: auto; }
     </style>
 </head>
 <body>
@@ -40,7 +29,7 @@
                     <div class="upi-main-logo">
                         <img src="assets/images/upi_logo.png" alt="UPI" style="height: 20px; margin-bottom: -6px; opacity: 1;">
                     </div>
-                    <span class="upi-id" style="line-height: 1;">7415448245@idfcfirst
+                    <span class="upi-id" style="line-height: 1;">...
                         <svg width="32" height="32" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-left: 8px; vertical-align: middle; transform: translateY(-12px); opacity: 0.95;">
                             <path fill="#FFD700" d="M108 108h23.226Z"></path>
                             <path stroke="#FFD700" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" d="M108 108h23.226"></path>
@@ -68,7 +57,7 @@
                     </span>
                 </div>
                 <div class="profile-circle">LC</div>
-                <div style="margin-left: 5px;">
+                <div style="margin-left: 5px;" onclick="window.location.href='dashboard.html'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.22 5.22a.75.75 0 011.06 0l6.25 6.25a.75.75 0 010 1.06l-6.25 6.25a.75.75 0 11-1.06-1.06L13.94 12 8.22 6.28a.75.75 0 010-1.06z" fill="#666"></path>
                     </svg>
@@ -76,7 +65,6 @@
             </div>
         </header>
 
-        <!-- Tabs -->
         <nav class="txn-tabs">
             <div class="tab-item">Payments</div>
             <div class="tab-item">Requests</div>
@@ -85,18 +73,14 @@
             <div class="tab-item">Money Manager</div>
         </nav>
 
-        <!-- Scrollable Content Area -->
         <main class="txn-list-content">
-            <!-- RESTORED: Search & Actions -->
             <div class="search-action-bar">
                 <div class="search-container">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <input type="text" class="search-input" placeholder="Search">
                 </div>
                 <div class="download-icon-btn" id="open-download-sheet">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.97 11.03a.75.75 0 111.06-1.06L11 14.94V2.75a.75.75 0 011.5 0v12.19l4.97-4.97a.75.75 0 111.06 1.06l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25zm-.22 9.47a.75.75 0 000 1.5h14.5a.75.75 0 000-1.5H4.75z" fill="currentColor"></path>
-                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.97 11.03a.75.75 0 111.06-1.06L11 14.94V2.75a.75.75 0 011.5 0v12.19l4.97-4.97a.75.75 0 111.06 1.06l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25zm-.22 9.47a.75.75 0 000 1.5h14.5a.75.75 0 000-1.5H4.75z" fill="currentColor"></path></svg>
                 </div>
             </div>
 
@@ -104,186 +88,114 @@
                 <p class="context-help">Can't find your recent transactions? <span class="red-highlight">Click here</span></p>
             </div>
 
-            <!-- RESTORED: Filter -->
             <div class="filter-row">
                 <div class="filter-pill">
                     <div class="filter-icon-circle">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="4" y1="21" x2="4" y2="14"></line>
-                            <line x1="4" y1="10" x2="4" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12" y2="3"></line>
-                            <line x1="20" y1="21" x2="20" y2="16"></line>
-                            <line x1="20" y1="12" x2="20" y2="3"></line>
-                            <line x1="1" y1="14" x2="7" y2="14"></line>
-                            <line x1="9" y1="8" x2="15" y2="8"></line>
-                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                            <line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line>
                         </svg>
                     </div>
                     Filter
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path>
-                    </svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path></svg>
                 </div>
             </div>
 
-            <!-- This div will hold the dynamic transactions list -->
             <div id="dynamic-txn-list"></div>
         </main>
 
-        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <div class="nav-item" onclick="window.location.href='dashboard.html'">
-                <img src="assets/images/home.svg" alt="Home">
-                <span>HOME</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='accounts.html'">
-                <img src="assets/images/accounts.svg" alt="Accounts">
-                <span>ACCOUNTS</span>
-            </div>
-            <div class="nav-item active">
-                <div class="nav-icon-wrapper">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 4H10.5M10.5 4C12.9853 4 15 6.01472 15 8.5C15 10.9853 12.9853 13 10.5 13H6L13 20M10.5 4H18M6 8.5H18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                </div>
-                <span>PAY</span>
-            </div>
-            <div class="nav-item">
-                <img src="assets/images/savings.svg" alt="Loans">
-                <span>LOANS</span>
-            </div>
-            <div class="nav-item">
-                <img src="assets/images/qr_scan_v2.svg" alt="Scan">
-                <span>SCAN</span>
-            </div>
+            <div class="nav-item" onclick="window.location.href='dashboard.html'"><img src="assets/images/home.svg" alt="Home"><span>HOME</span></div>
+            <div class="nav-item" onclick="window.location.href='accounts.html'"><img src="assets/images/accounts.svg" alt="Accounts"><span>ACCOUNTS</span></div>
+            <div class="nav-item active"><div class="nav-icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4H10.5M10.5 4C12.9853 4 15 6.01472 15 8.5C15 10.9853 12.9853 13 10.5 13H6L13 20M10.5 4H18M6 8.5H18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span>PAY</span></div>
+            <div class="nav-item"><img src="assets/images/savings.svg" alt="Loans"><span>LOANS</span></div>
+            <div class="nav-item"><img src="assets/images/qr_scan_v2.svg" alt="Scan"><span>SCAN</span></div>
         </nav>
     </div>
 
-    <!-- RESTORED: Download Options Bottom Sheet -->
+    <!-- Bottom Sheet -->
     <div class="bottom-sheet-overlay" id="download-overlay">
         <div class="bottom-sheet-content">
-            <div class="sheet-header">
-                <button class="sheet-close-btn" id="close-download-sheet">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
+            <div class="sheet-header"><button class="sheet-close-btn" id="close-download-sheet"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d63031" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
             <div class="sheet-body">
-                <div class="sheet-option-item" onclick="window.location.href='account_statement.html'">
-                    <div class="option-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69V19.69C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                        </svg>
-                    </div>
-                    <div class="option-details">
-                        <p class="option-title" style="color: #931A1D; font-weight: 500;">Account statement</p>
-                    </div>
-                </div>
-                <div class="sheet-option-item" onclick="window.location.href='transaction_history.html'">
-                    <div class="option-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69V19.69C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                            <path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path>
-                        </svg>
-                    </div>
-                    <div class="option-details">
-                        <p class="option-title" style="color: #931A1D; font-weight: 500;">Transaction history</p>
-                        <p class="option-subtitle">Up to 2000 transactions</p>
-                    </div>
-                </div>
+                <div class="sheet-option-item" onclick="window.location.href='account_statement.html'"><div class="option-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69V19.69C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path><path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path></svg></div><div class="option-details"><p class="option-title" style="color: #931A1D; font-weight: 500;">Account statement</p></div></div>
+                <div class="sheet-option-item" onclick="window.location.href='transaction_history.html'"><div class="option-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.5 2H3.5V18.3C3.5 20.96 4.96 21.59 6.73 19.69V19.69C7.56 18.81 8.81 18.88 9.52 19.83L10.53 21.18C11.34 22.25 12.65 22.25 13.46 21.18L14.47 19.83C15.19 18.87 16.44 18.8 17.26 19.68C19.04 21.58 20.49 20.95 20.49 18.29V2Z" fill="none" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8 7.5H16" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path><path d="M9 11.5H15" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path><path d="M10 15.5H14" stroke="#931A1D" stroke-width="1.8" stroke-linecap="round"></path></svg></div><div class="option-details"><p class="option-title" style="color: #931A1D; font-weight: 500;">Transaction history</p><p class="option-subtitle">Up to 2000 transactions</p></div></div>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Setup Bottom Sheet
+            // Setup UI logic
             const openBtn = document.getElementById('open-download-sheet');
             const closeBtn = document.getElementById('close-download-sheet');
             const overlay = document.getElementById('download-overlay');
             const sheet = document.querySelector('.bottom-sheet-content');
-            if (openBtn) {
-                openBtn.addEventListener('click', () => {
-                    overlay.style.display = 'block';
-                    setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10);
-                });
-            }
-            const closeSheet = () => {
-                overlay.classList.remove('active');
-                sheet.classList.remove('active');
-                setTimeout(() => { overlay.style.display = 'none'; }, 300);
-            };
+            if (openBtn) openBtn.addEventListener('click', () => { overlay.style.display = 'block'; setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10); });
+            const closeSheet = () => { overlay.classList.remove('active'); sheet.classList.remove('active'); setTimeout(() => { overlay.style.display = 'none'; }, 300); };
             if (closeBtn) closeBtn.addEventListener('click', closeSheet);
             if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
 
-            // Load dynamic content
             const dynamicList = document.getElementById('dynamic-txn-list');
             const user = await loadAppData();
             if (!user) return;
 
-            // Header Info
+            // Header Info Update
             const upiElem = document.querySelector('.upi-id');
-            if (upiElem && upiElem.childNodes[0]) {
-                upiElem.childNodes[0].textContent = `${user.accountNumber.replace(/ /g, '')}@idfcfirst `;
-            }
+            if (upiElem && upiElem.childNodes[0]) upiElem.childNodes[0].textContent = `${user.accountNumber.replace(/ /g, '')}@idfcfirst `;
             const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'LC';
             const profileCircle = document.querySelector('.profile-circle');
             if (profileCircle) profileCircle.textContent = initials;
 
-            // Fetch Transactions
+            // Fetch and Group Transactions
             const allTxns = getTransactionsForActiveUser();
             const savingsTxns = allTxns.filter(t => !t.category || t.category === 'savings');
 
-            const bannerHtml = `
-                <div class="networth-promo-banner">
-                    <div class="banner-text-content">
-                        <p class="banner-text">See the impact of your last transaction on your Networth</p>
-                    </div>
-                    <button class="btn-unlock-networth" onclick="window.location.href='dashboard.html'">Unlock Networth</button>
-                </div>`;
+            const bannerHtml = `<div class="networth-promo-banner"><div class="banner-text-content"><p class="banner-text">See the impact of your last transaction on your Networth</p></div><button class="btn-unlock-networth" onclick="window.location.href='dashboard.html'">Unlock Networth</button></div>`;
 
             if (savingsTxns.length === 0) {
                 dynamicList.innerHTML = '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>' + bannerHtml;
                 return;
             }
 
+            // --- IMPROVED GROUPING LOGIC ---
             const currentBalance = user.availableBalance || '₹ 0.00';
+            const today = new Date(); today.setHours(0,0,0,0);
+            const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0,0,0,0);
+
             const grouped = {};
             savingsTxns.forEach(txn => {
-                if (!grouped[txn.date]) grouped[txn.date] = [];
-                grouped[txn.date].push(txn);
+                let dateKey = txn.date.trim();
+                // Ensure date format is consistent for keys
+                const txnDate = new Date(dateKey);
+                txnDate.setHours(0,0,0,0);
+
+                let label = dateKey;
+                if (txnDate.getTime() === today.getTime()) label = 'Today';
+                else if (txnDate.getTime() === yesterday.getTime()) label = 'Yesterday';
+
+                if (!grouped[label]) grouped[label] = { date: txnDate, items: [] };
+                grouped[label].items.push(txn);
             });
 
-            const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
-            let bannerPlaced = false;
-            const yesterdayDate = new Date(); yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-            const yesterdayStr = yesterdayDate.toDateString();
+            // Sort keys by actual date
+            const sortedLabels = Object.keys(grouped).sort((a, b) => grouped[b].date - grouped[a].date);
 
             let finalHtml = '';
-            sortedDates.forEach((date) => {
-                const txnDateObj = new Date(date);
-                const isYesterdayGroup = txnDateObj.toDateString() === yesterdayStr;
+            let bannerPlaced = false;
 
-                if (isYesterdayGroup && !bannerPlaced) {
+            sortedLabels.forEach((label) => {
+                // Place banner before "Yesterday" or at bottom
+                if (label === 'Yesterday' && !bannerPlaced) {
                     finalHtml += bannerHtml;
                     bannerPlaced = true;
                 }
 
-                let headerText = date;
-                if (txnDateObj.toDateString() === new Date().toDateString()) headerText = 'Today';
-                else if (txnDateObj.toDateString() === yesterdayStr) headerText = 'Yesterday';
+                finalHtml += `<div class="date-group-header">${label} | Balance ${currentBalance}</div>`;
 
-                finalHtml += `<div class="date-group-header">${headerText} | Balance ${currentBalance}</div>`;
-
-                grouped[date].forEach(txn => {
+                grouped[label].items.forEach(txn => {
                     const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
                     finalHtml += `
                         <div class="txn-card">
@@ -312,10 +224,7 @@
 
         window.addEventListener('load', function() {
             var loader = document.getElementById('loader-wrapper');
-            setTimeout(function() {
-                loader.style.opacity = '0';
-                setTimeout(function() { loader.style.display = 'none'; }, 500);
-            }, 1000);
+            setTimeout(function() { loader.style.opacity = '0'; setTimeout(function() { loader.style.display = 'none'; }, 500); }, 1000);
         });
     </script>
 </body>
