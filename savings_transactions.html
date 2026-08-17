@@ -9,7 +9,24 @@
     <link rel="stylesheet" href="css/payments_tab.css">
     <link rel="stylesheet" href="css/extra_tabs.css">
     <script src="js/core_manager.js"></script>
-    <script src="js/tab_manager.js"></script>
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.txn-tabs .tab-item');
+            const views = document.querySelectorAll('.tab-view');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+
+            const mapping = { 'payments': 0, 'requests': 1, 'transactions': 2, 'recurring': 3 };
+            const idx = mapping[tabName];
+
+            if (idx !== undefined && tabs[idx]) {
+                tabs[idx].classList.add('active');
+                const view = document.getElementById(tabName + '-view');
+                if (view) view.classList.add('active');
+            }
+        }
+    </script>
     <!-- PDF Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -311,6 +328,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            // Initial Tab Check
+            const urlParams = new URLSearchParams(window.location.search);
+            const tabParam = urlParams.get('tab');
+            if (tabParam) switchTab(tabParam);
+
             const dynamicList = document.getElementById('dynamic-txn-list');
             const user = await loadAppData();
             if (!user) return;
