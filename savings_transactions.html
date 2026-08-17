@@ -13,7 +13,7 @@
     <style>
         #loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: #ffffff; display: flex; justify-content: center; align-items: center;
             z-index: 999999; transition: opacity 0.5s ease;
         }
         #loader-wrapper img { width: 100px; height: auto; }
@@ -36,6 +36,13 @@
         .pdf-table td { padding: 12px 8px; font-size: 0.8rem; border-bottom: 1px solid #f0f0f0; }
         .pdf-amount-col { text-align: right; font-weight: 700; }
         .pdf-credit { color: #00816F; }
+
+        /* Content Switcher Styles */
+        .tab-view { display: none; }
+        .tab-view.active { display: block; }
+
+        /* Adjustments for integrated payments view */
+        #payments-view-content { background: white; min-height: 100%; }
     </style>
 </head>
 <body>
@@ -62,23 +69,61 @@
         </header>
 
         <nav class="txn-tabs">
-            <div class="tab-item" onclick="window.location.href='payments.html'">Payments</div><div class="tab-item">Requests</div><div class="tab-item active">Transactions</div><div class="tab-item">Recurring</div><div class="tab-item">Money Manager</div>
+            <div class="tab-item" onclick="switchTab('payments')">Payments</div>
+            <div class="tab-item">Requests</div>
+            <div class="tab-item active" onclick="switchTab('transactions')">Transactions</div>
+            <div class="tab-item">Recurring</div>
+            <div class="tab-item">Money Manager</div>
         </nav>
 
         <main class="txn-list-content">
-            <div class="search-action-bar">
-                <div class="search-container"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input type="text" class="search-input" placeholder="Search"></div>
-                <div class="download-icon-btn" id="open-download-sheet"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.97 11.03a.75.75 0 111.06-1.06L11 14.94V2.75a.75.75 0 011.5 0v12.19l4.97-4.97a.75.75 0 111.06 1.06l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25zm-.22 9.47a.75.75 0 000 1.5h14.5a.75.75 0 000-1.5H4.75z" fill="currentColor"></path></svg></div>
+            <!-- TAB 1: PAYMENTS CONTENT (Integrated from payments.html) -->
+            <div id="payments-view" class="tab-view">
+                <div id="payments-view-content" style="padding: 0 5px;">
+                    <p class="section-label">Send Money</p>
+                    <div class="icon-grid">
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10"></rect></svg></div><span>Scan any<br>QR</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></div><span>Add<br>money</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div><span>Pay to<br>mobile</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"></path></svg></div><span>Bank<br>transfer</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg></div><span>Pay to<br>UPI</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div><span>Pay<br>abroad</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 17l6-6-6-6M12 19h8"></path></svg></div><span>International<br>Payments</span></div>
+                        <div class="grid-item"><div class="icon-circle gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 11a8.1 8.1 0 0 0-15.5-2m-.5 5v-5h5"></path><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5-5v5h-5"></path></svg></div><span>Auto Add<br>Money</span></div>
+                    </div>
+                    <div class="setup-banner">
+                        <div class="banner-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <div class="banner-text"><h4>Setup UPI Number</h4><p>Receive money from any UPI app on your mobile no.</p></div>
+                        <div class="banner-arrow">→</div>
+                    </div>
+                    <p class="section-label">Recent Payees</p>
+                    <div class="empty-state-box">No payees to show</div>
+                    <div class="bills-header"><p class="section-label" style="margin-bottom: 0;">Recharges & Bills</p><div class="view-all">View All →</div></div>
+                    <div class="icon-grid">
+                        <div class="grid-item bill-item"><div class="new-badge">NEW</div><div class="icon-circle" style="background-color: #FFF0F0; border: 1.5px dashed #FFBABA;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#931A1D" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div><span>My Bills</span></div>
+                        <div class="grid-item"><div class="icon-circle red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div><span>Mobile<br>prepaid</span></div>
+                        <div class="grid-item"><div class="icon-circle red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg></div><span>Electricity</span></div>
+                        <div class="grid-item"><div class="icon-circle red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div><span>Credit Card</span></div>
+                    </div>
+                </div>
             </div>
-            <div class="full-width-help-container"><p class="context-help">Can't find your recent transactions? <span class="red-highlight">Click here</span></p></div>
-            <div class="filter-row"><div class="filter-pill"><div class="filter-icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>Filter<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path></svg></div></div>
-            <div id="dynamic-txn-list"></div>
+
+            <!-- TAB 2: TRANSACTIONS CONTENT (Original) -->
+            <div id="transactions-view" class="tab-view active">
+                <div class="search-action-bar">
+                    <div class="search-container"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input type="text" class="search-input" placeholder="Search"></div>
+                    <div class="download-icon-btn" id="open-download-sheet"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.97 11.03a.75.75 0 111.06-1.06L11 14.94V2.75a.75.75 0 011.5 0v12.19l4.97-4.97a.75.75 0 111.06 1.06l-6.25 6.25a.75.75 0 01-1.06 0l-6.25-6.25zm-.22 9.47a.75.75 0 000 1.5h14.5a.75.75 0 000-1.5H4.75z" fill="currentColor"></path></svg></div>
+                </div>
+                <div class="full-width-help-container"><p class="context-help">Can't find your recent transactions? <span class="red-highlight">Click here</span></p></div>
+                <div class="filter-row"><div class="filter-pill"><div class="filter-icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></div>Filter<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 15.5a.75.75 0 01-.53-.22l-5.25-5.25a.75.75 0 011.06-1.06L12 13.94l4.72-4.72a.75.75 0 111.06 1.06l-5.25 5.25a.75.75 0 01-.53.22z" fill="#888"></path></svg></div></div>
+                <div id="dynamic-txn-list"></div>
+            </div>
         </main>
 
         <nav class="bottom-nav">
             <div class="nav-item" onclick="window.location.href='dashboard.html'"><img src="assets/images/home.svg" alt="Home"><span>HOME</span></div>
             <div class="nav-item" onclick="window.location.href='accounts.html'"><img src="assets/images/accounts.svg" alt="Accounts"><span>ACCOUNTS</span></div>
-            <div class="nav-item active" onclick="window.location.href='payments.html'"><div class="nav-icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4H10.5M10.5 4C12.9853 4 15 6.01472 15 8.5C15 10.9853 12.9853 13 10.5 13H6L13 20M10.5 4H18M6 8.5H18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span>PAY</span></div>
+            <div class="nav-item active"><div class="nav-icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4H10.5M10.5 4C12.9853 4 15 6.01472 15 8.5C15 10.9853 12.9853 13 10.5 13H6L13 20M10.5 4H18M6 8.5H18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span>PAY</span></div>
             <div class="nav-item"><img src="assets/images/savings.svg" alt="Loans"><span>LOANS</span></div>
             <div class="nav-item"><img src="assets/images/qr_scan_v2.svg" alt="Scan"><span>SCAN</span></div>
         </nav>
@@ -124,19 +169,26 @@
     </div>
 
     <script>
+        window.switchTab = function(tabName) {
+            const tabs = document.querySelectorAll('.txn-tabs .tab-item');
+            const views = document.querySelectorAll('.tab-view');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+
+            if (tabName === 'payments') {
+                tabs[0].classList.add('active');
+                document.getElementById('payments-view').classList.add('active');
+            } else if (tabName === 'transactions') {
+                tabs[2].classList.add('active');
+                document.getElementById('transactions-view').classList.add('active');
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', async () => {
             const dynamicList = document.getElementById('dynamic-txn-list');
             const user = await loadAppData();
             if (!user) return;
-
-            // Populate Template Details
-            document.getElementById('tpl-name').textContent = user.fullName;
-            document.getElementById('tpl-cust-id').textContent = user.customerId;
-            document.getElementById('tpl-ckyc').textContent = user.ckycId || '**********7254';
-            document.getElementById('tpl-address').textContent = user.address || '';
-            const lastFour = user.accountNumber ? user.accountNumber.slice(-4) : 'XXXX';
-            document.getElementById('tpl-account').textContent = `IDFC FIRST xx ${lastFour} ${user.accountNumber}`;
-            document.getElementById('tpl-date-range').textContent = `Upto ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}`;
 
             // Header UI Update
             const upiElem = document.querySelector('.upi-id');
@@ -149,10 +201,18 @@
             if (profileCircle) profileCircle.textContent = initials;
 
             // Fetch Data
-            const allTxns = getTransactionsForActiveUser(); // Already sorted newest first
+            const allTxns = getTransactionsForActiveUser();
             const savingsTxns = allTxns.filter(t => !t.category || t.category === 'savings');
 
-            // Populate PDF Table with Savings Data
+            // Populate PDF Template
+            document.getElementById('tpl-name').textContent = user.fullName;
+            document.getElementById('tpl-cust-id').textContent = user.customerId;
+            document.getElementById('tpl-ckyc').textContent = user.ckycId || '**********7254';
+            document.getElementById('tpl-address').textContent = user.address || '';
+            const lastFour = user.accountNumber ? user.accountNumber.slice(-4) : 'XXXX';
+            document.getElementById('tpl-account').textContent = `IDFC FIRST xx ${lastFour} ${user.accountNumber}`;
+            document.getElementById('tpl-date-range').textContent = `Upto ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+
             const tplBody = document.getElementById('tpl-txn-body');
             savingsTxns.forEach(txn => {
                 const isCredit = txn.type === 'credit' || txn.amount.includes('+');
@@ -166,29 +226,21 @@
                     </tr>`);
             });
 
-            // UI Rendering
+            // UI Rendering for Transactions
             const bannerHtml = `<div class="networth-promo-banner"><div class="banner-text-content"><p class="banner-text">See the impact of your last transaction on your Networth</p></div><button class="btn-unlock-networth" onclick="window.location.href='dashboard.html'">Unlock Networth</button></div>`;
             if (savingsTxns.length === 0) { dynamicList.innerHTML = '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>' + bannerHtml; }
             else {
+                const currentBalance = user.availableBalance || '₹ 0.00';
                 const today = new Date(); today.setHours(0,0,0,0);
                 const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0,0,0,0);
-
-                // --- ADVANCED RUNNING BALANCE LOGIC ---
-                // Sort oldest first to calculate historical balance correctly
                 const chronologicalTxns = [...savingsTxns].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                let runningBalanceTotal = 0;
-                const dailyClosingBalances = {};
-
+                let runningBalanceTotal = 0; const dailyClosingBalances = {};
                 chronologicalTxns.forEach(txn => {
                     const amount = parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
-                    const isCredit = txn.type === 'credit' || txn.amount.includes('+');
-                    if (isCredit) runningBalanceTotal += amount;
+                    if (txn.type === 'credit' || txn.amount.includes('+')) runningBalanceTotal += amount;
                     else runningBalanceTotal -= amount;
-                    // Store the balance as it was at the end of this date
                     dailyClosingBalances[txn.date] = runningBalanceTotal;
                 });
-
                 const grouped = {};
                 savingsTxns.forEach(txn => {
                     const txnDate = new Date(txn.date); txnDate.setHours(0,0,0,0);
@@ -198,19 +250,12 @@
                     if (!grouped[label]) grouped[label] = { date: txnDate, originalDate: txn.date, items: [] };
                     grouped[label].items.push(txn);
                 });
-
                 const sortedLabels = Object.keys(grouped).sort((a, b) => grouped[b].date - grouped[a].date);
                 let finalHtml = ''; let bannerPlaced = false;
-
                 sortedLabels.forEach((label) => {
                     if (label === 'Yesterday' && !bannerPlaced) { finalHtml += bannerHtml; bannerPlaced = true; }
-
-                    // Get the closing balance for this specific date group
                     const histBalance = dailyClosingBalances[grouped[label].originalDate] || 0;
-                    const formattedHistBalance = `₹${histBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
-
-                    finalHtml += `<div class="date-group-header">${label} | Balance ${formattedHistBalance}</div>`;
-
+                    finalHtml += `<div class="date-group-header">${label} | Balance ₹${histBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>`;
                     grouped[label].items.forEach(txn => {
                         const isIncoming = txn.type === 'credit' || txn.amount.includes('+');
                         finalHtml += `<div class="txn-card"><div class="txn-icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path></svg></div><div class="txn-info-main"><p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p><p class="txn-subtitle">${txn.desc}</p></div><div class="txn-amount-box"><p class="txn-amount ${isIncoming ? 'incoming' : ''}">${isIncoming ? '+ ' : ''}${txn.amount.replace('+', '').replace('+ ', '')}</p><p class="txn-time">${txn.date}</p></div></div>`;
@@ -220,26 +265,15 @@
                 dynamicList.innerHTML = finalHtml;
             }
 
-            // Bottom Sheet and PDF Trigger
+            // UI Sheet logic
             const openBtn = document.getElementById('open-download-sheet');
-            const closeBtn = document.getElementById('close-download-sheet');
             const overlay = document.getElementById('download-overlay');
             const sheet = document.querySelector('.bottom-sheet-content');
-            const historyBtn = document.getElementById('history-pdf-trigger');
-
-            if (openBtn) {
-                openBtn.addEventListener('click', () => { overlay.style.display = 'block'; setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10); });
-            }
+            if (openBtn) openBtn.addEventListener('click', () => { overlay.style.display = 'block'; setTimeout(() => { overlay.classList.add('active'); sheet.classList.add('active'); }, 10); });
             const closeSheet = () => { overlay.classList.remove('active'); sheet.classList.remove('active'); setTimeout(() => { overlay.style.display = 'none'; }, 300); };
-            if (closeBtn) closeBtn.addEventListener('click', closeSheet);
-            if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
-
-            if (historyBtn) {
-                historyBtn.addEventListener('click', async () => {
-                    closeSheet();
-                    await generateDirectPDF();
-                });
-            }
+            document.getElementById('close-download-sheet').addEventListener('click', closeSheet);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeSheet(); });
+            document.getElementById('history-pdf-trigger').addEventListener('click', async () => { closeSheet(); await generateDirectPDF(); });
         });
 
         async function generateDirectPDF() {
@@ -255,12 +289,10 @@
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
                 pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                const base64String = pdf.output('datauristring').split(',')[1];
                 const fileName = "IDFC_History_" + Date.now() + ".pdf";
                 if (window.Android && window.Android.openPdfFromBase64) {
-                    window.Android.showNotification("Opening your Transaction History...");
-                    window.Android.openPdfFromBase64(base64String, fileName);
-                } else { pdf.save(fileName); }
+                    window.Android.openPdfFromBase64(pdf.output('datauristring').split(',')[1], fileName);
+                } else pdf.save(fileName);
             } catch (e) { alert("Error: " + e.message); }
             finally { loader.style.opacity = '0'; setTimeout(() => { loader.style.display = 'none'; loaderText.style.display = 'none'; }, 500); }
         }
