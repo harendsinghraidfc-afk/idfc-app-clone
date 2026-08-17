@@ -1,6 +1,6 @@
 [
     {
-        "welcomeName": "Lokesh",
+        "welcomeName": "Lokesh Chouhan",
         "fullName": "Lokesh Chouhan",
         "customerId": "6910097017",
         "accountNumber": "102 9516 8767",
@@ -9,6 +9,6 @@
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
         "mpin": "1234",
-        "availableBalance": "₹ 5,00,000.00"
+        "availableBalance": "100"
     }
 ]
