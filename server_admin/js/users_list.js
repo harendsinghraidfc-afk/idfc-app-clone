@@ -59,60 +59,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    async function pushToGithub(token, repo, path, content) {
+        // 1. Get SHA
+        const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+            headers: { 'Authorization': `token ${token}` }
+        });
+        if (!getRes.ok) throw new Error(`Could not find ${path} on GitHub`);
+        const fileData = await getRes.json();
+
+        // 2. Update
+        const updateRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: `Admin Panel Sync: ${path}`,
+                content: btoa(unescape(encodeURIComponent(content))),
+                sha: fileData.sha
+            })
+        });
+        if (!updateRes.ok) {
+            const err = await updateRes.json();
+            throw new Error(err.message || `Update failed for ${path}`);
+        }
+        return true;
+    }
+
     if (publishBtn) {
         publishBtn.addEventListener('click', async () => {
             const token = localStorage.getItem('idfc_gh_token');
             const repo = localStorage.getItem('idfc_gh_repo');
+
             const users = getUsers();
-            const content = JSON.stringify(users, null, 4);
+            const txns = getAllTransactions();
+
+            const usersContent = JSON.stringify(users, null, 4);
+            const txnsContent = JSON.stringify(txns, null, 4);
 
             if (!token || !repo) {
-                // Fallback to manual sync if no token
                 const modal = document.getElementById('sync-modal');
                 const textarea = document.getElementById('json-output');
                 if (modal && textarea) {
-                    textarea.value = content;
+                    textarea.value = `--- USERS.JSON ---\n${usersContent}\n\n--- TRANSACTIONS.JSON ---\n${txnsContent}`;
                     modal.classList.add('active');
                 }
                 return;
             }
 
-            // --- AUTOMATIC SYNC VIA GITHUB API ---
             publishBtn.textContent = 'Publishing...';
             publishBtn.disabled = true;
 
             try {
-                const path = 'server_backend/users.json';
+                // Sync both files
+                await pushToGithub(token, repo, 'server_backend/users.json', usersContent);
+                await pushToGithub(token, repo, 'server_backend/transactions.json', txnsContent);
 
-                // 1. Get the current file SHA (required to update)
-                const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-                    headers: { 'Authorization': `token ${token}` }
-                });
-
-                if (!getRes.ok) throw new Error('Could not find file on GitHub');
-                const fileData = await getRes.json();
-                const sha = fileData.sha;
-
-                // 2. Update the file
-                const updateRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        message: 'Admin Panel Auto-Update: Synchronized users.json',
-                        content: btoa(unescape(encodeURIComponent(content))), // Base64 encode
-                        sha: sha
-                    })
-                });
-
-                if (updateRes.ok) {
-                    alert('✅ Published Successfully! Website will update in ~60 seconds.');
-                } else {
-                    const err = await updateRes.json();
-                    throw new Error(err.message || 'Update failed');
-                }
+                alert('✅ Users and Transactions Published Successfully!');
             } catch (e) {
                 alert('❌ Error: ' + e.message);
                 console.error(e);

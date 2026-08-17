@@ -31,19 +31,32 @@ function getActiveUser() {
 }
 
 async function loadAppData() {
-    const user = getActiveUser();
+    let user = getActiveUser();
     if (!user) {
         try {
-            const response = await fetch('server_backend/users.json');
+            const response = await fetch('server_backend/users.json?t=' + new Date().getTime());
             if (response.ok) {
                 const users = await response.json();
                 if (users && users.length > 0) {
-                    localStorage.setItem(APP_USER_KEY, JSON.stringify(users[0]));
-                    return users[0];
+                    user = users[0];
+                    localStorage.setItem(APP_USER_KEY, JSON.stringify(user));
+                    localStorage.setItem(ADMIN_USERS_KEY, JSON.stringify(users)); // Sync admin key too
                 }
             }
-        } catch (e) { console.warn('JSON fetch failed'); }
+        } catch (e) { console.warn('Users JSON fetch failed'); }
     }
+
+    // Also proactively fetch transactions if not in local storage
+    if (!localStorage.getItem(ADMIN_TXN_KEY)) {
+        try {
+            const response = await fetch('server_backend/transactions.json?t=' + new Date().getTime());
+            if (response.ok) {
+                const txns = await response.json();
+                localStorage.setItem(ADMIN_TXN_KEY, JSON.stringify(txns));
+            }
+        } catch (e) { console.warn('Transactions JSON fetch failed'); }
+    }
+
     return user;
 }
 
