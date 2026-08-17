@@ -424,32 +424,63 @@
             if (savingsTxns.length === 0) {
                 txnListBody.insertAdjacentHTML('beforeend', '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>');
             } else {
-                // Add "Today" group header with user's available balance
-                const balance = user.availableBalance || '₹ 0.00';
-                txnListBody.insertAdjacentHTML('beforeend', `<div class="date-group-header">Today | Balance ${balance}</div>`);
+                const currentBalance = user.availableBalance || '₹ 0.00';
 
+                // Helper to format date header
+                const getGroupHeader = (dateStr) => {
+                    const txnDate = new Date(dateStr);
+                    const today = new Date();
+                    const yesterday = new Date();
+                    yesterday.setDate(today.getDate() - 1);
+
+                    if (txnDate.toDateString() === today.toDateString()) {
+                        return `Today | Balance ${currentBalance}`;
+                    } else if (txnDate.toDateString() === yesterday.toDateString()) {
+                        return `Yesterday | Balance ${currentBalance}`;
+                    } else {
+                        // Return the date as is (e.g. 08 Aug, 2026) | Balance ...
+                        return `${dateStr} | Balance ${currentBalance}`;
+                    }
+                };
+
+                // Group transactions by date
+                const grouped = {};
                 savingsTxns.forEach(txn => {
-                    const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
-                    const cardHtml = `
-                        <div class="txn-card">
-                            <div class="txn-icon-circle">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                                    <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                                    <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
-                                </svg>
+                    if (!grouped[txn.date]) grouped[txn.date] = [];
+                    grouped[txn.date].push(txn);
+                });
+
+                // Sort dates (descending)
+                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+
+                sortedDates.forEach(date => {
+                    // Add Group Header
+                    txnListBody.insertAdjacentHTML('beforeend', `<div class="date-group-header">${getGroupHeader(date)}</div>`);
+
+                    // Add Transactions for this date
+                    grouped[date].forEach(txn => {
+                        const isIncoming = txn.amount.includes('+') || txn.desc.toLowerCase().includes('deposit');
+                        const cardHtml = `
+                            <div class="txn-card">
+                                <div class="txn-icon-circle">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                        <path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                        <path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path>
+                                    </svg>
+                                </div>
+                                <div class="txn-info-main">
+                                    <p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p>
+                                    <p class="txn-subtitle">${txn.desc}</p>
+                                </div>
+                                <div class="txn-amount-box">
+                                    <p class="txn-amount ${isIncoming ? 'incoming' : ''}">${txn.amount}</p>
+                                    <p class="txn-time">${txn.date}</p>
+                                </div>
                             </div>
-                            <div class="txn-info-main">
-                                <p class="txn-name">${txn.desc.split('/')[0] || txn.desc}</p>
-                                <p class="txn-subtitle">${txn.desc}</p>
-                            </div>
-                            <div class="txn-amount-box">
-                                <p class="txn-amount ${isIncoming ? 'incoming' : ''}">${txn.amount}</p>
-                                <p class="txn-time">${txn.date}</p>
-                            </div>
-                        </div>
-                    `;
-                    txnListBody.insertAdjacentHTML('beforeend', cardHtml);
+                        `;
+                        txnListBody.insertAdjacentHTML('beforeend', cardHtml);
+                    });
                 });
             }
         });
