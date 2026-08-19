@@ -1,6 +1,6 @@
 [
     {
-        "welcomeName": "Lokesh",
+        "welcomeName": "Test",
         "fullName": "Lokesh Chouhan",
         "customerId": "6910097017",
         "accountNumber": "102 9516 8767",
@@ -8,6 +8,7 @@
         "swiftCode": "IDFB IN BB MUM",
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
+        "upiId": "7415448245@idfcfirst",
         "mpin": "1234",
         "availableBalance": "₹3,350.00",
         "accountType": "Savings Regular 25k",
@@ -19,7 +20,6 @@
         "ccTotalLimit": "₹50,000.00",
         "ccAvailableLimit": "₹48,500.00",
         "ckycId": "**********7254",
-        "address": "H.No 124, Sector 5, Malviya Nagar, Jaipur, Rajasthan 302017",
-        "upiId": "7415448245@idfcfirst"
+        "address": "H.No 124, Sector 5, Malviya Nagar, Jaipur, Rajasthan 302017"
     }
 ]
