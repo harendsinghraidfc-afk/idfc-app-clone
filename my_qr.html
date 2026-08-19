@@ -9,6 +9,8 @@
     <script src="js/core_manager.js"></script>
     <!-- QR Code Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- HTML to Canvas for sharing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="qr-container">
@@ -32,24 +34,27 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="user-name" id="display-name">...</div>
-            <div class="upi-id-display">My UPI ID: <span id="display-upi" style="font-weight: 600;">...</span></div>
+            <!-- Shareable Area (Everything inside here will be converted to image) -->
+            <div id="share-area" style="width: 100%; display: flex; flex-direction: column; align-items: center; background: white; padding-top: 20px;">
+                <div class="user-name" id="display-name">...</div>
+                <div class="upi-id-display">My UPI ID: <span id="display-upi" style="font-weight: 600;">...</span></div>
 
-            <p class="instruction-text">Use this QR code to transfer any amount</p>
+                <p class="instruction-text">Use this QR code to transfer any amount</p>
 
-            <div class="qr-wrapper">
-                <div id="qrcode"></div>
+                <div class="qr-wrapper" style="background: white; border: none; box-shadow: none; margin-bottom: 20px;">
+                    <div id="qrcode"></div>
+                </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Action Buttons (NOT in share-area) -->
             <div class="action-buttons">
-                <div class="action-item">
+                <div class="action-item" onclick="handleImageAction('share')">
                     <div class="circle-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                     </div>
                     <span class="action-label">Share</span>
                 </div>
-                <div class="action-item">
+                <div class="action-item" onclick="handleImageAction('download')">
                     <div class="circle-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     </div>
@@ -83,7 +88,6 @@
                 document.getElementById('display-upi').textContent = upiId;
 
                 // Generate QR Code
-                // Format: upi://pay?pa=UPI_ID&pn=NAME
                 const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&cu=INR`;
 
                 new QRCode(document.getElementById("qrcode"), {
@@ -96,6 +100,32 @@
                 });
             }
         });
+
+        async function handleImageAction(type) {
+            const element = document.getElementById('share-area');
+            try {
+                const canvas = await html2canvas(element, { scale: 3, backgroundColor: '#ffffff', logging: false });
+                const base64 = canvas.toDataURL('image/png').split(',')[1];
+                const fileName = "IDFC_QR_" + Date.now() + ".png";
+
+                if (window.Android) {
+                    if (type === 'share') {
+                        window.Android.shareImage(base64, fileName);
+                    } else {
+                        window.Android.downloadImage(base64, fileName);
+                    }
+                } else {
+                    // Browser Fallback
+                    const link = document.createElement('a');
+                    link.download = fileName;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }
+            } catch (e) {
+                console.error("Capture failed", e);
+                alert("Error: " + e.message);
+            }
+        }
     </script>
 </body>
 </html>
