@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add Payee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .header {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #931A1D;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+        .form-container {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .input-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+        }
+        .custom-input, .custom-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background-color: white;
+            color: #333;
+        }
+        .custom-input:focus, .custom-select:focus {
+            outline: none;
+            border-color: #931A1D;
+            box-shadow: 0 0 0 2px rgba(147, 26, 29, 0.1);
+        }
+        .submit-btn {
+            background-color: #000;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <button class="back-btn" onclick="window.history.back()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <span class="header-title">Add Payee</span>
+        </div>
+    </header>
+
+    <main class="form-container">
+        <div class="input-group">
+            <label class="input-label" for="bank-select">Select Bank</label>
+            <select class="custom-select" id="bank-select">
+                <option value="" disabled selected>Select Bank Name</option>
+                <option value="idfc">IDFC FIRST Bank</option>
+                <option value="sbi">State Bank of India</option>
+                <option value="hdfc">HDFC Bank</option>
+                <option value="icici">ICICI Bank</option>
+                <option value="axis">Axis Bank</option>
+                <option value="other">Other Banks</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Account Number</label>
+            <input type="text" class="custom-input" placeholder="Enter Account Number" maxlength="18">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Re-enter Account Number</label>
+            <input type="text" class="custom-input" placeholder="Re-enter Account Number" maxlength="18">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">IFSC Code</label>
+            <input type="text" class="custom-input" placeholder="Enter IFSC Code" style="text-transform: uppercase;">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Payee Name</label>
+            <input type="text" class="custom-input" placeholder="Enter Payee Full Name">
+        </div>
+
+        <button class="submit-btn">Proceed</button>
+    </main>
+
+    <script src="js/core_manager.js"></script>
+</body>
+</html>
