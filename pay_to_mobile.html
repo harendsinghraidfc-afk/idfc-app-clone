@@ -167,19 +167,11 @@
             gap: 15px;
             border: 1px solid #FEF1C7;
         }
-        .promo-icon-circle {
-            width: 42px;
-            height: 42px;
-            background: #FFD54F;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--idfc-maroon);
-            font-weight: 800;
-            font-size: 1.3rem;
+        .promo-icon {
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(255, 213, 79, 0.3);
+            object-fit: contain;
         }
         .promo-body {
             flex: 1;
@@ -300,7 +292,7 @@
 
     <div class="search-area">
         <div class="search-box">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--idfc-maroon)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--idfc-maroon)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -329,7 +321,7 @@
     </div>
 
     <div class="promo-banner">
-        <div class="promo-icon-circle">₹</div>
+        <img class="promo-icon" src="assets/images/Tick@3x.png" alt="">
         <div class="promo-body">
             <p class="promo-title">Add Money</p>
             <p class="promo-desc">Add up to ₹5 Lakh with any UPI app and earn up to 6.5% p.a.</p>
