@@ -135,19 +135,23 @@
             transition: background 0.2s;
         }
         .bank-item:active { background: #f8f8f8; }
-        .bank-logo {
-            width: 32px;
-            height: 32px;
+
+        .bank-icon-circle {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            object-fit: contain;
-            background: #f5f5f5;
-            padding: 4px;
+            background: #F8F9FA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #931A1D;
             border: 1px solid #eee;
+            flex-shrink: 0;
         }
         .bank-name { font-size: 0.95rem; color: #333; font-weight: 500; }
 
         .selected-bank-info { display: flex; align-items: center; gap: 10px; }
-        .selected-bank-logo { width: 24px; height: 24px; border-radius: 50%; object-fit: contain; display: none; }
+        .selected-bank-icon-wrap { display: none; margin-right: 5px; color: #931A1D; }
 
         /* Info Box */
         .info-box {
@@ -208,7 +212,9 @@
         <div class="input-group">
             <div class="custom-dropdown-trigger" id="bank-dropdown-trigger">
                 <div class="selected-bank-info">
-                    <img src="" class="selected-bank-logo" id="current-bank-logo" alt="Bank Logo">
+                    <div class="selected-bank-icon-wrap" id="current-bank-icon">
+                        <!-- SVG injected -->
+                    </div>
                     <span id="selected-bank-text" style="color: #999;">Select Bank</span>
                 </div>
                 <span class="dropdown-chevron">&rsaquo;</span>
@@ -270,24 +276,21 @@
 
     <script>
         const banks = [
-            { name: "IDFC FIRST Bank", domain: "idfcfirstbank.com" },
-            { name: "HDFC Bank", domain: "hdfcbank.com" },
-            { name: "ICICI Bank", domain: "icicibank.com" },
-            { name: "State Bank of India", domain: "sbi.co.in" },
-            { name: "Axis Bank", domain: "axisbank.com" },
-            { name: "Kotak Mahindra Bank", domain: "kotak.com" },
-            { name: "IndusInd Bank", domain: "indusind.com" },
-            { name: "Bank of Baroda", domain: "bankofbaroda.in" },
-            { name: "Punjab National Bank", domain: "pnbindia.in" },
-            { name: "Canara Bank", domain: "canarabank.com" },
-            { name: "Union Bank of India", domain: "unionbankofindia.co.in" },
-            { name: "Yes Bank", domain: "yesbank.in" },
-            { name: "Federal Bank", domain: "federalbank.co.in" },
-            { name: "RBL Bank", domain: "rblbank.com" },
-            { name: "IDBI Bank", domain: "idbibank.in" },
-            { name: "Indian Bank", domain: "indianbank.in" },
-            { name: "Bank of India", domain: "bankofindia.co.in" }
+            "IDFC FIRST Bank", "HDFC Bank", "ICICI Bank", "State Bank of India",
+            "Axis Bank", "Kotak Mahindra Bank", "IndusInd Bank", "Bank of Baroda",
+            "Punjab National Bank", "Canara Bank", "Union Bank of India",
+            "Yes Bank", "Federal Bank", "RBL Bank", "IDBI Bank",
+            "Indian Bank", "Bank of India"
         ];
+
+        const bankBuildingSVG = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"></path>
+                <path d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3"></path>
+                <path d="M19 21v-4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4"></path>
+                <path d="M9 21h6"></path>
+            </svg>
+        `;
 
         const trigger = document.getElementById('bank-dropdown-trigger');
         const modal = document.getElementById('bank-modal');
@@ -295,22 +298,21 @@
         const closeBtn = document.getElementById('close-modal');
         const bankList = document.getElementById('bank-list');
         const selectedText = document.getElementById('selected-bank-text');
-        const selectedLogo = document.getElementById('current-bank-logo');
+        const selectedIconWrap = document.getElementById('current-bank-icon');
 
         // Build Bank List
-        banks.forEach(bank => {
+        banks.forEach(name => {
             const div = document.createElement('div');
             div.className = 'bank-item';
-            const logoUrl = `https://logo.clearbit.com/${bank.domain}`;
             div.innerHTML = `
-                <img src="${logoUrl}" class="bank-logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(bank.name)}&background=random'">
-                <span class="bank-name">${bank.name}</span>
+                <div class="bank-icon-circle">${bankBuildingSVG}</div>
+                <span class="bank-name">${name}</span>
             `;
             div.onclick = () => {
-                selectedText.textContent = bank.name;
+                selectedText.textContent = name;
                 selectedText.style.color = "#333";
-                selectedLogo.src = logoUrl;
-                selectedLogo.style.display = "block";
+                selectedIconWrap.innerHTML = bankBuildingSVG;
+                selectedIconWrap.style.display = "block";
                 closeBankModal();
             };
             bankList.appendChild(div);
