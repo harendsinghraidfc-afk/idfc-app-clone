@@ -87,19 +87,26 @@
             color: var(--text-light-grey);
         }
         .abc-pill {
-            background: #5F6368;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #FFFFFF;
+            background: #F2F2F2;
+            padding: 2px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            letter-spacing: 0.5px;
             user-select: none;
+            border: 1px solid #E0E0E0;
         }
-        .abc-pill span:active {
-            opacity: 0.7;
+        .abc-pill span {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #5F6368;
+        }
+        .abc-pill span.active {
+            background: #000000;
+            color: #FFFFFF;
         }
 
         /* Sections */
@@ -307,8 +314,8 @@
             </svg>
             <input type="text" id="search-input" class="search-input" placeholder="Search Phone number" aria-label="Search Phone number">
             <div class="abc-pill">
-                <span id="kb-abc" style="cursor: pointer; padding-right: 4px;">ABC</span>
-                <span id="kb-123" style="cursor: pointer; padding-left: 4px; border-left: 1px solid rgba(255,255,255,0.3);">123</span>
+                <span id="kb-abc" class="active">ABC</span>
+                <span id="kb-123">123</span>
             </div>
         </div>
     </div>
@@ -366,6 +373,8 @@
 
         abcBtn.onclick = (e) => {
             e.stopPropagation();
+            abcBtn.classList.add('active');
+            numBtn.classList.remove('active');
             searchInput.inputMode = "text";
             searchInput.type = "text";
             searchInput.focus();
@@ -373,9 +382,9 @@
 
         numBtn.onclick = (e) => {
             e.stopPropagation();
+            numBtn.classList.add('active');
+            abcBtn.classList.remove('active');
             searchInput.inputMode = "numeric";
-            // Note: Changing to type="number" might cause issues with some browsers,
-            // but inputMode="numeric" is the modern way to suggest a numeric keyboard.
             searchInput.focus();
         };
     </script>
