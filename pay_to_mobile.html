@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pay to UPI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            background-color: #FEFDF6;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            padding-bottom: 80px;
+        }
+        .header {
+            background: white;
+            padding: 15px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .back-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #666;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+
+        /* Search Section */
+        .search-container {
+            padding: 15px 18px;
+        }
+        .search-box {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 12px;
+        }
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        .search-input::placeholder {
+            color: #999;
+        }
+        .abc-pill {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        /* Sections */
+        .section-header {
+            padding: 15px 18px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+        .manage-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #931A1D;
+        }
+
+        .recent-payees-empty {
+            padding: 30px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .empty-icon-wrap {
+            width: 48px;
+            height: 48px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #931A1D;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+        }
+        .empty-text {
+            font-size: 0.85rem;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* Promo Card */
+        .promo-card {
+            margin: 10px 18px;
+            background: #FEF9E7;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+        .promo-icon-wrap {
+            width: 45px;
+            height: 45px;
+            background: #fde492;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #931A1D;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .promo-content {
+            flex: 1;
+        }
+        .promo-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        .promo-desc {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        .promo-chevron {
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        /* Contacts Empty State */
+        .contacts-empty {
+            padding: 60px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .contacts-illustration {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+        .contacts-empty-text {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 18px;
+            background: #000;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <button class="back-btn" onclick="window.history.back()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <span class="header-title">Pay to UPI</span>
+        </div>
+        <div class="header-right">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" id="search-phone" placeholder="Search Phone number" aria-label="Search Phone number">
+            <div class="abc-pill">ABC 123</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <span class="section-title">Recent payees</span>
+        <span class="manage-link">Manage</span>
+    </div>
+
+    <div class="recent-payees-empty">
+        <div class="empty-icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="8.5" cy="7" r="4"></circle>
+            </svg>
+        </div>
+        <p class="empty-text">Your recent payees will appear here</p>
+    </div>
+
+    <div class="promo-card">
+        <div class="promo-icon-wrap">₹</div>
+        <div class="promo-content">
+            <p class="promo-title">Add Money</p>
+            <p class="promo-desc">Add up to ₹5 Lakh with any UPI app and earn up to 6.5% p.a.</p>
+        </div>
+        <span class="promo-chevron">&rsaquo;</span>
+    </div>
+
+    <div class="section-header" style="margin-top: 15px;">
+        <span class="section-title">All contacts</span>
+    </div>
+
+    <div class="contacts-empty">
+        <img src="assets/images/customer_service.svg" class="contacts-illustration" alt="">
+        <p class="contacts-empty-text">You do not have any saved contact</p>
+    </div>
+
+    <div class="fab">
+        <span style="font-size: 1.4rem; margin-top: -2px;">+</span>
+        New payment
+    </div>
+
+    <script src="js/core_manager.js"></script>
+</body>
+</html>
