@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Scan QR</title>
+    <title>Scan QR Code</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,26 +12,29 @@
             --text-dark: #1a1a1a;
             --text-mid: #2e2e2e;
             --text-light: #6c7a89;
-            --brand-red: #a51d2e;
+            --brand-red: #8B1538;
+            --brand-red-hover: #a51d2e;
             --border-soft: rgba(17, 17, 17, 0.2);
             --white: #ffffff;
             --chip: rgba(255,255,255,0.5);
+            --glass-bg: rgba(20, 20, 25, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         html, body {
             margin: 0;
+            padding: 0;
             width: 100%;
             height: 100%;
             font-family: 'Inter', sans-serif;
-            background: #d9dde4;
+            background: #111115;
             color: var(--text-dark);
-        }
-
-        body {
-            margin: 0;
             overflow: hidden;
-            background: #ffffff;
         }
 
         .phone-shell {
@@ -40,64 +43,47 @@
             height: 100vh;
             background: #ffffff;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .status-bar {
             height: 48px;
-            padding: 0 12px;
+            padding: 0 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: rgba(255, 255, 255, 0.97);
             gap: 12px;
+            z-index: 5;
         }
 
-        .back-btn {
-            width: 44px;
-            height: 44px;
+        .back-btn, .close-x-btn {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: transparent;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8B1538;
+            color: var(--brand-red);
             cursor: pointer;
             padding: 0;
             flex-shrink: 0;
+            transition: background-color 0.2s ease, transform 0.1s ease;
         }
 
-        .back-btn svg {
-            width: 28px;
-            height: 28px;
-            stroke: currentColor;
-            stroke-width: 2.8;
+        .back-btn:active, .close-x-btn:active {
+            background-color: rgba(139, 21, 56, 0.08);
+            transform: scale(0.95);
         }
 
-        .close-x-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: transparent;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8B1538;
-            cursor: pointer;
-            padding: 0;
-            flex-shrink: 0;
-        }
-
-        .close-x-btn svg {
+        .back-btn svg, .close-x-btn svg {
             width: 24px;
             height: 24px;
             stroke: currentColor;
-            stroke-width: 2.8;
-        }
-
-        .close-btn {
-            display: none;
+            stroke-width: 2.5;
         }
 
         .scan-header {
@@ -111,9 +97,8 @@
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
-            padding: 14px 18px 12px 18px;
-            margin-top: 0;
-            min-height: 68px;
+            padding: 10px 18px 16px 18px;
+            z-index: 4;
         }
 
         .scan-title-wrap {
@@ -122,14 +107,12 @@
             align-items: center;
             justify-content: space-between;
             gap: 18px;
-            min-height: 62px;
-            padding-top: 0;
         }
 
         .scan-title {
-            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-            line-height: 0.95;
-            letter-spacing: -0.06em;
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            line-height: 1;
+            letter-spacing: -0.05em;
             font-weight: 700;
             color: var(--text-dark);
             margin: 0;
@@ -139,161 +122,151 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            font-size: 11px;
+            gap: 4px;
+            font-size: 10px;
             color: #5d6976;
             font-weight: 600;
             white-space: nowrap;
+            letter-spacing: -0.02em;
         }
 
         .supported-by .brands {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-weight: 800;
             color: #1a1a1a;
+            font-size: 11px;
         }
 
         .brand-visa { color: #1a1f71; }
         .brand-upi { color: #2d7af7; }
         .brand-rupee { color: #d1282b; }
 
-        .scan-body {
-            position: relative;
-            height: calc(100vh - 100px);
-            min-height: 420px;
+        .permission-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 16px 20px 16px;
             background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-        }
-
-        .scan-body::before {
-            display: none;
+            position: relative;
         }
 
         .scan-section {
-            position: relative;
-            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 24px;
+            padding-top: 32px;
         }
 
         .camera-outline {
-            width: 100px;
-            height: 100px;
-            border: none;
+            width: 90px;
+            height: 90px;
             border-radius: 22px;
-            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: transparent;
-        }
-
-        .camera-outline::before {
-            display: none;
+            background: rgba(139, 21, 56, 0.05);
+            margin-bottom: 20px;
         }
 
         .camera-icon {
-            width: 48px;
-            height: 48px;
-            color: #1b1f24;
-            opacity: 1;
+            width: 46px;
+            height: 46px;
             fill: #1b1f24;
         }
 
         .permission-text {
-            margin-top: 24px;
-            width: min(82%, 460px);
+            width: min(85%, 440px);
             text-align: center;
-            font-size: clamp(0.95rem, 1.6vw, 1.6rem);
-            line-height: 1.3;
-            letter-spacing: -0.04em;
-            color: rgba(28, 31, 38, 0.92);
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            line-height: 1.35;
+            letter-spacing: -0.03em;
+            color: rgba(28, 31, 38, 0.9);
             font-weight: 500;
+            margin: 0;
         }
 
         .action-block {
-            position: relative;
-            z-index: 1;
-            margin-top: 22px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
+            margin-bottom: 30px;
         }
 
         .allow-btn {
             background: transparent;
             border: none;
-            font-size: clamp(1.2rem, 1.6vw, 1.8rem);
-            letter-spacing: -0.06em;
+            font-size: clamp(1.2rem, 2vw, 1.6rem);
+            letter-spacing: -0.05em;
             font-weight: 800;
             color: var(--brand-red);
             cursor: pointer;
             margin: 0;
-            padding: 0;
+            padding: 8px 16px;
+            transition: transform 0.15s ease;
+        }
+
+        .allow-btn:hover {
+            transform: scale(1.03);
         }
 
         .gallery-btn {
-            width: 72px;
-            height: 72px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             border: 1px solid rgba(0,0,0,0.1);
-            background: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .gallery-btn:active {
+            transform: scale(0.92);
         }
 
         .gallery-btn svg {
-            width: 34px;
-            height: 34px;
-            stroke: #8B1538;
+            width: 30px;
+            height: 30px;
+            stroke: var(--brand-red);
         }
 
         .gallery-label {
-            font-size: clamp(0.85rem, 1.3vw, 1.3rem);
-            font-weight: 500;
-            color: rgba(24, 28, 35, 0.9);
-            letter-spacing: -0.04em;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            font-weight: 600;
+            color: rgba(24, 28, 35, 0.85);
+            letter-spacing: -0.03em;
         }
 
         .bottom-indicator {
-            position: absolute;
-            left: 50%;
-            bottom: 14px;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 28px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            opacity: 0.9;
+            gap: 16px;
+            opacity: 0.7;
+            padding-bottom: 4px;
         }
 
         .bottom-indicator .bar {
-            width: 68px;
+            width: 60px;
             height: 4px;
             background: rgba(12,12,12,0.7);
             border-radius: 12px;
         }
 
         .bottom-indicator .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: rgba(12,12,12,0.7);
-        }
-
-        @media (max-width: 420px) {
-            .scan-title-wrap { gap: 4px; }
-            .supported-by { font-size: 10px; }
-            .scan-body { min-height: 440px; }
         }
 
         .camera-view {
@@ -302,36 +275,394 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
-            background: #000;
+            z-index: 100;
+            background: #000000;
+            flex-direction: column;
+            justify-content: space-between;
             overflow: hidden;
         }
 
         .camera-view.active {
             display: flex;
+        }
+
+        .camera-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Simulated Camera Background Fallback */
+        .simulated-camera-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at center, #232731 0%, #0a0b0e 100%);
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        .camera-view video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .simulated-camera-bg.active {
+            display: flex;
         }
 
-        .permission-screen.hidden {
+        .simulated-feed-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.85;
+        }
+
+        .simulated-badge {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 12;
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: -0.01em;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .camera-flash-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.25);
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .camera-flash-overlay.active {
+            opacity: 1;
+        }
+
+        .camera-feed-header {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .camera-feed-title {
+            color: #ffffff;
+            font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin: 0;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .feed-close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .feed-close-btn:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .feed-close-btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: #ffffff;
+            stroke-width: 2.5;
+        }
+
+        .camera-feed-bottom-controls {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 16px 20px 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        /* Actions above cylindrical pill bar */
+        .quick-actions-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            width: 100%;
+        }
+
+        .action-item-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.15s ease;
+        }
+
+        .action-item-btn:active {
+            transform: scale(0.92);
+        }
+
+        .icon-circle-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .action-item-btn.active .icon-circle-btn {
+            background: #ffffff;
+            color: #111111;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .icon-circle-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .action-item-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: -0.02em;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Cylindrical Sponsored Bar */
+        .cylindrical-sponsored-bar {
+            width: min(88%, 360px);
+            height: 46px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 20px;
+        }
+
+        .cylindrical-sponsored-bar .sponsor-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #5d6976;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .cylindrical-sponsored-bar .sponsor-brands {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .cylindrical-sponsored-bar .brand-visa { color: #1a1f71; }
+        .cylindrical-sponsored-bar .brand-upi { color: #2d7af7; }
+        .cylindrical-sponsored-bar .brand-rupee { color: #d1282b; }
+
+        .my-qr-modal {
             display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .my-qr-modal.active {
+            display: flex;
+        }
+
+        .my-qr-card {
+            width: min(90%, 340px);
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 28px 20px 24px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+            text-align: center;
+            animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .my-qr-card .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--brand-red);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(139, 21, 56, 0.3);
+        }
+
+        .my-qr-card .user-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #111;
+            margin: 0 0 4px 0;
+        }
+
+        .my-qr-card .upi-id {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .qr-code-img {
+            width: 210px;
+            height: 210px;
+            border-radius: 16px;
+            border: 2px solid #f0f0f5;
+            padding: 10px;
+            background: #fff;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.03);
+        }
+
+        .modal-close-x {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f2f4f7;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .modal-close-x svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+        }
+
+        .my-qr-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Hidden File Input for Gallery */
+        #galleryFileInput {
+            display: none;
+        }
+
+        /* Scan Toast Alert */
+        .toast-msg {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(18, 18, 22, 0.92);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 400;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
     </style>
 </head>
 <body>
     <div class="phone-shell">
+        
+        <!-- INITIAL PERMISSION SCREEN -->
         <div class="status-bar">
-            <button class="back-btn" onclick="window.history.back()" aria-label="Back">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18L9 12L15 6"/></svg>
+            <button class="back-btn" onclick="handleBackAction()" aria-label="Back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18L9 12L15 6"/></svg>
             </button>
-            <button class="close-x-btn" onclick="window.history.back()" aria-label="Close">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6L18 18M18 6L6 18"/></svg>
+            <button class="close-x-btn" onclick="handleBackAction()" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M6 6L18 18M18 6L6 18"/></svg>
             </button>
         </div>
 
@@ -349,10 +680,10 @@
             </div>
         </div>
 
-        <div class="scan-body">
+        <div class="permission-screen" id="permissionScreen">
             <div class="scan-section">
                 <div class="camera-outline">
-                    <svg class="camera-icon" viewBox="256 465 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
+                    <svg class="camera-icon" viewBox="256 465 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M272,487 C268.687,487 266,484.313 266,481 C266,477.687 268.687,475 272,475 C275.313,475 278,477.687 278,481 C278,484.313 275.313,487 272,487 L272,487 Z M272,473 C267.582,473 264,476.582 264,481 C264,485.418 267.582,489 272,489 C276.418,489 280,485.418 280,481 C280,476.582 276.418,473 272,473 L272,473 Z M286,489 C286,490.104 285.104,491 284,491 L260,491 C258.896,491 258,490.104 258,489 L258,473 C258,471.896 258.896,471 260,471 L264,471 L265,469 C265.707,467.837 265.896,467 267,467 L277,467 C278.104,467 278.293,467.837 279,469 L280,471 L284,471 C285.104,471 286,471.896 286,473 L286,489 L286,489 Z M284,469 L281,469 L280,467 C279.411,465.837 279.104,465 278,465 L266,465 C264.896,465 264.53,465.954 264,467 L263,469 L260,469 C257.791,469 256,470.791 256,473 L256,489 C256,491.209 257.791,493 260,493 L284,493 C286.209,493 288,491.209 288,489 L288,473 C288,470.791 286.209,469 284,469 L284,469 Z" />
                     </svg>
                 </div>
@@ -363,11 +694,11 @@
             <div class="action-block">
                 <button class="allow-btn" type="button" onclick="requestCameraAccess()">Allow camera access</button>
 
-                <div class="gallery-btn" aria-label="Upload from gallery">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <circle cx="16" cy="8" r="2" stroke="#8B1538" stroke-width="1.5"></circle>
-                        <path d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001" stroke="#8B1538" stroke-width="1.5" stroke-linecap="round"></path>
-                        <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="#8B1538" stroke-width="1.5" stroke-linecap="round"></path>
+                <div class="gallery-btn" onclick="triggerGalleryPicker()" aria-label="Upload from gallery">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="8" r="2" stroke="currentColor" stroke-width="1.8"></circle>
+                        <path d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                        <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
                     </svg>
                 </div>
                 <div class="gallery-label">Upload from gallery</div>
@@ -381,23 +712,342 @@
         </div>
 
         <div class="camera-view" id="cameraView">
-            <video id="cameraVideo" autoplay playsinline></video>
+            <!-- Video feed element -->
+            <video class="camera-video" id="cameraVideo" autoplay playsinline muted></video>
+
+            <!-- Fallback simulated camera canvas for restricted environments -->
+            <div class="simulated-camera-bg" id="simulatedCameraBg">
+                <canvas class="simulated-feed-canvas" id="simulatedCanvas"></canvas>
+                <div class="simulated-badge">Simulated Camera Mode</div>
+            </div>
+
+            <!-- Flash Simulation Overlay -->
+            <div class="camera-flash-overlay" id="flashOverlay"></div>
+
+            <!-- Top Header: Title "Scan any code" & Right "X" Close Button -->
+            <div class="camera-feed-header">
+                <h2 class="camera-feed-title">Scan any code</h2>
+                <button class="feed-close-btn" onclick="stopCamera()" aria-label="Close Camera">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Bottom Section: Quick Actions (Gallery, Flash, My QR) + Cylindrical Sponsored Bar -->
+            <div class="camera-feed-bottom-controls">
+                
+                <!-- Gallery, Flash & My QR buttons -->
+                <div class="quick-actions-row">
+                    <!-- Gallery Button -->
+                    <button class="action-item-btn" onclick="triggerGalleryPicker()" type="button" aria-label="Gallery">
+                        <div class="icon-circle-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="4" ry="4"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                        </div>
+                        <span class="action-item-label">Gallery</span>
+                    </button>
+
+                    <!-- Flash ON/OFF Button -->
+                    <button class="action-item-btn" id="flashBtn" onclick="toggleFlash()" type="button" aria-label="Flash Toggle">
+                        <div class="icon-circle-btn" id="flashIconWrap">
+                            <svg id="flashIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <span class="action-item-label" id="flashLabel">Flash OFF</span>
+                    </button>
+
+                    <!-- My QR Code Button -->
+                    <button class="action-item-btn" onclick="openMyQRModal()" type="button" aria-label="My QR Code">
+                        <div class="icon-circle-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                                <path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 19h2v2h-2z"></path>
+                            </svg>
+                        </div>
+                        <span class="action-item-label">My QR</span>
+                    </button>
+                </div>
+
+                <!-- Bottom Cylindrical Pill Bar: Sponsored by VISA UPI ₹ -->
+                <div class="cylindrical-sponsored-bar">
+                    <span class="sponsor-label">Sponsored by</span>
+                    <div class="sponsor-brands">
+                        <span class="brand-visa">VISA</span>
+                        <span class="brand-upi">UPI</span>
+                        <span class="brand-rupee">₹</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="my-qr-modal" id="myQrModal">
+        <div class="my-qr-card">
+            <button class="modal-close-x" onclick="closeMyQRModal()" aria-label="Close My QR">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="avatar">U</div>
+            <h3 class="user-name">User Account</h3>
+            <span class="upi-id">user@upi</span>
+            <svg class="qr-code-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer Corners -->
+                <rect x="5" y="5" width="28" height="28" rx="4" fill="none" stroke="#111" stroke-width="4"/>
+                <rect x="11" y="11" width="16" height="16" rx="2" fill="#111"/>
+                
+                <rect x="67" y="5" width="28" height="28" rx="4" fill="none" stroke="#111" stroke-width="4"/>
+                <rect x="73" y="11" width="16" height="16" rx="2" fill="#111"/>
+
+                <rect x="5" y="67" width="28" height="28" rx="4" fill="none" stroke="#111" stroke-width="4"/>
+                <rect x="11" y="73" width="16" height="16" rx="2" fill="#111"/>
+
+                <!-- Inner Patterns -->
+                <rect x="40" y="8" width="8" height="8" fill="#111"/>
+                <rect x="52" y="8" width="8" height="18" fill="#111"/>
+                <rect x="40" y="22" width="18" height="8" fill="#111"/>
+                <rect x="8" y="40" width="18" height="8" fill="#111"/>
+                <rect x="8" y="52" width="8" height="8" fill="#111"/>
+                <rect x="22" y="52" width="12" height="12" fill="#111"/>
+                <rect x="40" y="40" width="20" height="20" rx="2" fill="#8B1538"/>
+                <rect x="68" y="40" width="12" height="8" fill="#111"/>
+                <rect x="84" y="40" width="8" height="18" fill="#111"/>
+                <rect x="68" y="54" width="8" height="12" fill="#111"/>
+                <rect x="80" y="62" width="12" height="12" fill="#111"/>
+                <rect x="40" y="68" width="10" height="10" fill="#111"/>
+                <rect x="54" y="68" width="8" height="24" fill="#111"/>
+                <rect x="40" y="82" width="10" height="10" fill="#111"/>
+                <rect x="68" y="80" width="24" height="12" fill="#111"/>
+            </svg>
+            <div class="my-qr-brand-row">
+                <span class="brand-visa">VISA</span>
+                <span class="brand-upi">UPI</span>
+                <span class="brand-rupee">₹</span>
+            </div>
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div class="toast-msg" id="toastMsg">Notification</div>
+
+    <!-- Hidden File Input for Gallery Selection -->
+    <input type="file" id="galleryFileInput" accept="image/*" onchange="onGalleryFileSelected(event)">
+
     <script>
+        let currentStream = null;
+        let isFlashOn = false;
+        let isSimulatedMode = false;
+        let animFrameId = null;
+
+        // Function to request camera stream or fallback to simulated camera view
         async function requestCameraAccess() {
+            showToast("Opening camera...");
+            const cameraView = document.getElementById('cameraView');
+            const video = document.getElementById('cameraVideo');
+            const simBg = document.getElementById('simulatedCameraBg');
+
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                const video = document.getElementById('cameraVideo');
-                video.srcObject = stream;
-                
-                const cameraView = document.getElementById('cameraView');
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = currentStream;
+                await video.play();
+
+                isSimulatedMode = false;
+                simBg.classList.remove('active');
+                video.style.display = 'block';
                 cameraView.classList.add('active');
             } catch (error) {
-                console.error('Error accessing camera:', error);
-                alert('Unable to access camera. Please check permissions and try again.');
+                console.warn('Hardware camera permission denied/unavailable. Switching to interactive simulated camera feed.');
+                
+                // Fallback to simulated camera feed mode
+                isSimulatedMode = true;
+                video.style.display = 'none';
+                simBg.classList.add('active');
+                cameraView.classList.add('active');
+                
+                startSimulatedFeed();
+                showToast('Camera permission denied: Running in simulated camera mode');
             }
+        }
+
+        function startSimulatedFeed() {
+            const canvas = document.getElementById('simulatedCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+            }
+            resize();
+
+            let time = 0;
+            function render() {
+                if (!isSimulatedMode) return;
+                time += 0.03;
+                
+                const w = canvas.width;
+                const h = canvas.height;
+                
+                // Gradient background simulating camera viewfinder
+                const grad = ctx.createRadialGradient(w/2, h/2, 50, w/2, h/2, Math.max(w, h));
+                grad.addColorStop(0, '#1a1d24');
+                grad.addColorStop(1, '#08090c');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, w, h);
+
+                // Subtle grid pattern
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctx.lineWidth = 1;
+                const gridSize = 40;
+                for (let x = 0; x < w; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, h);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < h; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                    ctx.stroke();
+                }
+
+                // Dynamic scanning pulse center target
+                const pulseRadius = 90 + Math.sin(time * 3) * 8;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(w / 2, h / 2 - 20, pulseRadius, 0, Math.PI * 2);
+                ctx.stroke();
+
+                animFrameId = requestAnimationFrame(render);
+            }
+
+            if (animFrameId) cancelAnimationFrame(animFrameId);
+            render();
+        }
+
+        // Stop camera stream and reset view
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            
+            if (animFrameId) {
+                cancelAnimationFrame(animFrameId);
+                animFrameId = null;
+            }
+
+            isSimulatedMode = false;
+            isFlashOn = false;
+            updateFlashUI();
+
+            const cameraView = document.getElementById('cameraView');
+            cameraView.classList.remove('active');
+        }
+
+        // Toggle Flash / Torch on supporting hardware or simulated overlay
+        async function toggleFlash() {
+            isFlashOn = !isFlashOn;
+            updateFlashUI();
+
+            if (isSimulatedMode || !currentStream) {
+                showToast(isFlashOn ? "Flash ON (Simulated)" : "Flash OFF");
+                return;
+            }
+
+            const videoTrack = currentStream.getVideoTracks()[0];
+            if (videoTrack && videoTrack.getCapabilities) {
+                const capabilities = videoTrack.getCapabilities();
+                if (capabilities.torch) {
+                    try {
+                        await videoTrack.applyConstraints({ advanced: [{ torch: isFlashOn }] });
+                        showToast(isFlashOn ? "Flash ON" : "Flash OFF");
+                        return;
+                    } catch (e) {
+                        console.warn("Torch failed:", e);
+                    }
+                }
+            }
+            showToast(isFlashOn ? "Flash ON (Simulated)" : "Flash OFF");
+        }
+
+        function updateFlashUI() {
+            const flashBtn = document.getElementById('flashBtn');
+            const flashLabel = document.getElementById('flashLabel');
+            const flashOverlay = document.getElementById('flashOverlay');
+
+            if (isFlashOn) {
+                flashBtn.classList.add('active');
+                flashLabel.textContent = "Flash ON";
+                if (flashOverlay) flashOverlay.classList.add('active');
+            } else {
+                flashBtn.classList.remove('active');
+                flashLabel.textContent = "Flash OFF";
+                if (flashOverlay) flashOverlay.classList.remove('active');
+            }
+        }
+
+        // Handle Gallery Upload Option
+        function triggerGalleryPicker() {
+            const input = document.getElementById('galleryFileInput');
+            input.click();
+        }
+
+        function onGalleryFileSelected(event) {
+            const file = event.target.files[0];
+            if (file) {
+                showToast(`Selected "${file.name}" for scanning`);
+            }
+        }
+
+        // My QR Modal handlers
+        function openMyQRModal() {
+            document.getElementById('myQrModal').classList.add('active');
+        }
+
+        function closeMyQRModal() {
+            document.getElementById('myQrModal').classList.remove('active');
+        }
+
+        // Generic back handler
+        function handleBackAction() {
+            if (document.getElementById('myQrModal').classList.contains('active')) {
+                closeMyQRModal();
+            } else if (document.getElementById('cameraView').classList.contains('active')) {
+                stopCamera();
+            } else {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    showToast("Back button clicked");
+                }
+            }
+        }
+
+        // Utility Toast function
+        function showToast(message) {
+            const toast = document.getElementById('toastMsg');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
     </script>
 </body>
