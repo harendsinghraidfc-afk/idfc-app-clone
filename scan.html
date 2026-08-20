@@ -6,49 +6,352 @@
     <title>Scan QR</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background: #000; color: white; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
-        .scan-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .scan-frame { width: 250px; height: 250px; border: 2px solid rgba(255,255,255,0.5); border-radius: 20px; position: relative; }
-        .scan-frame::before { content: ''; position: absolute; top: -2px; left: -2px; width: 40px; height: 40px; border-top: 4px solid #fff; border-left: 4px solid #fff; border-radius: 20px 0 0 0; }
-        .scan-frame::after { content: ''; position: absolute; top: -2px; right: -2px; width: 40px; height: 40px; border-top: 4px solid #fff; border-right: 4px solid #fff; border-radius: 0 20px 0 0; }
-        .corner-bottom-left { position: absolute; bottom: -2px; left: -2px; width: 40px; height: 40px; border-bottom: 4px solid #fff; border-left: 4px solid #fff; border-radius: 0 0 0 20px; }
-        .corner-bottom-right { position: absolute; bottom: -2px; right: -2px; width: 40px; height: 40px; border-bottom: 4px solid #fff; border-right: 4px solid #fff; border-radius: 0 0 20px 0; }
+        :root {
+            --bg-screen: #edf2f7;
+            --bg-soft: #dfe7ef;
+            --text-dark: #1a1a1a;
+            --text-mid: #2e2e2e;
+            --text-light: #6c7a89;
+            --brand-red: #a51d2e;
+            --border-soft: rgba(17, 17, 17, 0.2);
+            --white: #ffffff;
+            --chip: rgba(255,255,255,0.5);
+        }
 
-        .scan-line { position: absolute; top: 0; left: 10px; width: calc(100% - 20px); height: 2px; background: #931A1D; box-shadow: 0 0 15px #931A1D; animation: scan 3s infinite linear; }
-        @keyframes scan { 0% { top: 10px; } 50% { top: 240px; } 100% { top: 10px; } }
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: #d9dde4;
+            color: var(--text-dark);
+        }
 
-        .scan-text { margin-top: 40px; font-size: 1.1rem; font-weight: 500; text-align: center; color: rgba(255,255,255,0.8); }
-        .close-btn { position: absolute; top: 30px; right: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #ffffff;
+        }
 
-        /* Bottom Nav Fix (Matching App) */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #111; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #666; text-decoration: none; font-size: 0.65rem; font-weight: 700; }
-        .nav-item.active { color: #fff; }
-        .nav-icon { width: 22px; height: 22px; filter: grayscale(1) opacity(0.5); }
-        .nav-item.active .nav-icon { filter: none; opacity: 1; }
+        .phone-shell {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .status-bar {
+            height: 48px;
+            padding: 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.97);
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B1538;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .back-btn svg {
+            width: 28px;
+            height: 28px;
+            stroke: currentColor;
+            stroke-width: 2.8;
+        }
+
+        .close-x-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B1538;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .close-x-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2.8;
+        }
+
+        .close-btn {
+            display: none;
+        }
+
+        .scan-header {
+            position: relative;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+            box-shadow: 0 6px 18px rgba(17, 17, 17, 0.04);
+            border-radius: 0 0 22px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 14px 18px 12px 18px;
+            margin-top: 0;
+            min-height: 68px;
+        }
+
+        .scan-title-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            min-height: 62px;
+            padding-top: 0;
+        }
+
+        .scan-title {
+            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+            line-height: 0.95;
+            letter-spacing: -0.06em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .supported-by {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #5d6976;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .supported-by .brands {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .brand-visa { color: #1a1f71; }
+        .brand-upi { color: #2d7af7; }
+        .brand-rupee { color: #d1282b; }
+
+        .scan-body {
+            position: relative;
+            height: calc(100vh - 100px);
+            min-height: 420px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+        }
+
+        .scan-body::before {
+            display: none;
+        }
+
+        .scan-section {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 24px;
+        }
+
+        .camera-outline {
+            width: 100px;
+            height: 100px;
+            border: none;
+            border-radius: 22px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .camera-outline::before {
+            display: none;
+        }
+
+        .camera-icon {
+            width: 48px;
+            height: 48px;
+            color: #1b1f24;
+            opacity: 1;
+            fill: #1b1f24;
+        }
+
+        .permission-text {
+            margin-top: 24px;
+            width: min(82%, 460px);
+            text-align: center;
+            font-size: clamp(0.95rem, 1.6vw, 1.6rem);
+            line-height: 1.3;
+            letter-spacing: -0.04em;
+            color: rgba(28, 31, 38, 0.92);
+            font-weight: 500;
+        }
+
+        .action-block {
+            position: relative;
+            z-index: 1;
+            margin-top: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .allow-btn {
+            background: transparent;
+            border: none;
+            font-size: clamp(1.2rem, 1.6vw, 1.8rem);
+            letter-spacing: -0.06em;
+            font-weight: 800;
+            color: var(--brand-red);
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+
+        .gallery-btn {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .gallery-btn svg {
+            width: 34px;
+            height: 34px;
+            stroke: #8B1538;
+        }
+
+        .gallery-label {
+            font-size: clamp(0.85rem, 1.3vw, 1.3rem);
+            font-weight: 500;
+            color: rgba(24, 28, 35, 0.9);
+            letter-spacing: -0.04em;
+        }
+
+        .bottom-indicator {
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0.9;
+        }
+
+        .bottom-indicator .bar {
+            width: 68px;
+            height: 4px;
+            background: rgba(12,12,12,0.7);
+            border-radius: 12px;
+        }
+
+        .bottom-indicator .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(12,12,12,0.7);
+        }
+
+        @media (max-width: 420px) {
+            .scan-title-wrap { gap: 4px; }
+            .supported-by { font-size: 10px; }
+            .scan-body { min-height: 440px; }
+        }
     </style>
 </head>
 <body>
-    <div class="close-btn" onclick="window.history.back()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    </div>
-
-    <div class="scan-overlay">
-        <div class="scan-frame">
-            <div class="scan-line"></div>
-            <div class="corner-bottom-left"></div>
-            <div class="corner-bottom-right"></div>
+    <div class="phone-shell">
+        <div class="status-bar">
+            <button class="back-btn" onclick="window.history.back()" aria-label="Back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18L9 12L15 6"/></svg>
+            </button>
+            <button class="close-x-btn" onclick="window.history.back()" aria-label="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6L18 18M18 6L6 18"/></svg>
+            </button>
         </div>
-        <p class="scan-text">Align QR code within the frame to scan</p>
-    </div>
 
-    <!-- Minimal bottom nav to match app context -->
-    <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='dashboard.html'"><img src="assets/images/home.svg" class="nav-icon" alt="Home"><span>HOME</span></div>
-        <div class="nav-item" onclick="window.location.href='accounts.html'"><img src="assets/images/accounts.svg" class="nav-icon" alt="Accounts"><span>ACCOUNTS</span></div>
-        <div class="nav-item" onclick="window.location.href='savings_transactions.html?tab=payments'"><img src="assets/images/pay.svg" class="nav-icon" alt="Pay"><span>PAY</span></div>
-        <div class="nav-item"><img src="assets/images/savings.svg" class="nav-icon" alt="Loans"><span>LOANS</span></div>
-        <div class="nav-item active" onclick="window.location.href='scan.html'"><img src="assets/images/qr_scan_v2.svg" class="nav-icon" style="filter: none; opacity: 1;" alt="Scan"><span>SCAN</span></div>
-    </nav>
+        <div class="scan-header">
+            <div class="scan-title-wrap">
+                <h1 class="scan-title">Scan QR code</h1>
+                <div class="supported-by">
+                    <span>Supported by</span>
+                    <div class="brands">
+                        <span class="brand-visa">VISA</span>
+                        <span class="brand-upi">UPI</span>
+                        <span class="brand-rupee">₹</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scan-body">
+            <div class="scan-section">
+                <div class="camera-outline">
+                    <svg class="camera-icon" viewBox="256 465 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
+                        <path d="M272,487 C268.687,487 266,484.313 266,481 C266,477.687 268.687,475 272,475 C275.313,475 278,477.687 278,481 C278,484.313 275.313,487 272,487 L272,487 Z M272,473 C267.582,473 264,476.582 264,481 C264,485.418 267.582,489 272,489 C276.418,489 280,485.418 280,481 C280,476.582 276.418,473 272,473 L272,473 Z M286,489 C286,490.104 285.104,491 284,491 L260,491 C258.896,491 258,490.104 258,489 L258,473 C258,471.896 258.896,471 260,471 L264,471 L265,469 C265.707,467.837 265.896,467 267,467 L277,467 C278.104,467 278.293,467.837 279,469 L280,471 L284,471 C285.104,471 286,471.896 286,473 L286,489 L286,489 Z M284,469 L281,469 L280,467 C279.411,465.837 279.104,465 278,465 L266,465 C264.896,465 264.53,465.954 264,467 L263,469 L260,469 C257.791,469 256,470.791 256,473 L256,489 C256,491.209 257.791,493 260,493 L284,493 C286.209,493 288,491.209 288,489 L288,473 C288,470.791 286.209,469 284,469 L284,469 Z" />
+                    </svg>
+                </div>
+
+                <p class="permission-text">To make faster payments using scan QR,<br>please provide camera access</p>
+            </div>
+
+            <div class="action-block">
+                <button class="allow-btn" type="button">Allow camera access</button>
+
+                <div class="gallery-btn" aria-label="Upload from gallery">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="16" cy="8" r="2" stroke="#8B1538" stroke-width="1.5"></circle>
+                        <path d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001" stroke="#8B1538" stroke-width="1.5" stroke-linecap="round"></path>
+                        <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="#8B1538" stroke-width="1.5" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+                <div class="gallery-label">Upload from gallery</div>
+            </div>
+
+            <div class="bottom-indicator" aria-hidden="true">
+                <span class="bar"></span>
+                <span class="dot"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
