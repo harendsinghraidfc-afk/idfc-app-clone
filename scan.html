@@ -295,6 +295,33 @@
             .supported-by { font-size: 10px; }
             .scan-body { min-height: 440px; }
         }
+
+        .camera-view {
+            display: none;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .camera-view.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .camera-view video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .permission-screen.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -334,7 +361,7 @@
             </div>
 
             <div class="action-block">
-                <button class="allow-btn" type="button">Allow camera access</button>
+                <button class="allow-btn" type="button" onclick="requestCameraAccess()">Allow camera access</button>
 
                 <div class="gallery-btn" aria-label="Upload from gallery">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -352,6 +379,26 @@
                 <span class="bar"></span>
             </div>
         </div>
+
+        <div class="camera-view" id="cameraView">
+            <video id="cameraVideo" autoplay playsinline></video>
+        </div>
     </div>
+
+    <script>
+        async function requestCameraAccess() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                const video = document.getElementById('cameraVideo');
+                video.srcObject = stream;
+                
+                const cameraView = document.getElementById('cameraView');
+                cameraView.classList.add('active');
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                alert('Unable to access camera. Please check permissions and try again.');
+            }
+        }
+    </script>
 </body>
 </html>
