@@ -129,15 +129,20 @@ body {
 }
 
 .fixed-qr-icon {
-    width: 32px;
-    height: 32px;
-    background: #F9F9F9;
-    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    background: #FFF1F1;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #999;
-    border: 1px dashed #DDD;
+    color: var(--idfc-red);
+    transition: all 0.3s ease;
+}
+
+.fixed-amount-card:active .fixed-qr-icon {
+    transform: scale(0.95);
+    background: #FFE4E4;
 }
 
 .card-text {
