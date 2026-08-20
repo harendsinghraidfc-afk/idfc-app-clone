@@ -88,14 +88,18 @@
         }
         .abc-pill {
             background: #5F6368;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #FFFFFF;
             display: flex;
             align-items: center;
             letter-spacing: 0.5px;
+            user-select: none;
+        }
+        .abc-pill span:active {
+            opacity: 0.7;
         }
 
         /* Sections */
@@ -302,7 +306,10 @@
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
             <input type="text" id="search-input" class="search-input" placeholder="Search Phone number" aria-label="Search Phone number">
-            <div class="abc-pill">ABC 123</div>
+            <div class="abc-pill">
+                <span id="kb-abc" style="cursor: pointer; padding-right: 4px;">ABC</span>
+                <span id="kb-123" style="cursor: pointer; padding-left: 4px; border-left: 1px solid rgba(255,255,255,0.3);">123</span>
+            </div>
         </div>
     </div>
 
@@ -352,6 +359,26 @@
         </button>
     </div>
 
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const abcBtn = document.getElementById('kb-abc');
+        const numBtn = document.getElementById('kb-123');
+
+        abcBtn.onclick = (e) => {
+            e.stopPropagation();
+            searchInput.inputMode = "text";
+            searchInput.type = "text";
+            searchInput.focus();
+        };
+
+        numBtn.onclick = (e) => {
+            e.stopPropagation();
+            searchInput.inputMode = "numeric";
+            // Note: Changing to type="number" might cause issues with some browsers,
+            // but inputMode="numeric" is the modern way to suggest a numeric keyboard.
+            searchInput.focus();
+        };
+    </script>
     <script src="js/core_manager.js"></script>
 </body>
 </html>
