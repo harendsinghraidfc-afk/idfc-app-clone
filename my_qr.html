@@ -69,14 +69,21 @@
             <div class="fixed-amount-card" style="cursor: pointer; padding: 15px 20px;">
                 <div class="card-left">
                     <div class="fixed-qr-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="3" width="7" height="7"></rect>
-                            <rect x="14" y="14" width="7" height="7"></rect>
-                            <rect x="3" y="14" width="7" height="7"></rect>
-                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                            <line x1="17" y1="7" x2="17.01" y2="7"></line>
-                            <line x1="7" y1="17" x2="7.01" y2="17"></line>
+                        <svg viewBox="0 0 512 512" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                            <polygon points="48 48 176 48 176 16 16 16 16 176 48 176 48 48"></polygon>
+                            <path d="M176,176V80H80v96h96Zm-64-64h32v32H112Z"></path>
+                            <polygon points="328 48 464 48 464 176 496 176 496 16 328 16 328 48"></polygon>
+                            <path d="M432,176V80H336v96h96Zm-64-64h32v32H368Z"></path>
+                            <polygon points="176 464 48 464 48 336 16 336 16 496 176 496 176 464"></polygon>
+                            <path d="M176,336H80v96h96V336Zm-32,64H112V368h32Z"></path>
+                            <polygon points="464 464 328 464 328 496 496 496 496 336 464 336 464 464"></polygon>
+                            <polygon points="272 304 400 304 400 368 432 368 432 272 272 272 272 304"></polygon>
+                            <polygon points="432 432 432 400 240 400 240 272 80 272 80 304 208 304 208 432 432 432"></polygon>
+                            <rect width="32" height="96" x="208" y="80"></rect>
+                            <polygon points="80 240 304 240 304 80 272 80 272 208 80 208 80 240"></polygon>
+                            <rect width="96" height="32" x="336" y="208"></rect>
+                            <rect width="32" height="32" x="336" y="336"></rect>
+                            <rect width="32" height="32" x="272" y="336"></rect>
                         </svg>
                     </div>
                     <div class="card-text" style="color: #444; font-size: 0.9rem;">Generate QR code to receive a fixed amount</div>
