@@ -15,11 +15,11 @@
         }
         .header {
             background: white;
-            padding: 15px 20px;
+            padding: 15px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #f0f0f0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -33,56 +33,104 @@
             border: none;
             padding: 0;
             cursor: pointer;
-            color: #931A1D;
-            margin-right: 15px;
+            color: #666;
+            margin-right: 12px;
             display: flex;
             align-items: center;
         }
         .header-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #1A1A1A;
         }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
         .form-container {
-            padding: 20px;
+            padding: 15px 18px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
         }
         .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .input-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #666;
+            position: relative;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
         }
         .custom-input, .custom-select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
+            height: 54px;
+            padding: 0 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
             box-sizing: border-box;
             background-color: white;
             color: #333;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .select-wrapper::after {
+            content: "\203A";
+            font-size: 24px;
+            color: #999;
+            transform: rotate(90deg);
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            margin-top: -16px;
+            pointer-events: none;
+        }
+        .custom-input::placeholder {
+            color: #999;
         }
         .custom-input:focus, .custom-select:focus {
-            outline: none;
             border-color: #931A1D;
-            box-shadow: 0 0 0 2px rgba(147, 26, 29, 0.1);
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #FEF9E7;
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .info-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .info-text {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #666;
+            margin: 0;
+        }
+
+        .submit-btn-fixed {
+            position: fixed;
+            bottom: 20px;
+            left: 18px;
+            right: 18px;
         }
         .submit-btn {
+            width: 100%;
             background-color: #000;
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 25px;
+            padding: 14px;
+            border-radius: 30px;
             font-size: 1rem;
             font-weight: 700;
-            margin-top: 20px;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -95,19 +143,28 @@
     <header class="header">
         <div class="header-left">
             <button class="back-btn" onclick="window.history.back()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
             </button>
             <span class="header-title">Add Payee</span>
         </div>
+        <div class="header-right">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+            </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" onclick="window.location.href='dashboard.html'">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
     </header>
 
     <main class="form-container">
-        <div class="input-group">
-            <label class="input-label" for="bank-select">Select Bank</label>
+        <div class="input-group select-wrapper">
             <select class="custom-select" id="bank-select">
-                <option value="" disabled selected>Select Bank Name</option>
+                <option value="" disabled selected>Select Bank</option>
                 <option value="idfc">IDFC FIRST Bank</option>
                 <option value="sbi">State Bank of India</option>
                 <option value="hdfc">HDFC Bank</option>
@@ -118,26 +175,41 @@
         </div>
 
         <div class="input-group">
-            <label class="input-label">Account Number</label>
-            <input type="text" class="custom-input" placeholder="Enter Account Number" maxlength="18">
+            <input type="text" class="custom-input" placeholder="Account Number" maxlength="18">
         </div>
 
         <div class="input-group">
-            <label class="input-label">Re-enter Account Number</label>
             <input type="text" class="custom-input" placeholder="Re-enter Account Number" maxlength="18">
         </div>
 
         <div class="input-group">
-            <label class="input-label">IFSC Code</label>
-            <input type="text" class="custom-input" placeholder="Enter IFSC Code" style="text-transform: uppercase;">
+            <input type="text" class="custom-input" placeholder="IFSC Code" style="text-transform: uppercase;">
         </div>
 
         <div class="input-group">
-            <label class="input-label">Payee Name</label>
-            <input type="text" class="custom-input" placeholder="Enter Payee Full Name">
+            <input type="text" class="custom-input" placeholder="Payee's Name">
         </div>
 
-        <button class="submit-btn">Proceed</button>
+        <div class="info-box">
+            <div class="info-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </div>
+            <p class="info-text">
+                Funds will be transferred using payee's account number and IFSC. IDFC FIRST Bank will not validate Bank Account or Credit Card number and is not responsible for unintended fund transfers.
+            </p>
+        </div>
+
+        <div class="input-group">
+            <input type="text" class="custom-input" placeholder="Nickname (Optional)">
+        </div>
+
+        <div class="submit-btn-fixed">
+            <button class="submit-btn">Proceed</button>
+        </div>
     </main>
 
     <script src="js/core_manager.js"></script>
