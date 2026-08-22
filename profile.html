@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile - IDFC Clone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <div id="profile-container">
+        <!-- Top Section with Gradient -->
+        <div class="profile-top-section">
+            <span class="sparkle s1">✦</span>
+            <header class="profile-header">
+                <button class="back-btn" onclick="window.history.back()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="user-info">
+                <div class="badge-container">
+                    <div class="circular-badge">
+                        <svg class="badge-text" viewBox="0 0 100 100">
+                            <defs>
+                                <path id="circlePath" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+                            </defs>
+                            <circle cx="50" cy="50" r="49" fill="none" stroke="rgba(255, 255, 255, 0.4)" stroke-width="0.8" />
+                            <text fill="#a0aec0">
+                                <textPath href="#circlePath" startOffset="0%">
+                                    IDFC FIRST CUSTOMER &nbsp;&nbsp;&nbsp; ● &nbsp;&nbsp;&nbsp; SINCE 2026 &nbsp;&nbsp;&nbsp; ● &nbsp;&nbsp;&nbsp;
+                                </textPath>
+                            </text>
+                        </svg>
+                        <div class="avatar-circle">
+                            <span>RC</span>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="user-name">Rahul</h1>
+            </div>
+
+            <div class="profile-actions">
+                <div class="action-item">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="white">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <span>Manage<br>Profile &gt;</span>
+                </div>
+                <div class="action-item">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="white">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <span>Membership<br>& Benefits &gt;</span>
+                </div>
+                <div class="action-item">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="white">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M22 17.002a6.002 6.002 0 0 1-4.713 5.86l-.638-1.914A4.003 4.003 0 0 0 19.465 19H17a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.938a8.001 8.001 0 0 0-15.876 0H7a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5C2 6.477 6.477 2 12 2s10 4.477 10 10V17.002zM20 17v-4h-3v4h3zM4 13v4h3v-4H4z"></path>
+                        </svg>
+                    </div>
+                    <span>Customer<br>Service &gt;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet Section -->
+        <div class="profile-bottom-section">
+            <h2 class="section-title">Accounts & UPI</h2>
+
+            <div class="accounts-grid">
+                <!-- My UPI Card -->
+                <div class="upi-card">
+                    <div class="card-header">
+                        <span>My UPI ↗</span>
+                    </div>
+                    <div class="qr-container">
+                        <img src="assets/images/qr_scan_v2.svg" alt="QR Code" id="qr-image" style="width: 80px; height: 80px;">
+                    </div>
+                </div>
+
+                <!-- Savings Card -->
+                <div class="savings-info-card">
+                    <div class="savings-header">
+                        <span class="account-type">Savings ••4831</span>
+                    </div>
+                    <div class="account-details">
+                        <p class="detail-row"><span class="label">Name:</span> Mr. Rahul Chavda</p>
+                        <p class="detail-row"><span class="label">IFSC:</span> IDFB0042142</p>
+                        <p class="detail-row"><span class="label">Bank branch:</span> Sejawata Branch</p>
+                    </div>
+                    <div class="card-footer-actions">
+                        <button class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg></button>
+                        <button class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+                        <button class="footer-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></button>
+                        <span class="chevron-right">›</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What's New Section -->
+            <div class="whats-new-section">
+                <h2 class="section-title">✨ What's New ✨</h2>
+                <div class="horizontal-scroll">
+                    <div class="scroll-item">
+                        <div class="item-icon cibil" style="background-image: url('assets/images/shield_auth.svg'); background-size: 60%; background-repeat: no-repeat;"></div>
+                        <span>CIBIL<br>Simulator</span>
+                    </div>
+                    <div class="scroll-item">
+                        <div class="item-icon unlock" style="background-image: url('assets/images/unlock_networth.svg'); background-size: 60%; background-repeat: no-repeat;"></div>
+                        <span>Unlock<br>Networth</span>
+                    </div>
+                    <div class="scroll-item">
+                        <div class="item-icon deposit" style="background-image: url('assets/images/deposits.svg'); background-size: 60%; background-repeat: no-repeat;"></div>
+                        <span>Book Fixed<br>Deposit</span>
+                    </div>
+                    <div class="scroll-item">
+                        <div class="item-icon in-go" style="background-image: url('assets/images/shop.svg'); background-size: 60%; background-repeat: no-repeat;"></div>
+                        <span>In<br>Go'</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='dashboard.html'">
+            <img src="assets/images/home.svg" alt="Home">
+            <span>HOME</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='accounts.html'">
+            <img src="assets/images/accounts.svg" alt="Accounts">
+            <span>ACCOUNTS</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='savings_transactions.html?tab=payments'">
+            <img src="assets/images/pay.svg" alt="Pay">
+            <span>PAY</span>
+        </div>
+        <div class="nav-item">
+            <img src="assets/images/savings.svg" alt="Loans">
+            <span>LOANS</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='scan.html'">
+            <img src="assets/images/qr_scan_v2.svg" alt="Scan">
+            <span>SCAN</span>
+        </div>
+    </nav>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>

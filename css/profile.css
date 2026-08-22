@@ -1,0 +1,330 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+#profile-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Top Section */
+.profile-top-section {
+    background: linear-gradient(180deg, #1a2a44 0%, #0d1526 100%);
+    color: white;
+    padding: 20px;
+    padding-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sparkle {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+.s1 { top: 80px; left: 10%; font-size: 14px; }
+
+.profile-top-section::before {
+    content: '✦';
+    position: absolute;
+    top: 50px;
+    left: 20%;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.profile-top-section::after {
+    content: '✦';
+    position: absolute;
+    top: 150px;
+    right: 15%;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+}
+
+.user-info {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.badge-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 15px;
+}
+
+.circular-badge {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+.badge-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    fill: #a0aec0;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    animation: rotateBadge 15s linear infinite;
+}
+
+@keyframes rotateBadge {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.avatar-circle {
+    width: 70px;
+    height: 70px;
+    background: #4a5568;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    border: 2px solid #718096;
+}
+
+.user-name {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-circle {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-circle svg {
+    width: 24px;
+    height: 24px;
+}
+
+.action-item span {
+    font-size: 12px;
+    line-height: 1.2;
+    color: #cbd5e0;
+}
+
+/* Bottom Section */
+.profile-bottom-section {
+    background: white;
+    border-radius: 35px 35px 0 0;
+    margin-top: -30px;
+    padding: 25px 20px;
+    flex-grow: 1;
+    box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 10;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 20px;
+}
+
+.accounts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.upi-card, .savings-info-card {
+    background: #fff;
+    border: 1px solid #edf2f7;
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.card-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.qr-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.qr-container img {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+}
+
+.savings-header {
+    margin-bottom: 15px;
+}
+
+.account-type {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.account-details {
+    font-size: 12px;
+    color: #718096;
+    margin-bottom: 15px;
+}
+
+.detail-row {
+    margin: 4px 0;
+}
+
+.detail-row .label {
+    color: #a0aec0;
+}
+
+.card-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #4a5568;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.chevron-right {
+    margin-left: auto;
+    color: #cbd5e0;
+    font-size: 20px;
+}
+
+/* What's New Section */
+.whats-new-section .section-title {
+    text-align: center;
+    font-size: 16px;
+}
+
+.horizontal-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+    text-align: center;
+}
+
+.item-icon {
+    width: 60px;
+    height: 60px;
+    background: #edf2f7;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    background-size: cover;
+    background-position: center;
+}
+
+.scroll-item span {
+    font-size: 11px;
+    font-weight: 500;
+    color: #4a5568;
+    line-height: 1.2;
+}
+
+/* Placeholder for icons in scroll section */
+.item-icon.cibil { background-color: #e2e8f0; }
+.item-icon.unlock { background-color: #e2e8f0; }
+.item-icon.deposit { background-color: #e2e8f0; }
+.item-icon.in-go { background-color: #e2e8f0; }
+
+/* Bottom Nav Styling (assuming similar to main.css) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    color: #718096;
+}
+
+.nav-item img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
