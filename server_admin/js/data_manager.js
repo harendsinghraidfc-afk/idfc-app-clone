@@ -40,19 +40,20 @@ async function resetToServer() {
 
 function recalculateUserBalance(customerId) {
     const users = getUsers();
-    const userIndex = users.findIndex(u => u.customerId === customerId);
+    const userIndex = users.findIndex(u => String(u.customerId) === String(customerId));
     if (userIndex === -1) return;
 
     const txns = getTransactionsForUser(customerId);
     let total = 0;
 
     txns.forEach(t => {
-        const amount = parseFloat(t.amount.replace(/[^0-9.]/g, '')) || 0;
-        if (t.type === 'credit' || t.amount.includes('+')) {
-            total += amount;
-        } else {
-            total -= amount;
-        }
+        const amount = parseFloat(String(t.amount || '0').replace(/[^\d.]/g, '')) || 0;
+        const legCredit = t.leg && String(t.leg).toUpperCase() === 'CREDIT';
+        const typeCredit = t.type && String(t.type).toLowerCase() === 'credit';
+        const signCredit = String(t.amount || '').indexOf('+') !== -1;
+        const isCredit = legCredit || typeCredit || signCredit;
+        if (isCredit) total += amount;
+        else total -= amount;
     });
 
     // Update the availableBalance field for the user

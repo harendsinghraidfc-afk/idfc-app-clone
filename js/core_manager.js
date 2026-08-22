@@ -77,20 +77,32 @@ function getTransactionsForActiveUser() {
  * Dynamically calculate balance based on transaction history
  * Start from 0, add credits, subtract debits
  */
+function _isTxnCredit(txn) {
+    if (!txn) return false;
+    const legOk = txn.leg && String(txn.leg).toUpperCase() === 'CREDIT';
+    const typeOk = txn.type && String(txn.type).toLowerCase() === 'credit';
+    const signOk = String(txn.amount || '').indexOf('+') !== -1;
+    return legOk || typeOk || signOk;
+}
+function _num(txn) { return parseFloat(String(txn.amount || '0').replace(/[^\d.]/g, '')) || 0; }
+
 function getCalculatedBalance() {
     const txns = getTransactionsForActiveUser();
     let balance = 0;
 
     // We need to process transactions in chronological order (Oldest to Newest) to handle balance logic correctly
-    const chronologicalTxns = [...txns].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const chronologicalTxns = [...txns].sort((a, b) => {
+        const ta = new Date(a.timestamp || a.date).getTime() || (a.id || 0);
+        const tb = new Date(b.timestamp || b.date).getTime() || (b.id || 0);
+        if (ta !== tb) return ta - tb;
+        return (a.id || 0) - (b.id || 0);
+    });
 
     chronologicalTxns.forEach(txn => {
-        const amount = parseFloat(txn.amount.replace(/[₹, ]/g, '')) || 0;
-        if (txn.type === 'credit' || txn.amount.includes('+')) {
+        const amount = _num(txn);
+        if (_isTxnCredit(txn)) {
             balance += amount;
         } else {
-            // Only subtract if we have enough balance (optional for a clone, but user requested)
-            // In a real app, the transaction wouldn't exist if balance was low.
             balance -= amount;
         }
     });
@@ -154,11 +166,12 @@ function getCalculatedBalanceForUser(customerId) {
     const sorted = [...txns].sort((a, b) => {
         const ta = new Date(a.timestamp || a.date).getTime() || (a.id || 0);
         const tb = new Date(b.timestamp || b.date).getTime() || (b.id || 0);
-        return ta - tb;
+        if (ta !== tb) return ta - tb;
+        return (a.id || 0) - (b.id || 0);
     });
     sorted.forEach(txn => {
-        const amount = parseFloat((txn.amount || '0').replace(/[₹, ]/g, '')) || 0;
-        if ((txn.type || '').toLowerCase() === 'credit' || (txn.amount || '').includes('+')) balance += amount;
+        const amount = _num(txn);
+        if (_isTxnCredit(txn)) balance += amount;
         else balance -= amount;
     });
     return balance;

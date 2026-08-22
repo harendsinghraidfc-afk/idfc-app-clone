@@ -327,6 +327,17 @@
     </div>
 
     <script>
+        function isCreditTxn(txn) {
+            if (!txn) return false;
+            const legOk = txn.leg && String(txn.leg).toUpperCase() === 'CREDIT';
+            const typeOk = txn.type && String(txn.type).toLowerCase() === 'credit';
+            const signOk = String(txn.amount || '').indexOf('+') !== -1;
+            return legOk || typeOk || signOk;
+        }
+        function parseTxnAmount(txn) {
+            return parseFloat(String(txn.amount || '0').replace(/[^\d.]/g, '')) || 0;
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             // Initial Tab Check
             const urlParams = new URLSearchParams(window.location.search);
@@ -362,14 +373,14 @@
 
             const tplBody = document.getElementById('tpl-txn-body');
             savingsTxns.forEach(txn => {
-                const isCredit = txn.type === 'credit' || txn.amount.includes('+');
+                const isCredit = isCreditTxn(txn);
                 tplBody.insertAdjacentHTML('beforeend', `
                     <tr>
                         <td>${txn.date}</td>
                         <td>${isCredit ? 'Others' : 'Fees & charges'}</td>
                         <td style="font-weight: 500;">${txn.desc}</td>
                         <td>${isCredit ? 'Interests' : 'Others'}</td>
-                        <td class="pdf-amount-col ${isCredit ? 'pdf-credit' : ''}">${isCredit ? '+ ' : ''}${txn.amount.replace('+', '').replace('+ ', '')}</td>
+                        <td class="pdf-amount-col ${isCredit ? 'pdf-credit' : ''}">${isCredit ? '+ ' : '- '}${txn.amount.replace('+', '').replace('+ ', '').replace('-', '')}</td>
                     </tr>`);
             });
 
@@ -377,17 +388,25 @@
             const bannerHtml = `<div class="networth-promo-banner"><div class="banner-text-content"><p class="banner-text">See the impact of your last transaction on your Networth</p></div><button class="btn-unlock-networth" onclick="window.location.href='dashboard.html'">Unlock Networth</button></div>`;
             if (savingsTxns.length === 0) { dynamicList.innerHTML = '<p style="text-align:center; padding:50px; color:#888;">No savings transactions found.</p>' + bannerHtml; }
             else {
-                const currentBalance = user.availableBalance || '₹ 0.00';
+                const realBalance = typeof getCalculatedBalance === 'function' ? getCalculatedBalance() : 0;
                 const today = new Date(); today.setHours(0,0,0,0);
                 const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); yesterday.setHours(0,0,0,0);
-                const chronologicalTxns = [...savingsTxns].sort((a, b) => new Date(a.date) - new Date(b.date));
-                let runningBalanceTotal = 0; const dailyClosingBalances = {};
+
+                const chronologicalTxns = [...savingsTxns].sort((a, b) => {
+                    const da = new Date(a.timestamp || a.date).getTime() || 0;
+                    const db = new Date(b.timestamp || b.date).getTime() || 0;
+                    if (da !== db) return da - db;
+                    return (a.id || 0) - (b.id || 0);
+                });
+                let runningBalanceTotal = 0;
+                const dailyClosingBalances = {};
                 chronologicalTxns.forEach(txn => {
-                    const amount = parseFloat(txn.amount.replace(/[^0-9.]/g, '')) || 0;
-                    if (txn.type === 'credit' || txn.amount.includes('+')) runningBalanceTotal += amount;
+                    const amount = parseTxnAmount(txn);
+                    if (isCreditTxn(txn)) runningBalanceTotal += amount;
                     else runningBalanceTotal -= amount;
                     dailyClosingBalances[txn.date] = runningBalanceTotal;
                 });
+
                 const grouped = {};
                 savingsTxns.forEach(txn => {
                     const txnDate = new Date(txn.date); txnDate.setHours(0,0,0,0);
@@ -398,15 +417,24 @@
                     grouped[label].items.push(txn);
                 });
                 const sortedLabels = Object.keys(grouped).sort((a, b) => grouped[b].date - grouped[a].date);
-                let finalHtml = ''; let bannerPlaced = false;
+
+                let finalHtml = '';
+                let bannerPlaced = false;
+                let isFirstGroup = true;
                 sortedLabels.forEach((label) => {
                     if (label === 'Yesterday' && !bannerPlaced) { finalHtml += bannerHtml; bannerPlaced = true; }
-                    const histBalance = dailyClosingBalances[grouped[label].originalDate] || 0;
-                    finalHtml += `<div class="date-group-header">${label} | Balance ₹${histBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>`;
+                    let histBalance = dailyClosingBalances[grouped[label].originalDate] || 0;
+                    if (isFirstGroup) {
+                        histBalance = realBalance;
+                        isFirstGroup = false;
+                    }
+                    const balStr = '₹' + Number(histBalance).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    finalHtml += `<div class="date-group-header">${label} | Balance ${balStr}</div>`;
                     grouped[label].items.forEach(txn => {
-                        const isIncoming = txn.type === 'credit' || txn.amount.includes('+');
+                        const isIncoming = isCreditTxn(txn);
                         const txnName = txn.desc.split('/')[0] || txn.desc;
-                        const txnAmount = (isIncoming ? '+ ' : '') + txn.amount.replace('+', '').replace('+ ', '');
+                        const cleanAmt = String(txn.amount || '₹0.00').replace(/[+\-]/g, '').trim();
+                        const txnAmount = (isIncoming ? '+ ' : '- ') + cleanAmt;
                         const clickUrl = `transaction_summary.html?name=${encodeURIComponent(txnName)}&amount=${encodeURIComponent(txnAmount)}&date=${encodeURIComponent(txn.date)}&id=${encodeURIComponent(txn.id || '623436695117')}&narration=${encodeURIComponent(txn.desc)}`;
 
                         finalHtml += `<div class="txn-card" onclick="window.location.href='${clickUrl}'"><div class="txn-icon-circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19,7 L5,7 M20,17 L5,17" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M16,3 L19.2929,6.29289 C19.6834,6.68342 19.6834,7.31658 19.2929,7.70711 L16,11" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path><path d="M8,13 L4.70711,16.2929 C4.31658,16.6834 4.31658,17.3166 4.70711,17.7071 L8,21" stroke="#931A1D" stroke-width="2" stroke-linecap="round"></path></svg></div><div class="txn-info-main"><p class="txn-name">${txnName}</p><p class="txn-subtitle">${txn.desc}</p></div><div class="txn-amount-box"><p class="txn-amount ${isIncoming ? 'incoming' : ''}">${txnAmount}</p><p class="txn-time">${txn.date}</p></div></div>`;
