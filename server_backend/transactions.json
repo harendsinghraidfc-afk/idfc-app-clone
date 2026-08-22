@@ -3,29 +3,11 @@
         {
             "id": 5001,
             "date": "22 Aug, 2026",
-            "desc": "Swiggy/Order/Lunch",
-            "amount": "₹450.00",
-            "category": "savings",
-            "type": "debit",
-            "status": "approved"
-        },
-        {
-            "id": 5002,
-            "date": "21 Aug, 2026",
             "desc": "Salary/Deposit/Corp",
-            "amount": "₹75,000.00",
+            "amount": "₹5,000.00",
             "category": "savings",
             "type": "credit",
             "status": "approved"
-        },
-        {
-            "id": 5003,
-            "date": "20 Aug, 2026",
-            "desc": "Amazon/Shopping/Electronics",
-            "amount": "₹12,000.00",
-            "category": "savings",
-            "type": "debit",
-            "status": "billed"
         }
     ],
     "6910097017": [
@@ -37,60 +19,6 @@
             "category": "savings",
             "type": "credit",
             "status": "approved"
-        },
-        {
-            "id": 2001,
-            "date": "17 Aug, 2026",
-            "desc": "Phonepe/UPI/Transfer to Friends",
-            "amount": "₹500.00",
-            "category": "savings",
-            "type": "debit",
-            "status": "unbilled"
-        },
-        {
-            "id": 2002,
-            "date": "16 Aug, 2026",
-            "desc": "Zomato/Order/Food Delivery",
-            "amount": "₹350.00",
-            "category": "savings",
-            "type": "debit",
-            "status": "approved"
-        },
-        {
-            "id": 2003,
-            "date": "08 Aug, 2026",
-            "desc": "ATM/Cash Withdrawal/Mumbai",
-            "amount": "₹2,000.00",
-            "category": "savings",
-            "type": "debit",
-            "status": "billed"
-        },
-        {
-            "id": 2004,
-            "date": "17 Aug, 2026",
-            "desc": "ATM/Cash Withdrawal/Mumbai",
-            "amount": "₹200.00",
-            "status": "billed",
-            "category": "savings",
-            "type": "debit"
-        },
-        {
-            "date": "17 Aug 2026",
-            "desc": "ATM/Cash Withdrawal/Mumbai",
-            "amount": "100",
-            "status": "unbilled",
-            "category": "savings",
-            "type": "debit",
-            "id": 1786960646971
-        },
-        {
-            "date": "17 Aug 2026",
-            "desc": "ATM/Cash Deposit/Mumbai",
-            "amount": "₹1500",
-            "status": "approved",
-            "category": "savings",
-            "type": "credit",
-            "id": 1786960694577
         }
     ]
 }
