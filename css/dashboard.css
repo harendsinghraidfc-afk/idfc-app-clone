@@ -618,13 +618,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 0.75rem !important; /* Slightly bigger */
+    font-size: 0.75rem !important;
     color: #ffffff;
-    /* Stronger shadow for crisp readability on maroon bg */
-    text-shadow: 0 1px 6px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.8);
-    font-weight: 700; /* Bolder */
-    width: 55%; /* Narrow width so it stays strictly on the left half */
-    line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    font-weight: 500; /* Removed bold (700 -> 500) */
+    width: 90%; /* Increased width to avoid unexpected wrapping */
+    line-height: 1.3;
     margin: 0 !important;
     opacity: 0;
     transform: translateY(40px);
