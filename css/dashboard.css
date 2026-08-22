@@ -244,13 +244,13 @@
 .golden-circle {
     width: 68px;
     height: 68px;
-    background: linear-gradient(135deg, #FFD700 0%, #FBB03B 100%);
+    background: #FFCC00; /* Solid Gold for perfectly uniform look */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 6px 15px rgba(251, 176, 59, 0.4);
-    border: 3.5px solid #FFD700; /* Matching start of gradient for seamless look */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none; /* Removed border to eliminate "different color" look on edges */
     text-align: center;
     box-sizing: border-box;
     overflow: hidden;
