@@ -3,6 +3,15 @@
 const STORAGE_KEY = 'idfc_users_data';
 const TXN_STORAGE_KEY = 'idfc_transactions_data';
 
+function formatCurrencyIN(amount) {
+    const num = typeof amount === 'number' ? amount : parseFloat(String(amount || '0').replace(/[₹,\s]/g, '')) || 0;
+    return `₹${num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function _toAmountNum(amount) {
+    return typeof amount === 'number' ? amount : parseFloat(String(amount || '0').replace(/[₹,\s]/g, '')) || 0;
+}
+
 // Initialize data from server
 async function initializeData(forceFetch = false) {
     if (forceFetch || !localStorage.getItem(STORAGE_KEY)) {
@@ -59,7 +68,7 @@ function recalculateUserBalance(customerId) {
         else total -= amount;
     });
 
-    users[userIndex].availableBalance = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+    users[userIndex].availableBalance = formatCurrencyIN(total);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
 }
 
@@ -111,13 +120,25 @@ function saveTransaction(customerId, txn, txnId = null) {
         }
     }
 
+    const amtNum = _toAmountNum(txn.amount);
+    txn.amount = formatCurrencyIN(txn.amount);
+    if (!txn.amount_num || String(txn.amount_num).trim() === '') txn.amount_num = amtNum;
+
     if (txnId) {
-        const index = allTxns[customerId].findIndex(t => t.id == txnId);
+        const index = allTxns[customerId].findIndex(t => String(t.id) === String(txnId));
         if (index !== -1) {
-            allTxns[customerId][index] = { ...txn, id: parseInt(txnId) };
+            allTxns[customerId][index] = { ...allTxns[customerId][index], ...txn, id: allTxns[customerId][index].id };
         }
     } else {
         txn.id = Date.now();
+        txn.timestamp = txn.timestamp || txn.date || new Date().toLocaleString('en-GB');
+        txn.standalone = txn.standalone !== undefined ? txn.standalone : true;
+        txn.initiated_by = txn.initiated_by || 'ADMIN';
+        txn.mode = txn.mode || 'MANUAL';
+        txn.leg = (txn.type || 'credit').toUpperCase();
+        txn.mpin_verified = txn.mpin_verified !== undefined ? txn.mpin_verified : false;
+        txn.reconciled = txn.reconciled !== undefined ? txn.reconciled : true;
+        txn.status = txn.status || 'approved';
         allTxns[customerId].push(txn);
     }
 
@@ -175,12 +196,18 @@ function adminAddSingle(customerId, opts) {
         id: Date.now(),
         date: opts.date || new Date().toLocaleDateString('en-GB'),
         desc: opts.desc || (opts.type === 'credit' ? 'Admin Credit' : 'Admin Debit'),
-        amount: opts.amount || `₹${Number(opts.amountNum).toFixed(2)}`,
+        amount: formatCurrencyIN(opts.amountNum != null ? opts.amountNum : (opts.amount || 0)),
+        amount_num: _parseNum(opts.amountNum != null ? opts.amountNum : (opts.amount || 0)),
         type: (opts.type || 'credit').toLowerCase(),
         category: opts.category || 'savings',
         status: status,
         initiated_by: 'ADMIN',
-        mode: opts.mode || 'ADMIN'
+        mode: opts.mode || 'ADMIN',
+        standalone: true,
+        reconciled: true,
+        leg: (opts.type || 'credit').toUpperCase(),
+        mpin_verified: false,
+        timestamp: opts.timestamp || opts.date || new Date().toLocaleString('en-GB')
     };
     allTxns[customerId].push(txn);
     localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
@@ -218,13 +245,15 @@ function adminTransfer(fromCustomerId, toCustomerId, amountNum, opts = {}) {
     }
     allTxns[fromCustomerId].push({
         id: baseId, date: dNow, desc: opts.desc || 'Admin Transfer Out',
-        amount: `₹${amt.toFixed(2)}`, type: 'debit', category: opts.category || 'savings',
-        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
+        amount: formatCurrencyIN(amt), amount_num: amt, type: 'debit', category: opts.category || 'savings',
+        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER',
+        leg: 'DEBIT', standalone: false, reconciled: true, timestamp: dNow, mpin_verified: true
     });
     allTxns[toCustomerId].push({
         id: baseId+1, date: dNow, desc: opts.desc || 'Admin Transfer In',
-        amount: `₹${amt.toFixed(2)}`, type: 'credit', category: opts.category || 'savings',
-        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
+        amount: formatCurrencyIN(amt), amount_num: amt, type: 'credit', category: opts.category || 'savings',
+        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER',
+        leg: 'CREDIT', standalone: false, reconciled: true, timestamp: dNow, mpin_verified: false
     });
     localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
     recalculateUserBalance(fromCustomerId);

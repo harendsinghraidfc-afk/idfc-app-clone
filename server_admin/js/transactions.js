@@ -124,10 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
     txnForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const customerId = userSelector.value;
+        const rawAmount = document.getElementById('txn-amount').value;
         const txnData = {
             date: document.getElementById('txn-date').value,
             desc: document.getElementById('txn-desc').value,
-            amount: document.getElementById('txn-amount').value,
+            amount: rawAmount,
             status: document.getElementById('txn-status').value,
             category: document.getElementById('txn-category').value,
             type: document.getElementById('txn-type').value
