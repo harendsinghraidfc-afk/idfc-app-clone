@@ -618,12 +618,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    font-size: 0.75rem !important;
+    font-size: 0.68rem !important; /* Reduced font size to prevent 3-line wrap */
     color: #ffffff;
     text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-    font-weight: 500; /* Removed bold (700 -> 500) */
-    width: 90%; /* Increased width to avoid unexpected wrapping */
-    line-height: 1.3;
+    font-weight: 500;
+    width: 100%; /* Full width to use all available space */
+    line-height: 1.2;
     margin: 0 !important;
     opacity: 0;
     transform: translateY(40px);
