@@ -8,6 +8,15 @@
             "category": "savings",
             "type": "credit",
             "status": "approved"
+        },
+        {
+            "date": "22 Aug 2026",
+            "desc": "IGST",
+            "amount": "2540",
+            "status": "unbilled",
+            "category": "savings",
+            "type": "debit",
+            "id": 1787395420460
         }
     ],
     "6910097017": [
