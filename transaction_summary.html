@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaction Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/transaction_summary.css">
+    <script src="js/core_manager.js"></script>
+</head>
+<body>
+    <div id="summary-container">
+        <!-- Header -->
+        <header class="summary-header">
+            <button class="icon-btn back-btn" onclick="window.history.back()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="header-center">
+                <h1>Transaction Summary</h1>
+                <p id="txn-date-header">Sat • 22 Aug, 2026 • 01:36 PM</p>
+            </div>
+            <button class="icon-btn share-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
+        </header>
+
+        <!-- Main Amount Section -->
+        <div class="amount-section">
+            <div class="main-icon-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+            </div>
+            <div class="txn-info">
+                <h2 class="txn-name">Airtelpredirect2</h2>
+                <p class="txn-category-label">Home expenses</p>
+            </div>
+            <div class="txn-amount">₹405.10</div>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="category-selection">
+            <p class="category-title">Tap to change category</p>
+            <div class="category-scroll">
+                <div class="category-item">
+                    <div class="cat-icon-circle active">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="15" y2="17"></line></svg>
+                        <div class="check-badge">✓</div>
+                    </div>
+                    <span class="cat-name">Home expenses</span>
+                </div>
+                <div class="category-item">
+                    <div class="cat-icon-circle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                    </div>
+                    <span class="cat-name">Food and Drinks</span>
+                </div>
+                <div class="category-item">
+                    <div class="cat-icon-circle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </div>
+                    <span class="cat-name">Grocery</span>
+                </div>
+                <div class="category-item">
+                    <div class="cat-icon-circle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <span class="cat-name">Family and Friends</span>
+                </div>
+                <div class="category-item">
+                    <div class="cat-icon-circle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </div>
+                    <span class="cat-name">View More</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Details List -->
+        <div class="details-list" id="details-section">
+            <div class="detail-item">
+                <p class="detail-label">Transaction type</p>
+                <p class="detail-value">Domestic POS</p>
+            </div>
+            <div class="detail-item">
+                <p class="detail-label">From</p>
+                <p class="detail-value">FIRST Digital Credit Card xx 4361</p>
+            </div>
+            <div class="detail-item">
+                <p class="detail-label">Transaction ID</p>
+                <div class="detail-value-row">
+                    <p class="detail-value">623436695117</p>
+                    <button class="copy-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy
+                    </button>
+                </div>
+            </div>
+            <div class="detail-item">
+                <p class="detail-label">Status</p>
+                <p class="detail-value">unbilled</p>
+            </div>
+            <div class="detail-item">
+                <p class="detail-label">Original Narration</p>
+                <p class="detail-value">CC/4814/713406508</p>
+            </div>
+            <div class="detail-item">
+                <p class="detail-label">Remarks</p>
+                <div class="remarks-section">
+                    <input type="text" class="remarks-input" placeholder="Add Remarks">
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Toggle -->
+        <div class="details-toggle" id="toggle-btn">
+            Hide Transaction Details
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="summary-actions">
+            <button class="action-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#931A1D" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>DOWNLOAD<br>RECEIPT</span>
+            </button>
+            <button class="action-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#931A1D" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="11" y2="17"></line></svg>
+                <span>RAISE DISPUTE /<br>REPORT FRAUD</span>
+            </button>
+        </div>
+
+        <!-- Promo Card -->
+        <div class="promo-card">
+            <div class="promo-text">
+                <h3>Shield your next spend! Book<br>FD @7.25% p.a.</h3>
+            </div>
+            <div class="promo-chevron">❯</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('toggle-btn');
+            const detailsSection = document.getElementById('details-section');
+            let isHidden = false;
+
+            toggleBtn.addEventListener('click', () => {
+                isHidden = !isHidden;
+                if (isHidden) {
+                    detailsSection.style.display = 'none';
+                    toggleBtn.innerHTML = 'Show Transaction Details <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+                } else {
+                    detailsSection.style.display = 'block';
+                    toggleBtn.innerHTML = 'Hide Transaction Details <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+                }
+            });
+
+            // Populate with dynamic data if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            const amount = urlParams.get('amount');
+            const date = urlParams.get('date');
+            const type = urlParams.get('type') || 'Domestic POS';
+            const from = urlParams.get('from') || 'FIRST Digital Credit Card xx 4361';
+            const id = urlParams.get('id') || '623436695117';
+            const status = urlParams.get('status') || 'unbilled';
+            const narration = urlParams.get('narration') || 'CC/4814/713406508';
+
+            if (name) document.querySelector('.txn-name').textContent = name;
+            if (amount) document.querySelector('.txn-amount').textContent = amount;
+            if (date) document.getElementById('txn-date-header').textContent = date;
+
+            const detailValues = document.querySelectorAll('.detail-value');
+            if (detailValues.length >= 5) {
+                detailValues[0].textContent = type;
+                detailValues[1].textContent = from;
+                detailValues[2].textContent = id;
+                detailValues[3].textContent = status;
+                detailValues[4].textContent = narration;
+            }
+
+            const user = getActiveUser();
+            if (user) {
+                // You could parse URL parameters here to show specific transaction details
+            }
+        });
+    </script>
+</body>
+</html>
