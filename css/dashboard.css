@@ -222,26 +222,52 @@
     overflow: hidden; /* Changed back to hidden */
 }
 
-.card-circle-top {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    top: 50%;
-    left: -40px; /* Half outside on left */
-    transform: translateY(-50%);
+/* Golden Quick Actions sit on the card's edge */
+.savings-quick-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 40px;
+    margin-top: -35px; /* Pull up to sit on the card border */
+    position: relative;
+    z-index: 20;
+    margin-bottom: 25px;
 }
 
-.card-circle-bottom {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.1);
+.quick-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.golden-circle {
+    width: 68px;
+    height: 68px;
+    background: linear-gradient(135deg, #FFD700 0%, #FBB03B 100%);
     border-radius: 50%;
-    top: 50%;
-    right: -40px; /* Half outside on right */
-    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 6px 15px rgba(251, 176, 59, 0.4);
+    border: 3.5px solid #ffffff;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.circle-text {
+    font-size: 11px;
+    font-weight: 800;
+    color: #8B1538;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.action-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a5568;
+    text-align: center;
 }
 
 .card-header {
