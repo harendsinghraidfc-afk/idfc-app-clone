@@ -1,0 +1,441 @@
+================================================================================
+                    IDFC APP - TRANSACTION FORMAT & MATCHING SYSTEM
+                                   (Full Specification)
+================================================================================
+Report Generated On: 22-Aug-2026
+Version: 1.0
+Purpose: User + Admin controlled transactions, with 100% Credit-Debit matching
+================================================================================
+
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│ 1. CORE PRINCIPLE - BANKING GRADE DUAL ENTRY                              │
+│                                                                            │
+│    RULE: Har DEBIT transaction ke liye EXACTLY EK CREDIT transaction      │
+│          hona CHAHIYE, same amount + same UTR + same timestamp.           │
+│          In dono ko milkar EK "MATCHED PAIR" banta hai.                    │
+│                                                                            │
+│    Golden Formula:  SUM(ALL DEBITS)  =  SUM(ALL CREDITS)                   │
+│                    (Across entire system, always zero difference)         │
+│                                                                            │
+│    Exceptions: Only those marked "STANDALONE"                             │
+│       → Cash Deposit at Branch (only Credit, no internal Debit)            │
+│       → Salary Credit from Employer (only Credit)                          │
+│       → Bank Charges / Penalty (only Debit)                                │
+│       → Interest Credit (only Credit)                                      │
+│    These carry a flag: standalone=true                                     │
+└────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+  2. NEW TRANSACTION RECORD FORMAT (Every entry in transactions.json)
+================================================================================
+
+{
+  "id": 5001,                              // Auto: Date.now() / sequential
+  "date": "22 Aug, 2026",                   // Date part only
+  "timestamp": "22 Aug, 2026 14:36:22",    // Full timestamp for matching
+  "utr": "UPI2208202614362200001",          // * MANDATORY - Unique Pair ID *
+  "leg": "DEBIT",                           // "DEBIT" or "CREDIT" - matching side
+  "pair_of": 5002,                          // id of counter entry (mirror)
+  "category": "savings",                    // savings | credit_card | fd | etc.
+  "mode": "UPI",                            // UPI | QR | BANK_TRANSFER |
+                                            //   NEFT | RTGS | IMPS | CASH |
+                                            //   AUTO_PAY | BILL | STANDALONE
+  "amount": "₹500.00",                      // Signed by 'leg' field above
+  "desc": "UPI/Sent To/Rahul Chavda",
+  "remarks": "Lunch money",
+  "from_customer_id": "8822334455",         // Money came out from
+  "to_customer_id":   "6910097017",         // Money went into
+  "from_account_mask": "100 **** 2211",
+  "to_account_mask":   "102 **** 4831",
+  "initiated_by": "USER",                   // USER | ADMIN | SYSTEM
+  "mpin_verified": true,                    // For user-initiated debits
+  "balance_check_pass": true,               // Insufficient check result
+  "status": "APPROVED",                     // PENDING | APPROVED | FAILED |
+                                            //   REVERSED | ON_HOLD | RECONCILED
+  "status_history": [
+     { "s": "PENDING",  "t": "22 Aug 2026 14:36:10", "by": "USER"  },
+     { "s": "APPROVED", "t": "22 Aug 2026 14:36:22", "by": "SYSTEM"}
+  ],
+  "hold_funds_applied": false,              // E.g. cheque clear hold
+  "hold_release_date": null,
+  "standalone": false,                      // true → pair check SKIP (salary etc.)
+  "standalone_reason": null,                // "SALARY_CREDIT" | "CASH_DIPOSIT" | etc.
+  "reconciled": true,                       // Auto after pair match
+  "reconcile_timestamp": "22 Aug 2026 14:36:22",
+  "fee_applied": "₹0.00",
+  "gst_applied": "₹0.00",
+  "reverse_of": null,                       // If reversed, original txn id
+  "narration_internal": "AUTO_GEN_UPI_PAIR",
+  "admin_override": false,                  // Did admin force-create?
+  "admin_override_reason": null,
+  "checksum": "SHA256(above fields)"        // Tamper detection
+}
+
+
+================================================================================
+  3. NEW TRANSACTIONS.JSON STRUCTURE (Backward Compatible)
+================================================================================
+
+OLD (Current):
+   {
+     "8822334455": [  {id, desc, amount, type, ... }  ],
+     "6910097017": [  {id, desc, amount, type, ... }  ]
+   }
+
+NEW (Recommended):
+   {
+     "meta": {
+         "last_utr": "UPI2208202614362200001",
+         "last_id": 5099,
+         "reconcile_cycle_run": "22 Aug 2026 23:59:00",
+         "system_net_balance_checksum": 0
+     },
+     "by_customer": {
+         "8822334455": [  /* old user txns array, same format */  ],
+         "6910097017": [  /* old user txns array, same format */  ]
+     },
+     "by_utr": {
+         "UPI2208202614362200001": {
+             "debit_id":  5001,
+             "credit_id": 5002,
+             "amount": "₹500.00",
+             "status": "MATCHED",  /* MATCHED | UNMATCHED_DEBIT | UNMATCHED_CREDIT | MISMATCH */
+             "amount_match": true,
+             "timestamp_delta_sec": 2
+         }
+     },
+     "unmatched_queue": [
+         /* auto populated by reconcile job */
+     ],
+     "standalone_txns": [
+         /* list of IDs where standalone=true */
+     ],
+     "audit_log": [
+         {
+             "t": "22 Aug 2026 14:36:22",
+             "by": "ADMIN",
+             "action": "TXN_FORCE_APPROVE",
+             "txn_id": 5055,
+             "reason": "Compliance cleared manually"
+         }
+     ]
+   }
+
+Note: `by_customer` block keeps existing UI pages running without code break.
+
+
+================================================================================
+  4. USER vs ADMIN CONTROL MATRIX (Kaun kya kar sakta hai)
+================================================================================
+
+------------------------------------------------------------------------
+ ACTION                         |  USER (Self)  |  ADMIN (Any User)
+------------------------------------------------------------------------
+View own transactions           |     YES       |     YES (all users)
+View other user txns            |     NO        |     YES
+------------------------------------------------------------------------
+Initiate DEBIT (pay money)      |     YES       |     YES (override)
+  Conditions USER:              |               |
+    • MPIN required             |  MANDATORY    |  OPTIONAL (if override)
+    • Balance check             |  MANDATORY    |  OPTIONAL (can override)
+    • Can overdraw              |     NO        |  YES (with flag + reason)
+  Conditions ADMIN:             |               |
+    • Admin password required   |      -        |  MANDATORY
+    • Reason field mandatory    |      -        |  YES (if override)
+------------------------------------------------------------------------
+Initiate CREDIT (receive /      |               |
+   add money)                   |               |
+  From external (salary/cash)   |   Can request |  YES (direct)
+  From another IDFC user        |   Auto on     |  YES (direct)
+                                |   their debit |
+------------------------------------------------------------------------
+Edit transaction                |               |
+  Fields editable by USER:      |  REMARKS      |  REMARKS, CATEGORY
+                                |  CATEGORY     |  STATUS, AMOUNT*, MODE
+                                |               |
+  * Amount edit by ADMIN:       |               |
+    → BOTH legs auto-sync       |      -        |  YES (mirror both)
+------------------------------------------------------------------------
+Delete transaction              |     NO        |  YES (soft delete only)
+  Delete = REVERSE pair both    |      -        |  Always creates REVERSED
+                                |               |  counter txns automatically
+------------------------------------------------------------------------
+Change Status                   |     NO        |  YES
+  PENDING → APPROVED            |     NO        |  YES
+  APPROVED → REVERSED           |     NO        |  YES (with reason)
+  FAILED → PENDING (retry)      |     NO        |  YES
+------------------------------------------------------------------------
+Run Manual Reconciliation       |     NO        |  YES (button in admin)
+Mark pair MATCHED forcibly      |     NO        |  YES
+Fix Unmatched queue             |     NO        |  YES
+Override pair check             |     NO        |  YES (with reason)
+------------------------------------------------------------------------
+Export Report                   |  OWN ONLY     |  ALL, FULL RECON REPORT
+Download Statement              |  OWN (format) |  ALL USER + AUDIT
+------------------------------------------------------------------------
+Fee / Charges apply             |  READ ONLY    |  YES (manual, auto-sync both)
+Interest credit                 |  READ ONLY    |  YES (standalone credit)
+------------------------------------------------------------------------
+
+
+================================================================================
+  5. MATCHING / RECONCILIATION ENGINE - STEP BY STEP ALGORITHM
+================================================================================
+
+This runs: (A) On EVERY transaction write  (B) Nightly 23:59 batch  (C) Admin button
+
+────────────────────────────────────────────────────────────────────────
+Step 1: UTR Pair Build (by_utr index)
+────────────────────────────────────────────────────────────────────────
+For every transaction:
+  → If standalone=true  → SKIP pair match (mark RECONCILED=true, reason=STANDALONE)
+  → Else:
+      Look up by_utr[ txn.utr ]
+        • If entry missing → create:  { debit_id:null, credit_id:null, status:"PENDING" }
+        • If txn.leg = DEBIT  → by_utr[utr].debit_id  = txn.id
+        • If txn.leg = CREDIT → by_utr[utr].credit_id = txn.id
+
+────────────────────────────────────────────────────────────────────────
+Step 2: Pair Match Check (Per UTR)
+────────────────────────────────────────────────────────────────────────
+For each UTR in by_utr:
+
+  Case A: Both debit_id AND credit_id present
+    → Load both txn objects (from two customer buckets)
+    → Compare 4 rules:
+        Rule 1: amounts identical (parse numbers, exact match)
+        Rule 2: from_customer_id of DEBIT == to_customer_id in pair opposite? YES
+        Rule 3: Both statuses != FAILED
+        Rule 4: Timestamp delta < 300 seconds (5 min)
+
+    → All 4 pass → status = "MATCHED"
+                   → Mark BOTH txns: reconciled=true, reconcile_timestamp=now
+    → Any fail    → status = "MISMATCH"
+                   → Add to unmatched_queue with mismatch_reason
+                   → Alert admin dashboard
+
+  Case B: Only debit_id present
+    → Check if txn.date older than T+0 (today)
+       • No  → wait (status = UNMATCHED_DEBIT, temp)
+       • Yes → push to unmatched_queue: "DEBIT WITHOUT CREDIT (UTR xxx)"
+                Admin can: [Resolve to Standalone / Force pair / Reverse]
+
+  Case C: Only credit_id present
+    → Same as B → unmatched_queue: "CREDIT WITHOUT DEBIT (UTR xxx)"
+                (Could be salary, cash deposit, etc.)
+                Admin can: [Mark Standalone / Find pair / Reject]
+
+────────────────────────────────────────────────────────────────────────
+Step 3: Global System Consistency (Zero Sum)
+────────────────────────────────────────────────────────────────────────
+Sum ALL txns:
+   total = Σ ( amount_num * (leg=="DEBIT" ? -1 : +1) * (status=="APPROVED" ? 1 : 0) )
+
+Expected result after full reconcile:
+   total == Σ STANDALONE TXNS only (because real pairs cancel out)
+
+If total != expected: → CRITICAL ALERT, admin panel RED
+   → Possible causes: tamper, mid-write crash, admin partial edit
+
+────────────────────────────────────────────────────────────────────────
+Step 4: Per-User Running Balance Audit
+────────────────────────────────────────────────────────────────────────
+For EACH customer_id:
+   Calc balance_oldest_to_newest (getCalculatedBalance existing logic)
+   Also cross check:
+      user.availableBalance  MUST  ==  getCalculatedBalance()
+
+   If mismatch: → Add to audit_log + auto-fix (write correct value)
+                 → Admin notified "Auto-fix: User 8822334455 balance corrected"
+
+────────────────────────────────────────────────────────────────────────
+Step 5: Reconciliation Report Output (TXT / PDF)
+────────────────────────────────────────────────────────────────────────
+Sample Report Snippet:
+
+  IDFC FIRST BANK - DAILY RECONCILIATION REPORT
+  Date: 22 Aug 2026 | Generated: 23:59:05
+  ──────────────────────────────────────────────────────
+  System Approved Count     :  5,212 txns
+  Matched Pairs             :  2,450 pairs (4,900 txns)  [93.9%]
+  Standalone Transactions   :    312 txns               [ 5.9%]
+  Unmatched Queue           :     15 items              [ 0.2%]
+    ├─ UNMATCHED_DEBIT      :      8
+    ├─ UNMATCHED_CREDIT     :      5
+    └─ MISMATCH             :      2
+  ──────────────────────────────────────────────────────
+  Global Net Sum (excl ST): ₹ 0.00   ✓ CONSISTENT
+  Highest txn day: ₹ 5,00,000 (User 8822334455)
+  Admin overrides today: 3
+  ──────────────────────────────────────────────────────
+  Unmatched Details:
+  1. UTR: IMPS2208xxxxxx  | DEBIT-only | ₹ 12,500 | 14:20:33
+     Action suggested: Mark STANDALONE (outgoing IMPS to external bank)
+  2. UTR: CASH2208xxxxxx  | CREDIT-only | ₹ 8,000 | 10:05:12
+     Action suggested: Admin confirm Cash Deposit slip → standalone
+
+
+================================================================================
+  6. FULL TRANSACTION FLOW - USER SENDS MONEY TO OTHER USER (Example)
+================================================================================
+
+User Aman (8822334455) → ₹500 → Rahul (6910097017) via UPI
+
+Step 1   Aman opens Pay to Mobile → enters phone, amount, remarks
+Step 2   Validate:
+         • Phone maps to Rahul? (Lookup users.json by customerId/phone field)
+         • Aman balance >= ₹500? (YES/NO → "Insufficient balance")
+         • If NO → FAIL record (single, FAILED, no pair needed)
+Step 3   MPIN prompt → 4 digit enter
+         • auth.js compare → match pass
+Step 4   System generates 1 UTR = "UPI2208202614362200001"
+Step 5   Build Aman's DEBIT leg + Rahul's CREDIT leg (both objects in memory)
+Step 6   Insert BOTH atomically (write localStorage in ONE operation,
+         so system never sees half-written state)
+Step 7   Run inline Reconcile Step 1-2 for this UTR
+         → by_utr entry: both IDs present, amount match → MATCHED
+         → Both txns set reconciled=true
+Step 8   Recalculate Aman balance (decrease ₹500)
+         Recalculate Rahul balance (increase ₹500)
+         Update users.json both records
+Step 9   UI shows: "Payment Successful | UTR: UPI2208xxxx" + receipt
+Step 10  Aman's transactions + Rahul's transactions BOTH show new record
+         (Aman sees ₹-500 red,  Rahul sees ₹+500 green)
+
+RESULT: 2 transaction records generated → 100% Matched Pair ✓
+        Global sum unaffected (₹-500 + ₹+500 = 0) ✓
+
+
+================================================================================
+  7. EXTERNAL MONEY IN (Add Money / Salary / Cash Deposit)
+================================================================================
+
+Scenario: Aman's salary ₹50,000 credited.
+
+Step 1   Admin → Admin Dashboard → Transactions → Add Transaction
+Step 2   Admin chooses:
+           Customer: Aman
+           Mode: SALARY
+           Amount: ₹50,000
+           Leg: CREDIT
+           Standalone: TRUE
+           Standalone Reason: "SALARY_CREDIT_FROM_XYZ_CORP"
+           Admin password: ●●●●●●
+Step 3   System creates ONLY ONE transaction record
+         leg=CREDIT, standalone=true, pair_of=null
+         reconciled=true (bypass pair rule, because standalone)
+Step 4   Reconcile sees standalone=true → skips pair check
+         Adds id to standalone_txns[] array
+Step 5   Aman balance recalculation: + ₹50,000
+Step 6   Audit log writes {admin, action:"STANDALONE CREDIT", ...}
+
+NOTE: Add Money via UPI from external app → Treat as STANDALONE CREDIT
+(External bank is not in our system so no DEBIT leg in our DB)
+
+
+================================================================================
+  8. ADMIN REVERSAL FLOW (How to undo mistakes, keeping matching)
+================================================================================
+
+If admin needs to reverse txn_id 5001 (₹500 DEBIT Aman → Rahul):
+
+Step 1  Admin clicks "Reverse" on 5001
+Step 2  Reason popup: "Customer dispute, wrong beneficiary"
+Step 3  System loads pair via utr → finds 5002 (the CREDIT in Rahul)
+Step 4  Generate NEW UTR: "REV2208xxxxxx"
+Step 5  Generate REVERSE pair:
+         5099: DEBIT  Rahul  ₹500  reverse_of=5002
+         5100: CREDIT Aman   ₹500  reverse_of=5001
+Step 6  Original 5001.status = "REVERSED"
+        Original 5002.status = "REVERSED"
+        Original by_utr entry → "MATCHED_REVERSED"
+Step 7  Reverse pair 5099/5100 → "MATCHED"
+Step 8  Balances recalc: Aman +500, Rahul -500 (back to original)
+Step 9  Audit log writes 2 entries
+
+RESULT: Original pair kept intact (audit trail never lost)
+        Reverse pair also matched 100%
+        Net effect on all users: Zero (as if never happened)
+        History is preserved, not deleted!
+
+
+================================================================================
+  9. TAMPER PROTECTION (Why checksum field?)
+================================================================================
+
+Every transaction write:
+   payload_string = JSON string of all fields in fixed key order
+   checksum = SHA256(payload_string + server_salt_from_env)
+   store checksum field alongside
+
+Every reconcile run:
+   Re-compute checksum for EACH txn and compare to stored value
+   MISMATCH → audit_log: "POSSIBLE TAMPER: txn 5001 checksum mismatch"
+              Mark that txn ON_HOLD, block user actions until admin review
+
+Admin cannot silently change amount without checksum invalidating.
+Fix: Admin edits go through admin panel → panel updates checksum correctly,
+     plus logs admin action in audit_log[] with reason.
+
+
+================================================================================
+  10. IMPLEMENTATION ORDER (Kaise karein step by step)
+================================================================================
+
+PHASE 1 — INFRASTRUCTURE (No UI change needed, safe rollout)
+   a) Update core_manager.js with new helper functions:
+        • generateUTR(mode)
+        • createTransactionPair(fromId, toId, amount, mode, desc, remarks)
+        • createStandaloneTxn(customerId, leg, amount, reason, mode, desc)
+        • runInlineReconcile(utr)
+        • recalculateAllBalances()
+        • verifyChecksum(txn) / generateChecksum(txn)
+   b) Update data_manager.js (admin) same helpers + admin password gate
+   c) Migrate transactions.json → new wrapper structure (by_customer keep old)
+
+PHASE 2 — INTEGRATE EXISTING INITIATORS
+   a) scan.html            → on QR scan success → call createTransactionPair
+   b) bank_transfer.html   → on confirm + payee exists → pair create
+   c) pay_to_mobile.html   → on match found + confirm → pair create
+   d) savings_details "Add Money" → standalone credit
+
+PHASE 3 — RECONCILIATION DASHBOARD
+   a) server_admin → NEW PAGE: reconciliation.html
+      → Show UTR table: matched/unmatched/mismatch counters
+      → Unmatched queue action buttons: Mark Standalone / Reverse / Force pair
+      → Zero-sum checksum status (green / red banner)
+      → Full audit log viewer
+
+PHASE 4 — REVERSAL + ADMIN OVERRIDE
+   a) transactions.html admin → Add Reverse button
+   b) Admin password modal before destructive ops
+   c) Fee / Interest standalone credit flow
+
+PHASE 5 — NIGHTLY BATCH + REPORTS
+   a) If backend ever moves to Node/PHP: cron job every midnight
+      (For static app: admin "Run Daily Reconcile" button works just fine)
+   b) Export reconciliation TXT/PDF report
+
+
+================================================================================
+  11. KEY ADVANTAGES OF THIS DESIGN
+================================================================================
+
+ ✓ 100% Audit Trail (never delete - always reverse with pair)
+ ✓ Zero-sum consistency verifiable every second
+ ✓ Pair matching auto + admin correction for real-world exceptions
+ ✓ User actions gated (MPIN + Balance check) — cannot cheat
+ ✓ Admin has override powers, but EVERYTHING logged with reason
+ ✓ Old UI keeps working (by_customer block unchanged shape)
+ ✓ Tamper detection via checksum
+ ✓ External banks / salary scenario → Standalone flag cleanly handles
+ ✓ Unmatched queue never lost → human + algorithm both see it
+ ✓ Reversal preserves history, doesn't try to pretend it never happened
+ ✓ Scales: 10 txns/day or 10M txns/day — logic is same O(n) indexing by UTR
+
+
+================================================================================
+END OF REPORT
+================================================================================

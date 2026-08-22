@@ -28,13 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Artificial delay to simulate network request
                     await new Promise(resolve => setTimeout(resolve, 1500));
 
-                    // Fetch with cache-busting timestamp
-                    const response = await fetch('server_backend/users.json?t=' + new Date().getTime());
-                    const users = await response.json();
-                    const user = getActiveUser();
-
-                    const userData = users.find(u => u.customerId === user?.customerId) || users[0];
-                    const balance = userData.availableBalance || '₹ 0.00';
+                    // Use dynamic calculation from core_manager.js
+                    const calculatedBalance = getCalculatedBalance();
+                    const balance = formatCurrency(calculatedBalance);
 
                     savingsCard.classList.remove('loading-shimmer');
                     balanceDots.textContent = balance;

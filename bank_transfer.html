@@ -137,9 +137,86 @@
                 </svg>
                 Add Payee
             </button>
+
+            <button class="add-payee-btn" style="margin-top:14px;background:#1b1f3a;color:#fff;border-color:#1b1f3a;" onclick="openQuickTransfer()">
+                ⚡ Quick Transfer (Demo)
+            </button>
         </div>
     </main>
 
+    <!-- Quick Transfer Modal -->
+    <div id="qtModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99998;display:none;align-items:flex-end;justify-content:center;">
+      <div style="background:#fff;width:100%;max-width:460px;border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;max-height:92vh;overflow:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="margin:0 0 10px;font-size:17px;">Quick Bank Transfer</h3>
+          <button onclick="document.getElementById('qtModal').style.display='none'" style="border:0;background:transparent;font-size:22px;cursor:pointer;color:#888;">&times;</button>
+        </div>
+
+        <div style="margin-top:10px;">
+          <label style="font-size:12px;color:#666;">Transfer Mode</label>
+          <select id="qtMode" style="width:100%;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;margin-top:6px;font-size:14px;">
+            <option value="IMPS">IMPS (Instant)</option>
+            <option value="NEFT">NEFT (2 hours)</option>
+            <option value="RTGS">RTGS (Above ₹2 Lakh)</option>
+          </select>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;color:#666;">Beneficiary (IDFC Customer ID for internal transfer, or Beneficiary A/C no. for external)</label>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <input id="qtTo" type="text" placeholder="Customer ID / Beneficiary ID" style="flex:1;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:14px;">
+            <button onclick="findQt()" style="padding:12px 14px;border:0;background:#1b1f3a;color:#fff;border-radius:12px;font-size:13px;font-weight:600;">Find</button>
+          </div>
+          <div id="qtInfo" style="margin-top:8px;font-size:12px;color:#555;min-height:18px;"></div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;color:#666;">Amount (₹)</label>
+          <input id="qtAmount" type="number" min="1" step="0.01" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:18px;font-weight:600;margin-top:6px;">
+          <div id="qtBal" style="font-size:12px;color:#666;margin-top:6px;"></div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;color:#666;">Remarks (optional)</label>
+          <input id="qtRemarks" type="text" placeholder="Add a note" style="width:100%;box-sizing:border-box;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:14px;margin-top:6px;">
+        </div>
+
+        <button onclick="submitQt()" style="width:100%;margin-top:18px;padding:14px;border:0;background:#8B1538;color:#fff;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;">Transfer &amp; Verify MPIN</button>
+      </div>
+    </div>
+
     <script src="js/core_manager.js"></script>
+    <script src="js/user_payment_flow.js"></script>
+    <script>
+        let qtPayee = null;
+        function openQuickTransfer() {
+            document.getElementById('qtModal').style.display='flex';
+            document.getElementById('qtTo').value='';
+            document.getElementById('qtAmount').value='';
+            document.getElementById('qtRemarks').value='';
+            document.getElementById('qtInfo').textContent='';
+            qtPayee=null;
+            try { document.getElementById('qtBal').textContent='Available Balance: ' + formatCurrency(userGetMyBalance()); } catch(e){}
+        }
+        function findQt() {
+            const q = document.getElementById('qtTo').value.trim();
+            const u = findUserByPhoneOrCid(q);
+            if (u) {
+                qtPayee = { customerId: u.customerId, name: u.fullName || u.name || 'User' };
+                document.getElementById('qtInfo').innerHTML = `<span style="color:#0a8f51;">✓ IDFC Internal Transfer → MATCHED PAIR: <b>${qtPayee.name}</b> (${u.customerId})</span>`;
+            } else {
+                qtPayee = { name: 'External Beneficiary ' + q, accountNumber: q };
+                document.getElementById('qtInfo').innerHTML = `<span style="color:#c60;">External bank: will record as STANDALONE debit in your account only (demo).</span>`;
+            }
+        }
+        function submitQt() {
+            const amt = parseFloat(document.getElementById('qtAmount').value);
+            if (!amt || amt <= 0) { alert('Enter amount'); return; }
+            if (!qtPayee) { findQt(); if (!qtPayee) return; }
+            const mode = document.getElementById('qtMode').value;
+            const remarks = document.getElementById('qtRemarks').value;
+            userBankTransfer(qtPayee, amt, { mode, remarks });
+        }
+    </script>
 </body>
 </html>

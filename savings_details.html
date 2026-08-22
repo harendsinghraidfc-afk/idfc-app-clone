@@ -277,9 +277,10 @@
                 accNumHeader.classList.remove('skeleton-loading');
                 infoRows.forEach(row => row.classList.remove('skeleton-loading'));
 
-                balanceElem.textContent = user.availableBalance || '₹ 0.00';
-                netWithdrawalElem.textContent = user.availableBalance || '₹ 0.00';
-                accNumHeader.textContent = `${user.accountNumber} - ...`;
+                const calculatedBalance = formatCurrency(getCalculatedBalance());
+                balanceElem.textContent = calculatedBalance;
+                netWithdrawalElem.textContent = calculatedBalance;
+                accNumHeader.textContent = `${user.accountNumber} - ${user.accountType}`;
 
                 // Update Account Type and Header
                 const accTypeElem = document.querySelector('.header-acc-type');

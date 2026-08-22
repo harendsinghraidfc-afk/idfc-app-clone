@@ -344,12 +344,47 @@
     </div>
 
     <div class="fab-container">
-        <button class="new-payment-btn">
+        <button class="new-payment-btn" onclick="openNewPaymentFlow()">
             <span class="plus-icon">+</span>
             <span>New payment</span>
         </button>
     </div>
 
+    <!-- Payment Modal -->
+    <div id="payModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99998;display:none;align-items:flex-end;justify-content:center;">
+      <div id="payModalBox" style="background:#fff;width:100%;max-width:460px;border-top-left-radius:20px;border-top-right-radius:20px;padding:20px;box-shadow:0 -12px 36px rgba(0,0,0,.15);max-height:92vh;overflow:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="margin:0;font-size:17px;">Send Money</h3>
+          <button onclick="closePayModal()" style="border:0;background:transparent;font-size:22px;cursor:pointer;color:#888;">&times;</button>
+        </div>
+
+        <div style="margin-top:10px;">
+          <label style="font-size:12px;color:#666;">To (Phone / Customer ID)</label>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <input id="payTarget" type="text" placeholder="Phone or ID" style="flex:1;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:14px;">
+            <button onclick="findPayTarget()" style="padding:12px 14px;border:0;background:#1b1f3a;color:#fff;border-radius:12px;font-size:13px;font-weight:600;">Find</button>
+          </div>
+          <div id="payTargetInfo" style="margin-top:8px;font-size:12px;color:#555;min-height:18px;"></div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;color:#666;">Amount (₹)</label>
+          <input id="payAmount" type="number" min="1" step="0.01" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:18px;font-weight:600;margin-top:6px;">
+          <div id="payBalanceInfo" style="font-size:12px;color:#666;margin-top:6px;"></div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;color:#666;">Remarks (optional)</label>
+          <input id="payRemarks" type="text" placeholder="Add a note" style="width:100%;box-sizing:border-box;padding:12px;border:1.5px solid #dfe5ef;border-radius:12px;outline:none;font-size:14px;margin-top:6px;">
+        </div>
+
+        <button onclick="submitPay()" style="width:100%;margin-top:18px;padding:14px;border:0;background:#8B1538;color:#fff;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;">Pay &amp; Verify MPIN</button>
+        <button onclick="demoAddMoney()" style="width:100%;margin-top:8px;padding:12px;border:1px dashed #2f5bec;background:#f2f6ff;color:#2f5bec;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;">Quick Add Money (Demo Standalone Credit)</button>
+      </div>
+    </div>
+
+    <script src="js/core_manager.js"></script>
+    <script src="js/user_payment_flow.js"></script>
     <script>
         const searchInput = document.getElementById('search-input');
         const abcBtn = document.getElementById('kb-abc');
@@ -371,7 +406,56 @@
             searchInput.inputMode = "numeric";
             searchInput.focus();
         };
+
+        let _foundTarget = null;
+
+        function openNewPaymentFlow() {
+            document.getElementById('payModal').style.display = 'flex';
+            document.getElementById('payTarget').value = '';
+            document.getElementById('payAmount').value = '';
+            document.getElementById('payRemarks').value = '';
+            document.getElementById('payTargetInfo').textContent = '';
+            _foundTarget = null;
+            try { document.getElementById('payBalanceInfo').textContent = 'Available Balance: ' + formatCurrency(userGetMyBalance()); } catch(e){}
+        }
+        function closePayModal(){ document.getElementById('payModal').style.display='none'; }
+
+        function findPayTarget() {
+            const q = document.getElementById('payTarget').value.trim();
+            if (!q) { document.getElementById('payTargetInfo').textContent = 'Enter phone or ID'; return; }
+            const u = findUserByPhoneOrCid(q);
+            if (!u) { _foundTarget=null; document.getElementById('payTargetInfo').innerHTML='<span style="color:#d33;">No matching IDFC user found. Will treat as EXTERNAL (debit only, standalone demo).</span>'; return; }
+            _foundTarget = u;
+            document.getElementById('payTargetInfo').innerHTML = `<span style="color:#0a8f51;">✓ Found: <b>${u.fullName || u.name || 'User'}</b> • ID ${u.customerId}. Payment will create MATCHED PAIR transfer.</span>`;
+        }
+
+        function submitPay() {
+            const amt = parseFloat(document.getElementById('payAmount').value);
+            if (!amt || amt <= 0) { alert('Enter amount'); return; }
+            const rem = document.getElementById('payRemarks').value;
+            if (_foundTarget) {
+                userPayToContact(_foundTarget, amt, { remarks: rem });
+            } else {
+                const q = document.getElementById('payTarget').value.trim();
+                const fakeUser = { customerId: null, fullName: q || 'External UPI' };
+                userScanQrPay(null, amt, { merchant: q || 'External Beneficiary', remarks: rem });
+            }
+        }
+
+        function demoAddMoney() {
+            const amt = parseFloat(document.getElementById('payAmount').value);
+            if (!amt || amt <= 0) { alert('Enter amount to add'); return; }
+            userAddMoney(amt, 'UPI', { remarks: 'Demo add money via UPI (external)' });
+        }
+
+        /* Wire search input to Find */
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('payTarget').value = searchInput.value;
+                openNewPaymentFlow();
+                setTimeout(findPayTarget, 50);
+            }
+        });
     </script>
-    <script src="js/core_manager.js"></script>
 </body>
 </html>

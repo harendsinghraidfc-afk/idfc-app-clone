@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Engine TEST</title>
+<style>
+  body { font-family: Inter, Arial; padding: 20px; background:#f5f7fb; color:#111; }
+  .card { background:#fff; padding:16px; border-radius:14px; box-shadow: 0 6px 18px rgba(0,0,0,.05); margin-bottom: 16px;}
+  h2 { margin: 0 0 10px; font-size: 16px; }
+  pre { background:#111; color:#9ee6b6; padding:12px; border-radius:10px; overflow:auto; font-size:12px;}
+  button { background:#1b1f3a; color:#fff; padding:8px 12px; border:0; border-radius:8px; cursor:pointer; margin:2px;}
+  .row { display:flex; gap:8px; flex-wrap:wrap;}
+  .pass { color:#0a8f51; font-weight:700; }
+  .fail { color:#d33; font-weight:700; }
+  .test { padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 13px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2>🔬 Transaction Matching Engine — Test Harness</h2>
+    <div class="row">
+      <button onclick="runAllTests()">▶ Run All Tests</button>
+      <button onclick="runTest(1)">T1: Transfer Aman → Rahul ₹500</button>
+      <button onclick="runTest(2)">T2: Balance Check + Debit Block</button>
+      <button onclick="runTest(3)">T3: Admin Standalone Credit (Salary)</button>
+      <button onclick="runTest(4)">T4: Reconciliation — Pair Matched?</button>
+      <button onclick="runTest(5)">T5: Add Money (User Standalone Credit)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🧾 Results</h2>
+    <div id="results">Click "Run All Tests" to start.</div>
+  </div>
+
+  <div class="card">
+    <h2>💾 Current localStorage Snapshot</h2>
+    <pre id="snap"></pre>
+  </div>
+
+  <script src="js/core_manager.js"></script>
+  <script src="js/user_payment_flow.js"></script>
+  <script>
+    const AMAN = "8822334455";
+    const RAHUL = "6910097017";
+    let logs = [];
+    let passed = 0, failed = 0;
+
+    function reset() {
+      localStorage.removeItem('idfc_app_user_data');
+      localStorage.removeItem('idfc_transactions_data');
+      localStorage.setItem('idfc_users_data', JSON.stringify([
+        { customerId: AMAN, fullName: "Aman Sharma", mpin:"1111", accountNumber:"10044552211", availableBalance:"₹0.00"},
+        { customerId: RAHUL, fullName: "Rahul Chavda", mpin:"1234", accountNumber:"10295164831", availableBalance:"₹0.00"}
+      ]));
+      localStorage.setItem('idfc_app_user_data', JSON.stringify({ customerId: AMAN, fullName:"Aman Sharma", mpin:"1111" }));
+    }
+
+    function log(name, ok, detail) {
+      const div = document.createElement('div');
+      div.className = 'test';
+      div.innerHTML = `${ok?'<span class="pass">✓ PASS</span>':'<span class="fail">✗ FAIL</span>'} <b>${name}</b> — ${detail||''}`;
+      document.getElementById('results').appendChild(div);
+      if (ok) passed++; else failed++;
+    }
+
+    async function snap() {
+      const txn = JSON.parse(localStorage.getItem('idfc_transactions_data')||'{}');
+      document.getElementById('snap').textContent = JSON.stringify(txn, null, 2).slice(0, 3500);
+    }
+
+    function runTest(n) {
+      if (n === 1) {
+        // First setup: credit Aman some amount
+        adminAddTxn(AMAN, { adminAuthorised:true, type:'credit', amountNum:1000, mode:'SALARY', desc:'Opening balance', standalone:true, standaloneReason:'OPENING_BALANCE'});
+        const before = { a: getCalculatedBalanceForUser(AMAN), r: getCalculatedBalanceForUser(RAHUL) };
+        const res = transferBetweenUsers({ fromCustomerId:AMAN, toCustomerId:RAHUL, amountNum:500, mode:'UPI', initiatedBy:'ADMIN', mpinVerified:true });
+        const after  = { a: getCalculatedBalanceForUser(AMAN), r: getCalculatedBalanceForUser(RAHUL) };
+        log('T1a: Transfer function returned ok', res.ok, res.ok ? ('UTR: ' + res.utr) : res.reason);
+        log('T1b: Aman balance decreased ₹500', after.a === before.a - 500, `Before: ${before.a}, After: ${after.a}`);
+        log('T1c: Rahul balance increased ₹500', after.r === before.r + 500, `Before: ${before.r}, After: ${after.r}`);
+      }
+
+      if (n === 2) {
+        // Ensure Aman has only 100, try to debit 500 → fail
+        localStorage.setItem('idfc_transactions_data', JSON.stringify({}));
+        adminAddTxn(AMAN, { adminAuthorised:true, type:'credit', amountNum:100, desc:'Small credit', standalone:true, standaloneReason:'TEST'});
+        const lowBal = hasSufficientBalance(AMAN, 500);
+        log('T2a: hasSufficientBalance detects insufficient', lowBal === false, `Bal 100 vs require 500 → ${lowBal}`);
+        const failRes = transferBetweenUsers({ fromCustomerId:AMAN, toCustomerId:RAHUL, amountNum:500, initiatedBy:'ADMIN', mpinVerified:true });
+        log('T2b: Transfer blocked on low balance', !failRes.ok, failRes.reason || '');
+        const failDebit = addSingleTransaction(AMAN, { type:'debit', amountNum:500 });
+        log('T2c: Single Debit also blocked', !failDebit.ok, failDebit.reason || '');
+      }
+
+      if (n === 3) {
+        localStorage.setItem('idfc_transactions_data', JSON.stringify({}));
+        const before = getCalculatedBalanceForUser(RAHUL);
+        const res = adminAddTxn(RAHUL, { adminAuthorised:true, type:'credit', amountNum:25000, mode:'SALARY', desc:'Salary Credit Aug 2026', standalone:true, standaloneReason:'SALARY_CREDIT'});
+        const after = getCalculatedBalanceForUser(RAHUL);
+        log('T3a: Admin standalone credit returned ok', res.ok, res.ok ? ('txnId: ' + res.txn.id) : res.reason);
+        log('T3b: User balance increased correctly', after === before + 25000, `Before ${before}, After ${after}`);
+        log('T3c: Standalone flag set', !!res.txn && !!res.txn.standalone, 'standalone=' + (!!res.txn && res.txn.standalone));
+      }
+
+      if (n === 4) {
+        localStorage.setItem('idfc_transactions_data', JSON.stringify({}));
+        adminAddTxn(AMAN, { adminAuthorised:true, type:'credit', amountNum:5000, standalone:true, standaloneReason:'OPENING', desc:'Opening'});
+        const r1 = transferBetweenUsers({ fromCustomerId:AMAN, toCustomerId:RAHUL, amountNum:750, mode:'IMPS', initiatedBy:'ADMIN', mpinVerified:true });
+        const r2 = transferBetweenUsers({ fromCustomerId:AMAN, toCustomerId:RAHUL, amountNum:320, mode:'UPI', initiatedBy:'ADMIN', mpinVerified:true });
+        const rec = runQuickReconcile();
+        log('T4a: Two transfers executed', r1.ok && r2.ok, '');
+        log('T4b: Total pairs counted correctly', rec.total_pairs === 2, 'total_pairs=' + rec.total_pairs);
+        log('T4c: NO unmatched/mismatch issues', rec.issues.length === 0, 'issues=' + rec.issues.length + ' → ' + JSON.stringify(rec.issues));
+
+        // Now break data: delete Rahul credit
+        const all = JSON.parse(localStorage.getItem('idfc_transactions_data'));
+        const rahulTxns = all[RAHUL].filter(t => t.utr !== r1.utr);
+        all[RAHUL] = rahulTxns;
+        localStorage.setItem('idfc_transactions_data', JSON.stringify(all));
+        const rec2 = runQuickReconcile();
+        log('T4d: Reconcile detects UNPAIRED debit', rec2.issues.some(i => i.type === 'UNPAIRED'), 'issues=' + JSON.stringify(rec2.issues.map(i=>i.type)));
+      }
+
+      if (n === 5) {
+        localStorage.setItem('idfc_transactions_data', JSON.stringify({}));
+        localStorage.setItem('idfc_app_user_data', JSON.stringify({ customerId: AMAN, fullName:"Aman Sharma", mpin:"1111" }));
+        // call addMoney engine directly
+        const res = addSingleTransaction(AMAN, { type:'credit', amountNum:2000, mode:'UPI', desc:'Add Money/UPI/Load Wallet', standalone:true, standaloneReason:'EXTERNAL_ADD_MONEY'});
+        const after = getCalculatedBalanceForUser(AMAN);
+        log('T5a: Add Money standalone credit', res.ok, res.ok ? ('Bal now ' + after) : res.reason);
+        log('T5b: Balance reflects add', after === 2000, `Bal:${after}`);
+      }
+    }
+
+    function runAllTests() {
+      document.getElementById('results').innerHTML = '';
+      passed = 0; failed = 0;
+      reset();
+      [1,2,3,4,5].forEach(runTest);
+      const div = document.createElement('div');
+      div.innerHTML = `<br><b>Summary:</b> <span class="pass">✓ ${passed} Passed</span> / <span class="fail">✗ ${failed} Failed</span>`;
+      document.getElementById('results').appendChild(div);
+      snap();
+    }
+    reset(); snap();
+  </script>
+</body>
+</html>
