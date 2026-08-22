@@ -322,7 +322,7 @@
                 <img src="assets/images/savings.svg" alt="Loans">
                 <span>LOANS</span>
             </div>
-            <div class="nav-item" onclick="window.location.href='scan.html'">
+            <div class="nav-item" onclick="if(window.Android){Android.openScanner()}else{window.location.href='scan.html'}">
                 <img src="assets/images/qr_scan_v2.svg" alt="Scan">
                 <span>SCAN</span>
             </div>

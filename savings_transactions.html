@@ -102,7 +102,7 @@
                 <div id="payments-view-content" style="padding: 0 5px;">
                     <p class="section-label">Send Money</p>
                     <div class="icon-grid">
-                        <div class="grid-item" onclick="window.location.href='scan.html'"><div class="icon-circle gold">
+                        <div class="grid-item" onclick="if(window.Android){Android.openScanner()}else{window.location.href='scan.html'}"><div class="icon-circle gold">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2 9V6.5C2 4.01 4.01 2 6.5 2H9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                 <path d="M15 2H17.5C19.99 2 22 4.01 22 6.5V9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -283,7 +283,7 @@
             <div class="nav-item" onclick="window.location.href='accounts.html'"><img src="assets/images/accounts.svg" alt="Accounts"><span>ACCOUNTS</span></div>
             <div class="nav-item active" onclick="switchTab('payments')"><div class="nav-icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 4H10.5M10.5 4C12.9853 4 15 6.01472 15 8.5C15 10.9853 12.9853 13 10.5 13H6L13 20M10.5 4H18M6 8.5H18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><span>PAY</span></div>
             <div class="nav-item"><img src="assets/images/savings.svg" alt="Loans"><span>LOANS</span></div>
-            <div class="nav-item" onclick="window.location.href='scan.html'"><img src="assets/images/qr_scan_v2.svg" alt="Scan"><span>SCAN</span></div>
+            <div class="nav-item" onclick="if(window.Android){Android.openScanner()}else{window.location.href='scan.html'}"><img src="assets/images/qr_scan_v2.svg" alt="Scan"><span>SCAN</span></div>
         </nav>
     </div>
 
