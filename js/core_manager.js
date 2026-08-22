@@ -61,14 +61,21 @@ function getTransactionsForActiveUser() {
     const allTxns = JSON.parse(allTxnsData);
     const userTxns = allTxns[user.customerId] || [];
 
-    // Robust Chronological Sorting (Newest First)
-    return [...userTxns].sort((a, b) => {
+    const filtered = userTxns.filter(t => {
+        const cat = (t.category || 'savings').toLowerCase();
+        const status = String(t.status || 'approved').toLowerCase();
+        if (cat === 'savings') {
+            return status === 'approved';
+        }
+        return true;
+    });
+
+    return [...filtered].sort((a, b) => {
         const timeA = new Date(a.date).getTime();
         const timeB = new Date(b.date).getTime();
 
         if (timeB !== timeA) return timeB - timeA;
 
-        // If dates are exactly same, sort by ID to maintain entry order
         return (b.id || 0) - (a.id || 0);
     });
 }
@@ -90,7 +97,6 @@ function getCalculatedBalance() {
     const txns = getTransactionsForActiveUser();
     let balance = 0;
 
-    // We need to process transactions in chronological order (Oldest to Newest) to handle balance logic correctly
     const chronologicalTxns = [...txns].sort((a, b) => {
         const ta = new Date(a.timestamp || a.date).getTime() || (a.id || 0);
         const tb = new Date(b.timestamp || b.date).getTime() || (b.id || 0);
@@ -99,6 +105,9 @@ function getCalculatedBalance() {
     });
 
     chronologicalTxns.forEach(txn => {
+        const cat = (txn.category || 'savings').toLowerCase();
+        const status = String(txn.status || 'approved').toLowerCase();
+        if (cat === 'savings' && status !== 'approved') return;
         const amount = _num(txn);
         if (_isTxnCredit(txn)) {
             balance += amount;
@@ -170,6 +179,9 @@ function getCalculatedBalanceForUser(customerId) {
         return (a.id || 0) - (b.id || 0);
     });
     sorted.forEach(txn => {
+        const cat = (txn.category || 'savings').toLowerCase();
+        const status = String(txn.status || 'approved').toLowerCase();
+        if (cat === 'savings' && status !== 'approved') return;
         const amount = _num(txn);
         if (_isTxnCredit(txn)) balance += amount;
         else balance -= amount;

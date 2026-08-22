@@ -96,7 +96,7 @@
             </div>
             <div class="detail-item">
                 <p class="detail-label">Status</p>
-                <p class="detail-value">unbilled</p>
+                <p class="detail-value">approved</p>
             </div>
             <div class="detail-item">
                 <p class="detail-label">Original Narration</p>
@@ -162,7 +162,7 @@
             const type = urlParams.get('type') || 'Domestic POS';
             const from = urlParams.get('from') || 'FIRST Digital Credit Card xx 4361';
             const id = urlParams.get('id') || '623436695117';
-            const status = urlParams.get('status') || 'unbilled';
+            const status = urlParams.get('status') || 'approved';
             const narration = urlParams.get('narration') || 'CC/4814/713406508';
 
             if (name) document.querySelector('.txn-name').textContent = name;
@@ -174,7 +174,8 @@
                 detailValues[0].textContent = type;
                 detailValues[1].textContent = from;
                 detailValues[2].textContent = id;
-                detailValues[3].textContent = status;
+                const finalStatus = String(status).toLowerCase();
+                detailValues[3].textContent = (finalStatus === 'unbilled' || finalStatus === 'billed') ? 'approved' : status;
                 detailValues[4].textContent = narration;
             }
 

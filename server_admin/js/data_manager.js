@@ -47,6 +47,9 @@ function recalculateUserBalance(customerId) {
     let total = 0;
 
     txns.forEach(t => {
+        const cat = (t.category || 'savings').toLowerCase();
+        const status = String(t.status || 'approved').toLowerCase();
+        if (cat === 'savings' && status !== 'approved') return;
         const amount = parseFloat(String(t.amount || '0').replace(/[^\d.]/g, '')) || 0;
         const legCredit = t.leg && String(t.leg).toUpperCase() === 'CREDIT';
         const typeCredit = t.type && String(t.type).toLowerCase() === 'credit';
@@ -56,7 +59,6 @@ function recalculateUserBalance(customerId) {
         else total -= amount;
     });
 
-    // Update the availableBalance field for the user
     users[userIndex].availableBalance = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
 }
@@ -101,6 +103,14 @@ function saveTransaction(customerId, txn, txnId = null) {
     const allTxns = getAllTransactions();
     if (!allTxns[customerId]) allTxns[customerId] = [];
 
+    const cat = (txn.category || 'savings').toLowerCase();
+    if (cat === 'savings') {
+        const curStatus = String(txn.status || 'approved').toLowerCase();
+        if (curStatus === 'unbilled' || curStatus === 'billed') {
+            txn.status = 'approved';
+        }
+    }
+
     if (txnId) {
         const index = allTxns[customerId].findIndex(t => t.id == txnId);
         if (index !== -1) {
@@ -113,7 +123,6 @@ function saveTransaction(customerId, txn, txnId = null) {
 
     localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
 
-    // AUTO-RECALCULATE
     recalculateUserBalance(customerId);
     return true;
 }
@@ -156,6 +165,12 @@ function adminAddSingle(customerId, opts) {
     }
     const allTxns = getAllTransactions();
     if (!allTxns[customerId]) allTxns[customerId] = [];
+    const cat = (opts.category || 'savings').toLowerCase();
+    let status = opts.status || 'approved';
+    if (cat === 'savings') {
+        const s = String(status).toLowerCase();
+        if (s === 'unbilled' || s === 'billed') status = 'approved';
+    }
     const txn = {
         id: Date.now(),
         date: opts.date || new Date().toLocaleDateString('en-GB'),
@@ -163,7 +178,7 @@ function adminAddSingle(customerId, opts) {
         amount: opts.amount || `₹${Number(opts.amountNum).toFixed(2)}`,
         type: (opts.type || 'credit').toLowerCase(),
         category: opts.category || 'savings',
-        status: 'approved',
+        status: status,
         initiated_by: 'ADMIN',
         mode: opts.mode || 'ADMIN'
     };
@@ -189,22 +204,27 @@ function adminTransfer(fromCustomerId, toCustomerId, amountNum, opts = {}) {
             utr: opts.utr
         });
     }
-    /* fallback: manual dual entries */
     const allTxns = getAllTransactions();
     if (!allTxns[fromCustomerId]) allTxns[fromCustomerId] = [];
     if (!allTxns[toCustomerId]) allTxns[toCustomerId] = [];
     const utr = opts.utr || ('ADM' + Date.now());
     const dNow = new Date().toLocaleDateString('en-GB');
     const baseId = Date.now();
+    const cat = (opts.category || 'savings').toLowerCase();
+    let status = opts.status || 'approved';
+    if (cat === 'savings') {
+        const s = String(status).toLowerCase();
+        if (s === 'unbilled' || s === 'billed') status = 'approved';
+    }
     allTxns[fromCustomerId].push({
         id: baseId, date: dNow, desc: opts.desc || 'Admin Transfer Out',
-        amount: `₹${amt.toFixed(2)}`, type: 'debit', category: 'savings',
-        utr, status: 'approved', initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
+        amount: `₹${amt.toFixed(2)}`, type: 'debit', category: opts.category || 'savings',
+        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
     });
     allTxns[toCustomerId].push({
         id: baseId+1, date: dNow, desc: opts.desc || 'Admin Transfer In',
-        amount: `₹${amt.toFixed(2)}`, type: 'credit', category: 'savings',
-        utr, status: 'approved', initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
+        amount: `₹${amt.toFixed(2)}`, type: 'credit', category: opts.category || 'savings',
+        utr, status: status, initiated_by: 'ADMIN', mode: opts.mode || 'ADMIN_TRANSFER'
     });
     localStorage.setItem(TXN_STORAGE_KEY, JSON.stringify(allTxns));
     recalculateUserBalance(fromCustomerId);
