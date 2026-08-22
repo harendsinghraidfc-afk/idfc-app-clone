@@ -1,14 +1,14 @@
 [
     {
         "welcomeName": "Test2",
-        "fullName": "Lokesh Chouhan",
+        "fullName": "Rahul Chavda",
         "customerId": "6910097017",
-        "accountNumber": "102 9516 8767",
+        "accountNumber": "102 9516 4831",
         "ifscCode": "IDFB0042142",
         "swiftCode": "IDFB IN BB MUM",
         "bankName": "IDFC FIRST",
         "branchName": "Sejawata Branch",
-        "upiId": "7415448245@idfcfirst",
+        "upiId": "rahul.chavda@idfcfirst",
         "mpin": "1234",
         "availableBalance": "₹3,350.00",
         "accountType": "Savings Regular 25k",

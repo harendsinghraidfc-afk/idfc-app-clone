@@ -1,15 +1,39 @@
-body {
+html, body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    width: 100%;
     background-color: #f8f9fa;
-    color: #333;
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* Custom Visible Scrollbar for Laptop */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #profile-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: block;
 }
 
 /* Top Section */
@@ -17,9 +41,8 @@ body {
     background: linear-gradient(180deg, #1a2a44 0%, #0d1526 100%);
     color: white;
     padding: 20px;
-    padding-bottom: 40px;
+    padding-bottom: 50px;
     position: relative;
-    overflow: hidden;
 }
 
 .sparkle {
@@ -160,7 +183,6 @@ body {
     border-radius: 35px 35px 0 0;
     margin-top: -30px;
     padding: 25px 20px;
-    flex-grow: 1;
     box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 10;
@@ -175,7 +197,7 @@ body {
 
 .accounts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 15px;
     margin-bottom: 30px;
 }
@@ -184,8 +206,10 @@ body {
     background: #fff;
     border: 1px solid #edf2f7;
     border-radius: 24px;
-    padding: 18px;
+    padding: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
 }
 
 .card-header {
@@ -195,16 +219,26 @@ body {
     margin-bottom: 10px;
 }
 
+.upi-card .card-header {
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .qr-container {
     display: flex;
     justify-content: center;
-    padding: 10px;
+    padding: 5px;
 }
 
 .qr-container img {
     width: 100%;
-    max-width: 100px;
+    max-width: 220px;
     height: auto;
+    aspect-ratio: 1 / 1;
+    background: white;
+    padding: 8px;
+    border-radius: 12px;
+    box-sizing: border-box;
 }
 
 .savings-header {
@@ -303,7 +337,129 @@ body {
 .item-icon.deposit { background-color: #e2e8f0; }
 .item-icon.in-go { background-color: #e2e8f0; }
 
-/* Bottom Nav Styling (assuming similar to main.css) */
+/* Rewards Banner */
+.rewards-banner {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #edf2f7;
+    position: relative;
+    overflow: hidden;
+}
+
+.rewards-content h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.explore-tag {
+    background: #d4af37;
+    color: white;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.rewards-content p {
+    font-size: 12px;
+    color: #718096;
+    margin: 0;
+    max-width: 180px;
+}
+
+.rewards-visual img {
+    width: 60px;
+    height: auto;
+    opacity: 0.8;
+}
+
+/* Settings Section */
+.settings-section {
+    padding-bottom: 100px; /* Space for bottom nav */
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 5px;
+    cursor: pointer;
+}
+
+.item-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-icon-box img {
+    width: 24px;
+    height: 24px;
+}
+
+.item-icon-box.bg-blue { background-color: #ebf8ff; }
+.item-icon-box.bg-gold { background-color: #fffaf0; }
+.item-icon-box.bg-green { background-color: #f0fff4; }
+.item-icon-box.bg-light-blue { background-color: #e6f0ff; }
+.item-icon-box.bg-light-pink { background-color: #fff0f5; }
+.item-icon-box.bg-cyan { background-color: #e0ffff; }
+.item-icon-box.bg-dark-blue { background-color: #e8eaf6; }
+.item-icon-box.bg-light-green { background-color: #e8f5e9; }
+.item-icon-box.bg-light-orange { background-color: #fff3e0; }
+.item-icon-box.bg-light-red { background-color: #ffebee; }
+.item-icon-box.bg-light-maroon { background-color: #fce4ec; }
+
+.item-text {
+    flex-grow: 1;
+}
+
+.item-text h4 {
+    margin: 0 0 2px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.item-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #a0aec0;
+}
+
+/* Footer Promo */
+.profile-footer-promo {
+    text-align: center;
+    padding: 40px 0 100px 0;
+}
+
+.promo-text-blue {
+    color: #1a3a6c;
+    font-size: 24px;
+    font-weight: 800;
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+}
+
+
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -328,3 +484,32 @@ body {
     height: 24px;
     margin-bottom: 4px;
 }
+
+/* Scroll Top Button */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: #1a2a44;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: none;
+    pointer-events: none;
+}
+
+.scroll-top-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
