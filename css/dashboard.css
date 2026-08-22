@@ -222,6 +222,28 @@
     overflow: hidden; /* Changed back to hidden */
 }
 
+.card-circle-top {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: 50%;
+    left: -40px; /* Half outside on left */
+    transform: translateY(-50%);
+}
+
+.card-circle-bottom {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: 50%;
+    right: -40px; /* Half outside on right */
+    transform: translateY(-50%);
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;
