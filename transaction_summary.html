@@ -78,17 +78,31 @@
         <div class="details-list" id="details-section">
             <div class="detail-item">
                 <p class="detail-label">Transaction type</p>
-                <p class="detail-value">Domestic POS</p>
+                <p class="detail-value" data-field="type">Domestic POS</p>
             </div>
             <div class="detail-item">
                 <p class="detail-label">From</p>
-                <p class="detail-value">FIRST Digital Credit Card xx 4361</p>
+                <p class="detail-value" data-field="from">FIRST Digital Credit Card xx 4361</p>
+            </div>
+            <div class="detail-item" id="detail-to" style="display:none;">
+                <p class="detail-label">To</p>
+                <p class="detail-value" data-field="to">-</p>
+            </div>
+            <div class="detail-item" id="detail-utr" style="display:none;">
+                <p class="detail-label">UTR / Reference</p>
+                <div class="detail-value-row">
+                    <p class="detail-value" data-field="utr">-</p>
+                    <button class="copy-btn" onclick="copyField('utr')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy
+                    </button>
+                </div>
             </div>
             <div class="detail-item">
                 <p class="detail-label">Transaction ID</p>
                 <div class="detail-value-row">
-                    <p class="detail-value">623436695117</p>
-                    <button class="copy-btn">
+                    <p class="detail-value" data-field="id">623436695117</p>
+                    <button class="copy-btn" onclick="copyField('id')">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         Copy
                     </button>
@@ -96,17 +110,19 @@
             </div>
             <div class="detail-item">
                 <p class="detail-label">Status</p>
-                <p class="detail-value">approved</p>
+                <p class="detail-value" data-field="status">approved</p>
+            </div>
+            <div class="detail-item" id="detail-initiated" style="display:none;">
+                <p class="detail-label">Initiated by</p>
+                <p class="detail-value" data-field="initiated">-</p>
             </div>
             <div class="detail-item">
                 <p class="detail-label">Original Narration</p>
-                <p class="detail-value">CC/4814/713406508</p>
+                <p class="detail-value" data-field="narration">CC/4814/713406508</p>
             </div>
-            <div class="detail-item">
+            <div class="detail-item" id="detail-remarks" style="display:none;">
                 <p class="detail-label">Remarks</p>
-                <div class="remarks-section">
-                    <input type="text" class="remarks-input" placeholder="Add Remarks">
-                </div>
+                <p class="detail-value" data-field="remarks">-</p>
             </div>
         </div>
 
@@ -138,7 +154,89 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        function setDetail(field, value) {
+            const nodes = document.querySelectorAll(`[data-field="${field}"]`);
+            nodes.forEach(n => { if (value !== null && value !== undefined && value !== '') n.textContent = value; });
+        }
+        function showRow(id, show) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = show ? 'block' : 'none';
+        }
+        function copyField(field) {
+            const node = document.querySelector(`[data-field="${field}"]`);
+            const v = node ? node.textContent : '';
+            try {
+                navigator.clipboard.writeText(v).then(() => {}).catch(() => {
+                    const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+                });
+            } catch (e) {
+                const ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+            }
+        }
+        function _maskAccount(full, fallback) {
+            if (!full) return fallback || 'XXXX';
+            const digits = String(full).replace(/\s+/g, '');
+            return digits.length >= 4 ? digits.slice(-4) : (fallback || digits || 'XXXX');
+        }
+        function _catAccountLabel(cat, user, txn) {
+            cat = String(cat || 'savings').toLowerCase();
+            if (cat === 'credit_card' || cat === 'cc') {
+                return `FIRST Digital Credit Card xx ${_maskAccount(user && user.creditCardNumber, '4361')}`;
+            }
+            if (cat === 'loan') {
+                return `IDFC Loan Account xx ${_maskAccount(user && user.accountNumber, 'XXXX')}`;
+            }
+            return `IDFC FIRST Savings xx ${_maskAccount(user && user.accountNumber, 'XXXX')}`;
+        }
+        function _findPairedTxn(customerId, utr, legFilter) {
+            try {
+                const raw = localStorage.getItem('ADMIN_TRANSACTIONS');
+                if (!raw) return null;
+                const all = JSON.parse(raw);
+                const list = all[customerId] || [];
+                return list.find(t => t.utr === utr && (!legFilter || (t.leg || '').toUpperCase() === String(legFilter).toUpperCase())) || null;
+            } catch (e) { return null; }
+        }
+        function _findUserById(customerId) {
+            try {
+                const raw = localStorage.getItem('ADMIN_USERS');
+                if (raw) {
+                    const arr = JSON.parse(raw);
+                    const u = arr.find(x => String(x.customerId) === String(customerId));
+                    if (u) return u;
+                }
+                const raw2 = localStorage.getItem('users');
+                if (raw2) {
+                    const arr = JSON.parse(raw2);
+                    const u = arr.find(x => String(x.customerId) === String(customerId));
+                    if (u) return u;
+                }
+            } catch (e) {}
+            return null;
+        }
+        function _fetchActualTxnById(idParam) {
+            if (!idParam) return { txn: null, customerId: null };
+            const active = getActiveUser ? getActiveUser() : null;
+            try {
+                const raw = localStorage.getItem('ADMIN_TRANSACTIONS');
+                if (raw) {
+                    const all = JSON.parse(raw);
+                    const ids = Object.keys(all);
+                    for (const cid of ids) {
+                        const match = all[cid].find(t => String(t.id) === String(idParam));
+                        if (match) return { txn: match, customerId: cid };
+                    }
+                }
+            } catch (e) {}
+            if (active && typeof getTransactionsForActiveUser === 'function') {
+                const arr = getTransactionsForActiveUser();
+                const match = arr.find(t => String(t.id) === String(idParam));
+                if (match) return { txn: match, customerId: active.customerId };
+            }
+            return { txn: null, customerId: active ? active.customerId : null };
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
             const toggleBtn = document.getElementById('toggle-btn');
             const detailsSection = document.getElementById('details-section');
             let isHidden = false;
@@ -154,34 +252,167 @@
                 }
             });
 
-            // Populate with dynamic data if available
+            if (typeof loadAppData === 'function') { try { await loadAppData(); } catch(e) {} }
+
             const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+
+            const { txn: actualTxn, customerId } = _fetchActualTxnById(idParam);
+            const activeUser = (typeof getActiveUser === 'function') ? getActiveUser() : null;
+            const ownerUser = (customerId && _findUserById(customerId)) || activeUser;
+
             const name = urlParams.get('name');
-            const amount = urlParams.get('amount');
+            const amountUrl = urlParams.get('amount');
             const date = urlParams.get('date');
-            const type = urlParams.get('type') || 'Domestic POS';
-            const from = urlParams.get('from') || 'FIRST Digital Credit Card xx 4361';
-            const id = urlParams.get('id') || '623436695117';
-            const status = urlParams.get('status') || 'approved';
-            const narration = urlParams.get('narration') || 'CC/4814/713406508';
+            const typeUrl = urlParams.get('type');
+            const fromUrl = urlParams.get('from');
+            const statusUrl = urlParams.get('status');
+            const narrationUrl = urlParams.get('narration');
+            const utrUrl = urlParams.get('utr');
+            const remarksUrl = urlParams.get('remarks');
 
-            if (name) document.querySelector('.txn-name').textContent = name;
-            if (amount) document.querySelector('.txn-amount').textContent = amount;
-            if (date) document.getElementById('txn-date-header').textContent = date;
+            let finalTxnName = 'Transaction';
+            let finalAmount = '₹0.00';
+            let finalDateHeader = document.getElementById('txn-date-header').textContent;
+            let finalCategoryLabel = 'Transaction';
+            let finalType = 'Domestic POS';
+            let finalFrom = ownerUser ? _catAccountLabel(actualTxn && actualTxn.category, ownerUser) : (fromUrl || 'IDFC FIRST Savings xx XXXX');
+            let finalStatus = 'approved';
+            let finalNarration = '';
+            let finalRemarks = '';
+            let finalId = String(idParam || '623436695117');
+            let finalUtr = '';
+            let finalTo = '';
+            let finalInitiatedBy = '';
 
-            const detailValues = document.querySelectorAll('.detail-value');
-            if (detailValues.length >= 5) {
-                detailValues[0].textContent = type;
-                detailValues[1].textContent = from;
-                detailValues[2].textContent = id;
-                const finalStatus = String(status).toLowerCase();
-                detailValues[3].textContent = (finalStatus === 'unbilled' || finalStatus === 'billed') ? 'approved' : status;
-                detailValues[4].textContent = narration;
+            if (actualTxn) {
+                const isCredit = (actualTxn.leg && String(actualTxn.leg).toUpperCase() === 'CREDIT') ||
+                                 (actualTxn.type && String(actualTxn.type).toLowerCase() === 'credit') ||
+                                 (String(actualTxn.amount || '').indexOf('+') !== -1);
+                const amtNum = parseFloat(String(actualTxn.amount || actualTxn.amount_num || '0').replace(/[^\d.]/g, '')) || 0;
+                const cleanAmt = `₹${amtNum.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                finalAmount = (isCredit ? '+ ' : '- ') + cleanAmt;
+
+                const mainName = (actualTxn.desc && actualTxn.desc.split('/')[0]) || actualTxn.desc || name || 'Transaction';
+                finalTxnName = mainName;
+
+                finalCategoryLabel = (actualTxn.standalone_reason === 'EXTERNAL_SALARY_CREDIT') ? 'Income / Salary'
+                                    : (actualTxn.standalone_reason === 'EXTERNAL_GOVT_CHARGE') ? 'Government Charges / Taxes'
+                                    : (actualTxn.standalone_reason && actualTxn.standalone_reason.startsWith('EXTERNAL')) ? 'External Transaction'
+                                    : (actualTxn.mode === 'UPI' ? 'UPI Transfer'
+                                        : actualTxn.mode === 'NEFT' ? 'NEFT'
+                                        : actualTxn.mode === 'IMPS' ? 'IMPS'
+                                        : actualTxn.mode === 'RTGS' ? 'RTGS'
+                                        : actualTxn.mode === 'CHARGE' ? 'Bank Charge'
+                                        : actualTxn.mode === 'ADMIN' || actualTxn.mode === 'ADMIN_TRANSFER' ? 'Admin Operation'
+                                        : 'IDFC FIRST Transfer');
+
+                finalType = actualTxn.mode || actualTxn.category || (isCredit ? 'Credit' : 'Debit') + ' Transfer';
+                if (actualTxn.mode === 'UPI') finalType = 'UPI Transfer';
+                else if (actualTxn.mode === 'NEFT') finalType = 'NEFT';
+                else if (actualTxn.mode === 'IMPS') finalType = 'IMPS';
+                else if (actualTxn.mode === 'RTGS') finalType = 'RTGS';
+                else if (actualTxn.mode === 'CHARGE') finalType = 'Bank Charge / Govt Levy';
+                else if (actualTxn.mode === 'ADMIN' || actualTxn.mode === 'ADMIN_TRANSFER') finalType = 'Admin Initiated Transfer';
+                else if (actualTxn.category === 'savings') finalType = 'Savings Account Transaction';
+                else if (actualTxn.category === 'credit_card') finalType = 'Credit Card Transaction';
+                else if (actualTxn.category === 'loan') finalType = 'Loan Account Transaction';
+
+                const cat = (actualTxn.category || 'savings').toLowerCase();
+                if (actualTxn.from_customer_id) {
+                    const u = _findUserById(actualTxn.from_customer_id);
+                    if (u) finalFrom = _catAccountLabel(cat, u);
+                    else if (ownerUser) finalFrom = _catAccountLabel(cat, ownerUser);
+                } else if (ownerUser) {
+                    finalFrom = _catAccountLabel(cat, ownerUser);
+                }
+
+                if (actualTxn.to_customer_id && String(actualTxn.to_customer_id) !== String(customerId)) {
+                    const u = _findUserById(actualTxn.to_customer_id);
+                    if (u) finalTo = _catAccountLabel(cat, u);
+                    else finalTo = `Account xx ${_maskAccount(actualTxn.to_customer_id)}`;
+                }
+                if (!finalTo && actualTxn.utr && actualTxn.pair_of !== null && actualTxn.pair_of !== undefined) {
+                    const oppositeLeg = (String(actualTxn.leg || 'DEBIT').toUpperCase() === 'DEBIT') ? 'CREDIT' : 'DEBIT';
+                    const fromAll = _findPairedTxn(customerId, actualTxn.utr, oppositeLeg);
+                    if (fromAll) {
+                        const fromCID = customerId;
+                    } else {
+                        try {
+                            const raw = localStorage.getItem('ADMIN_TRANSACTIONS');
+                            if (raw) {
+                                const all = JSON.parse(raw);
+                                for (const cid2 of Object.keys(all)) {
+                                    if (cid2 === String(customerId)) continue;
+                                    const found = all[cid2].find(t => t.utr === actualTxn.utr && (!oppositeLeg || (t.leg || '').toUpperCase() === oppositeLeg));
+                                    if (found) {
+                                        const u = _findUserById(cid2);
+                                        if (u) finalTo = _catAccountLabel(cat, u);
+                                        else finalTo = `Account xx ${_maskAccount(cid2)}`;
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (e) {}
+                    }
+                }
+
+                if (actualTxn.utr) finalUtr = actualTxn.utr;
+                if (actualTxn.desc) finalNarration = actualTxn.desc;
+                if (actualTxn.remarks) finalRemarks = actualTxn.remarks;
+
+                const rawStatus = String(actualTxn.status || 'approved').toLowerCase();
+                finalStatus = (cat === 'savings' && (rawStatus === 'unbilled' || rawStatus === 'billed')) ? 'approved' : rawStatus;
+
+                if (actualTxn.id) finalId = String(actualTxn.id);
+
+                finalDateHeader = actualTxn.timestamp || actualTxn.date || (date || finalDateHeader);
+
+                if (actualTxn.initiated_by) {
+                    const ib = String(actualTxn.initiated_by).toUpperCase();
+                    if (ib === 'ADMIN') finalInitiatedBy = 'Admin';
+                    else if (ib === 'SYSTEM') finalInitiatedBy = 'IDFC System';
+                    else finalInitiatedBy = actualTxn.initiated_by;
+                }
             }
 
-            const user = getActiveUser();
-            if (user) {
-                // You could parse URL parameters here to show specific transaction details
+            if (name) finalTxnName = name;
+            if (amountUrl) finalAmount = amountUrl;
+            if (date) finalDateHeader = date;
+            if (typeUrl) finalType = typeUrl;
+            if (fromUrl) finalFrom = fromUrl;
+            if (statusUrl) {
+                const s = String(statusUrl).toLowerCase();
+                finalStatus = (s === 'unbilled' || s === 'billed') ? 'approved' : s;
+            }
+            if (narrationUrl) finalNarration = narrationUrl;
+            if (utrUrl && !finalUtr) finalUtr = utrUrl;
+            if (remarksUrl && !finalRemarks) finalRemarks = remarksUrl;
+
+            document.querySelector('.txn-name').textContent = finalTxnName;
+            document.querySelector('.txn-amount').textContent = finalAmount;
+            const catLabel = document.querySelector('.txn-category-label');
+            if (catLabel) catLabel.textContent = finalCategoryLabel;
+            document.getElementById('txn-date-header').textContent = finalDateHeader;
+
+            setDetail('type', finalType);
+            setDetail('from', finalFrom);
+            setDetail('to', finalTo);
+            setDetail('utr', finalUtr);
+            setDetail('id', finalId);
+            setDetail('status', finalStatus);
+            setDetail('narration', finalNarration || 'CC/4814/713406508');
+            setDetail('remarks', finalRemarks || null);
+            setDetail('initiated', finalInitiatedBy || null);
+
+            showRow('detail-to', !!finalTo);
+            showRow('detail-utr', !!finalUtr);
+            showRow('detail-initiated', !!finalInitiatedBy);
+            showRow('detail-remarks', !!finalRemarks);
+
+            const amtEl = document.querySelector('.txn-amount');
+            if (amtEl) {
+                amtEl.style.color = String(finalAmount).startsWith('+') ? '#16a34a' : (String(finalAmount).startsWith('-') ? '#931A1D' : '#111827');
             }
         });
     </script>
