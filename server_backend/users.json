@@ -1,5 +1,28 @@
 [
     {
+        "welcomeName": "Aman",
+        "fullName": "Aman Sharma",
+        "customerId": "8822334455",
+        "accountNumber": "100 4455 2211",
+        "ifscCode": "IDFB0010101",
+        "swiftCode": "IDFB IN BB DEL",
+        "bankName": "IDFC FIRST",
+        "branchName": "Delhi Central Branch",
+        "upiId": "aman.sharma@idfcfirst",
+        "mpin": "1111",
+        "availableBalance": "₹15,750.00",
+        "accountType": "Savings Wealth 100k",
+        "avgMonthlyBalance": "₹50,000.00",
+        "holdFunds": "₹0.00",
+        "unclearedFunds": "₹0.00",
+        "debitCardNumber": "4111 2222 3333 4444",
+        "creditCardNumber": "5111 2222 3333 4444",
+        "ccTotalLimit": "₹1,00,000.00",
+        "ccAvailableLimit": "₹95,000.00",
+        "ckycId": "**********9988",
+        "address": "B-45, Lajpat Nagar, New Delhi 110024"
+    },
+    {
         "welcomeName": "Test2",
         "fullName": "Rahul Chavda",
         "customerId": "6910097017",

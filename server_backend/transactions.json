@@ -1,4 +1,33 @@
 {
+    "8822334455": [
+        {
+            "id": 5001,
+            "date": "22 Aug, 2026",
+            "desc": "Swiggy/Order/Lunch",
+            "amount": "₹450.00",
+            "category": "savings",
+            "type": "debit",
+            "status": "approved"
+        },
+        {
+            "id": 5002,
+            "date": "21 Aug, 2026",
+            "desc": "Salary/Deposit/Corp",
+            "amount": "₹75,000.00",
+            "category": "savings",
+            "type": "credit",
+            "status": "approved"
+        },
+        {
+            "id": 5003,
+            "date": "20 Aug, 2026",
+            "desc": "Amazon/Shopping/Electronics",
+            "amount": "₹12,000.00",
+            "category": "savings",
+            "type": "debit",
+            "status": "billed"
+        }
+    ],
     "6910097017": [
         {
             "id": 1000,
