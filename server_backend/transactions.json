@@ -47,6 +47,15 @@
             "reconciled": true,
             "linked_utr": null,
             "balance_check_pass": true
+        },
+        {
+            "date": "21 Aug 2026",
+            "desc": "ATM/Cash Withdrawal",
+            "amount": "200",
+            "status": "approved",
+            "category": "savings",
+            "type": "debit",
+            "id": 1787397827847
         }
     ],
     "6910097017": [
