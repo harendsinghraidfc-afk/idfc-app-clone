@@ -143,9 +143,35 @@ function _timeStampStr() {
 
 function generateUTR(mode = 'TXN') {
     const d = new Date();
+    const dd = _pad2(d.getDate());
+    const mm = _pad2(d.getMonth() + 1);
+    const hh = _pad2(d.getHours());
+    const mi = _pad2(d.getMinutes());
+    const ss = _pad2(d.getSeconds());
+    const base4 = `${dd}${mm}${hh}${mi}${ss}`;
+    const rand2 = Math.floor(10 + Math.random() * 90);
+    return `${base4.slice(-10)}${rand2}`.slice(0, 12).padStart(12, '0');
+}
+
+function generateInternalTxnId(prefix) {
+    let maxId = 0;
+    const all = _getAllTxnsObj();
+    const p = String(prefix || 'T').toUpperCase();
+    Object.values(all).forEach(list => list.forEach(t => {
+        const s = String(t.id || '0');
+        const num = s.replace(/\D/g, '');
+        const n = parseInt(num, 10) || 0;
+        if (s.startsWith(p) && n > maxId) maxId = n;
+    }));
+    const next = (maxId || 10000) + 1;
+    return `${p}${next}`;
+}
+
+function generateExternalTxnId() {
+    const d = new Date();
     const stamp = `${d.getFullYear()}${_pad2(d.getMonth()+1)}${_pad2(d.getDate())}${_pad2(d.getHours())}${_pad2(d.getMinutes())}${_pad2(d.getSeconds())}`;
-    const rand  = Math.floor(1000 + Math.random() * 9000);
-    return `${String(mode).toUpperCase()}${stamp}${rand}`;
+    const rand = Math.floor(100 + Math.random() * 900);
+    return `${stamp}${rand}`;
 }
 
 function _getAllTxnsObj() {
@@ -230,7 +256,7 @@ function addSingleTransaction(customerId, opts) {
     const tsStr   = opts.timestamp || _timeStampStr();
 
     const txn = {
-        id: opts.id || _nextTxnId(),
+        id: opts.id || generateExternalTxnId(),
         date: dateStr,
         timestamp: tsStr,
         utr: opts.utr || generateUTR(type === 'credit' ? 'CR' : 'DR'),
@@ -296,8 +322,8 @@ function transferBetweenUsers(opts) {
     if (!all[fromId]) all[fromId] = [];
     if (!all[toId])   all[toId]   = [];
 
-    const debitId  = _nextTxnId();
-    const creditId = debitId + 1;
+    const debitId  = opts.debitId  || generateInternalTxnId('D');
+    const creditId = opts.creditId || generateInternalTxnId('C');
 
     const debitTxn = {
         id: debitId,

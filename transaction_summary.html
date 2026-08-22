@@ -99,16 +99,6 @@
                 </div>
             </div>
             <div class="detail-item">
-                <p class="detail-label">Transaction ID</p>
-                <div class="detail-value-row">
-                    <p class="detail-value" data-field="id">623436695117</p>
-                    <button class="copy-btn" onclick="copyField('id')">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        Copy
-                    </button>
-                </div>
-            </div>
-            <div class="detail-item">
                 <p class="detail-label">Status</p>
                 <p class="detail-value" data-field="status">approved</p>
             </div>
@@ -280,7 +270,6 @@
             let finalStatus = 'approved';
             let finalNarration = '';
             let finalRemarks = '';
-            let finalId = String(idParam || '623436695117');
             let finalUtr = '';
             let finalTo = '';
             let finalInitiatedBy = '';
@@ -319,42 +308,65 @@
                 else if (actualTxn.category === 'loan') finalType = 'Loan Account Transaction';
 
                 const cat = (actualTxn.category || 'savings').toLowerCase();
-                if (actualTxn.from_customer_id) {
-                    const u = _findUserById(actualTxn.from_customer_id);
-                    if (u) finalFrom = _catAccountLabel(cat, u);
-                    else if (ownerUser) finalFrom = _catAccountLabel(cat, ownerUser);
-                } else if (ownerUser) {
-                    finalFrom = _catAccountLabel(cat, ownerUser);
-                }
+                let userAccountLabel = _catAccountLabel(cat, ownerUser);
+                let otherPartyLabel = '';
 
                 if (actualTxn.to_customer_id && String(actualTxn.to_customer_id) !== String(customerId)) {
                     const u = _findUserById(actualTxn.to_customer_id);
-                    if (u) finalTo = _catAccountLabel(cat, u);
-                    else finalTo = `Account xx ${_maskAccount(actualTxn.to_customer_id)}`;
+                    otherPartyLabel = u ? _catAccountLabel(cat, u) : `Account xx ${_maskAccount(actualTxn.to_customer_id)}`;
                 }
-                if (!finalTo && actualTxn.utr && actualTxn.pair_of !== null && actualTxn.pair_of !== undefined) {
+                if (actualTxn.from_customer_id && String(actualTxn.from_customer_id) !== String(customerId)) {
+                    const u = _findUserById(actualTxn.from_customer_id);
+                    otherPartyLabel = u ? _catAccountLabel(cat, u) : `Account xx ${_maskAccount(actualTxn.from_customer_id)}`;
+                }
+                if (!otherPartyLabel && actualTxn.utr && actualTxn.pair_of !== null && actualTxn.pair_of !== undefined) {
                     const oppositeLeg = (String(actualTxn.leg || 'DEBIT').toUpperCase() === 'DEBIT') ? 'CREDIT' : 'DEBIT';
-                    const fromAll = _findPairedTxn(customerId, actualTxn.utr, oppositeLeg);
-                    if (fromAll) {
-                        const fromCID = customerId;
-                    } else {
-                        try {
-                            const raw = localStorage.getItem('ADMIN_TRANSACTIONS');
-                            if (raw) {
-                                const all = JSON.parse(raw);
-                                for (const cid2 of Object.keys(all)) {
-                                    if (cid2 === String(customerId)) continue;
-                                    const found = all[cid2].find(t => t.utr === actualTxn.utr && (!oppositeLeg || (t.leg || '').toUpperCase() === oppositeLeg));
-                                    if (found) {
-                                        const u = _findUserById(cid2);
-                                        if (u) finalTo = _catAccountLabel(cat, u);
-                                        else finalTo = `Account xx ${_maskAccount(cid2)}`;
-                                        break;
-                                    }
+                    try {
+                        const raw = localStorage.getItem('ADMIN_TRANSACTIONS');
+                        if (raw) {
+                            const all = JSON.parse(raw);
+                            for (const cid2 of Object.keys(all)) {
+                                if (cid2 === String(customerId)) continue;
+                                const found = all[cid2].find(t => t.utr === actualTxn.utr && (!oppositeLeg || (t.leg || '').toUpperCase() === oppositeLeg));
+                                if (found) {
+                                    const u = _findUserById(cid2);
+                                    otherPartyLabel = u ? _catAccountLabel(cat, u) : `Account xx ${_maskAccount(cid2)}`;
+                                    break;
                                 }
                             }
-                        } catch (e) {}
+                        }
+                    } catch (e) {}
+                }
+
+                if (!otherPartyLabel) {
+                    const sr = actualTxn.standalone_reason || '';
+                    if (sr === 'EXTERNAL_SALARY_CREDIT') {
+                        otherPartyLabel = 'External Employer / NEFT Credit';
+                    } else if (sr === 'EXTERNAL_GOVT_CHARGE') {
+                        otherPartyLabel = 'Government / Banking Charges';
+                    } else if (sr.startsWith('EXTERNAL')) {
+                        otherPartyLabel = 'External Source / Third-party';
+                    } else if (actualTxn.mode === 'CHARGE') {
+                        otherPartyLabel = 'Bank Charges / Government Levy';
+                    } else if (cat === 'credit_card' && isCredit) {
+                        otherPartyLabel = 'External Payment / Refund';
+                    } else if (cat === 'credit_card' && !isCredit) {
+                        otherPartyLabel = 'Merchant / Point of Sale';
+                    } else if (actualTxn.desc && actualTxn.desc.includes('Branch')) {
+                        otherPartyLabel = 'IDFC FIRST Branch (Cash)';
+                    } else if (actualTxn.mode === 'CASH' || actualTxn.desc && (actualTxn.desc.includes('Cash') || actualTxn.desc.includes('Deposit'))) {
+                        otherPartyLabel = 'IDFC FIRST Branch (Cash Deposit)';
+                    } else {
+                        otherPartyLabel = isCredit ? 'External Source / Remitter' : 'Merchant / Beneficiary';
                     }
+                }
+
+                if (isCredit) {
+                    finalFrom = otherPartyLabel;
+                    finalTo = userAccountLabel;
+                } else {
+                    finalFrom = userAccountLabel;
+                    finalTo = otherPartyLabel;
                 }
 
                 if (actualTxn.utr) finalUtr = actualTxn.utr;
@@ -363,8 +375,6 @@
 
                 const rawStatus = String(actualTxn.status || 'approved').toLowerCase();
                 finalStatus = (cat === 'savings' && (rawStatus === 'unbilled' || rawStatus === 'billed')) ? 'approved' : rawStatus;
-
-                if (actualTxn.id) finalId = String(actualTxn.id);
 
                 finalDateHeader = actualTxn.timestamp || actualTxn.date || (date || finalDateHeader);
 
@@ -399,7 +409,6 @@
             setDetail('from', finalFrom);
             setDetail('to', finalTo);
             setDetail('utr', finalUtr);
-            setDetail('id', finalId);
             setDetail('status', finalStatus);
             setDetail('narration', finalNarration || 'CC/4814/713406508');
             setDetail('remarks', finalRemarks || null);
