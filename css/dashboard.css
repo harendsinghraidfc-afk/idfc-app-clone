@@ -215,7 +215,7 @@
     border-radius: 20px;
     padding: 22px;
     padding-bottom: 25px; /* Reduced from 65px */
-    min-height: 140px; /* Reduced slightly */
+    min-height: 180px; /* Increased from 140px */
     color: white;
     position: relative;
     box-shadow: 0 10px 25px rgba(179, 29, 51, 0.15);
