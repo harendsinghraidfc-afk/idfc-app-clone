@@ -250,17 +250,36 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0 6px 15px rgba(251, 176, 59, 0.4);
-    border: 3.5px solid #FFD700;
+    border: 3.5px solid #FFD700; /* Matching start of gradient for seamless look */
     text-align: center;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-.circle-text {
+.circle-text-swipe {
+    height: 28px; /* Fixed height for two lines */
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.swipe-text {
+    display: flex;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
     font-size: 11px;
     font-weight: 800;
     color: #8B1538;
     line-height: 1.1;
     text-transform: uppercase;
+    animation: swipeUp 5s infinite;
+}
+
+@keyframes swipeUp {
+    0%, 45% { transform: translateY(0); }
+    50%, 95% { transform: translateY(-28px); }
+    100% { transform: translateY(0); }
 }
 
 .action-label {
